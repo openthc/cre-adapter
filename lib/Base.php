@@ -1,9 +1,11 @@
 <?php
 /**
- * A Base Class for an RBE
+ * A Base Class for a CRE
  */
 
-class RBE_Base
+namesapce OpenTHC\CRE;
+
+class Base
 {
 	protected $_api_base;
 
@@ -14,6 +16,8 @@ class RBE_Base
 	function getLicense()
 	{
 		return $this->_License;
+		//$L = License::findByCode($this->_license);
+		//return $L;
 	}
 
 	/**
@@ -44,6 +48,17 @@ class RBE_Base
 
 			$this->_License = $l;
 
+		} elseif (is_string($l) || is_numeric($l)) {
+
+			$x = License::findByGUID($l);
+			if (!empty($x)) {
+				$this->_License = $x->toArray();
+			} else {
+				$x = License::findByCode($l);
+				if (!empty($x)) {
+					$this->_License = $x->toArray();
+				}
+			}
 		} else {
 			throw new Exception('Invalid Parameters [LRB#066]');
 		}
@@ -65,20 +80,18 @@ class RBE_Base
 				}
 			}
 		}
-
-		self::_ksort_r($a);
-
+		$a = ksort_r($a);
 		return md5(json_encode($a));
 	}
 
 	/*
-	 * Key-Sort Array, Recursively
-	 */
+	* Key-Sort Array, Recursively
+	*/
 	static function _ksort_r($a)
 	{
 		foreach ($a as &$v) {
 			if (is_array($v)) {
-				_ksort_r($v);
+				self::_ksort_r($v);
 			}
 		}
 
