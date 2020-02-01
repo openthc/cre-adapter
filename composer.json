@@ -7,7 +7,7 @@
 			"lib/cre.php"
 		],
 		"psr-4": {
-			"OpenTHC\\CRE\\Adapter": "./lib"
+			"OpenTHC\\CRE\\Adapter\\": "./lib"
 		}
 	},
 	"require": {
@@ -19,7 +19,7 @@
 		"guzzlehttp/guzzle": "6.5.2"
 	},
 	"require-dev": {
-		"phpstan/phpstan": "0.12.18",
+		"phpstan/phpstan": "0.12.8",
 		"phpunit/phpunit": "8.5.2"
 	}
 }

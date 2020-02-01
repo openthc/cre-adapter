@@ -213,11 +213,11 @@ class LeafData extends Base
 	protected function _curl_init($uri)
 	{
 		if (empty($this->_license_auth)) {
-			throw new Exception('LRL#177 Invalid API Secret');
+			throw new \Exception('LRL#177 Invalid API Secret');
 		}
 
 		if (empty($this->_License['code'])) {
-			throw new Exception('LRL#113 Invalid API License');
+			throw new \Exception('LRL#113 Invalid API License');
 		}
 
 		if (empty($this->_api_host)) {

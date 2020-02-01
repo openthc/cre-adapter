@@ -69,11 +69,11 @@ class METRC extends Base
 	function __construct($x)
 	{
 		if (empty($x['program-key'])) {
-			throw new Exception('Invalid Program Key [LRM#048]');
+			throw new \Exception('Invalid Program Key [LRM#048]');
 		}
 
 		if (empty($x['license-key'])) {
-			throw new Exception('Invalid License Key [LRM#052]');
+			throw new \Exception('Invalid License Key [LRM#052]');
 		}
 
 		$this->_api_key_vendor = $x['program-key'];

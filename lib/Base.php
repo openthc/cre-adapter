@@ -40,43 +40,43 @@ class Base
 	 */
 	function setLicense($l)
 	{
-		// New Preferred Way
-		if (is_array($l) || is_object($l)) {
-
-			if (is_object($l)) {
-				$l = $l->toArray();
-			}
-
-			if (empty($l['id'])) {
-				throw new Exception('License Missing ID');
-			}
-
-			if (empty($l['code'])) {
-				throw new Exception('License Missing CODE');
-			}
-
-			if (empty($l['guid'])) {
-				throw new Exception('License Missing GUID');
-			}
-
-			$this->_License = $l;
-
-		} elseif (is_string($l) || is_numeric($l)) {
-
-			$x = License::findByGUID($l);
-			if (!empty($x)) {
-				$this->_License = $x->toArray();
-			} else {
-				$x = License::findByCode($l);
-				if (!empty($x)) {
-					$this->_License = $x->toArray();
-				}
-			}
+		if (is_array($l)) {
+			// Perfect
+		} elseif (is_object($l)) {
+			$l = $l->toArray(); // Hope it has this routine!
+		} elseif (is_string($l)) {
+			$l = [
+				'id' => $l,
+				'code' => $l,
+				'guid' => $l,
+			];
 		} else {
-			throw new Exception('Invalid Parameters [LRB#066]');
+			throw new \Exception('Invalid Parameters [LRB#066]');
 		}
 
+		if (empty($l['id'])) {
+			throw new \Exception('License Missing ID');
+		}
+
+		if (empty($l['code'])) {
+			throw new \Exception('License Missing CODE');
+		}
+
+		if (empty($l['guid'])) {
+			throw new \Exception('License Missing GUID');
+		}
+
+		$this->_License = $l;
+
 		return $this->_License;
+	}
+
+	/**
+	 * Everyone else should implement this
+	 */
+	function ping()
+	{
+		return false;
 	}
 
 	/**
