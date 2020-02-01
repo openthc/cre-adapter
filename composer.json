@@ -1,13 +1,13 @@
 {
 	"name": "openthc/cre-adapter",
 	"description": "OpenTHC Cannabis Reporting Engine API Adapters",
-	"license": "GPL-3.0-only",
+	"license": "MIT",
 	"autoload": {
 		"files": [
 			"lib/cre.php"
 		],
 		"psr-4": {
-			"OpenTHC\\CRE\\": "./lib"
+			"OpenTHC\\CRE\\Adapter": "./lib"
 		}
 	},
 	"require": {
@@ -16,10 +16,10 @@
 		"ext-date": "*",
 		"ext-json": "*",
 		"ext-sockets": "*",
-		"guzzlehttp/guzzle": "6.3.3"
+		"guzzlehttp/guzzle": "6.5.2"
 	},
 	"require-dev": {
-		"phpstan/phpstan": "0.11.12",
-		"phpunit/phpunit": "8.3.4"
+		"phpstan/phpstan": "0.12.18",
+		"phpunit/phpunit": "8.5.2"
 	}
 }

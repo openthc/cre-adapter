@@ -1,9 +1,9 @@
 <?php
 /**
- * A Base Class for a CRE
+ * A Base Class for an RBE
  */
 
-namesapce OpenTHC\CRE;
+namespace OpenTHC\CRE\Adapter;
 
 class Base
 {
@@ -13,11 +13,25 @@ class Base
 
 	const ENGINE = null;
 
+	/**
+	 * Get Configuration of a Specific Engine
+	 */
+	function getConfig($key)
+	{
+		$dir = __DIR__;
+		$dir = dirname($dir);
+
+		$ini_file = sprintf('%s/etc/cre.ini', $dir);
+		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
+
+		$cfg = $ini_data[$key];
+
+		return $cfg;
+	}
+
 	function getLicense()
 	{
 		return $this->_License;
-		//$L = License::findByCode($this->_license);
-		//return $L;
 	}
 
 	/**
@@ -33,7 +47,6 @@ class Base
 				$l = $l->toArray();
 			}
 
-			// OK
 			if (empty($l['id'])) {
 				throw new Exception('License Missing ID');
 			}
@@ -77,21 +90,23 @@ class Base
 			if (is_object($a)) {
 				if (method_exists($a, 'toArray')) {
 					$a = $a->toArray();
+				} else {
+					// JSON?
 				}
 			}
 		}
-		$a = ksort_r($a);
+		$a = self::ksort_r($a);
 		return md5(json_encode($a));
 	}
 
 	/*
 	* Key-Sort Array, Recursively
 	*/
-	static function _ksort_r($a)
+	static function ksort_r($a)
 	{
 		foreach ($a as &$v) {
 			if (is_array($v)) {
-				self::_ksort_r($v);
+					self::_ksort_r($v);
 			}
 		}
 

@@ -1,0 +1,266 @@
+;
+; RBE Definitions
+;
+
+;
+; Alaska
+[usa/ak]
+	name = "Alaska / METRC"
+	engine = "metrc"
+	region = "ak"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Alaska Test
+[usa/ak/test]
+	name = "Alaska / METRC / Test"
+	engine = "metrc"
+	region = "ak"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; California
+[usa/ca]
+	name = "California / METRC"
+	engine = "metrc"
+	region = "ca"
+	version = 2015001
+
+
+;
+; California
+[usa/ca/test]
+	name = "California / METRC / Test"
+	engine = "metrc"
+	region = "ca"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Colorado
+[usa/co]
+	name = "Colorado / METRC"
+	engine = "metrc"
+	region = "co"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Colorado
+[usa/co/test]
+	name = "Colorado / METRC / Test"
+	engine = "metrc"
+	region = "co"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Oregon
+[usa/or]
+	name = "Oregon / METRC"
+	engine = "metrc"
+	region = "or"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Oregon/Test
+[usa/or/test]
+	name = "Oregon/ METRC / Test"
+	engine = "metrc"
+	region = "or"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Hawaii
+[usa/hi]
+	name = "Hawaii / BioTrack"
+	host = "hicsts.hawaii.gov"
+	engine = "biotrack"
+	region = "hi"
+	version = 2014001
+
+
+;
+; Illinois
+[usa/il]
+	name = "Illinois / BioTrack"
+	engine = "biotrack"
+	region = "il"
+	version = 2014001
+
+
+;
+; Massachusetts
+[usa/ma]
+	name = "Massachusetts / METRC"
+	engine = "metrc"
+	region = "ma"
+	version = 2015001
+
+
+;
+; Maine
+[usa/me]
+	name = "Maine / BioTrack"
+	engine = "biotrack"
+	region = "me"
+	version = 2019270
+
+
+;
+; Michigan
+[usa/mi]
+	name = "Michigan / METRC"
+	engine = "metrc"
+	region = "mi"
+	version = 2018001
+
+
+;
+; Montana
+[usa/mt]
+	name = "Montana / METRC"
+	engine = "metrc"
+	region = "mt"
+	version = 2015001
+	program-key = ""
+
+
+;
+; Montana/TEST
+[usa/mt/test]
+	name = "Montana / METRC / Test"
+	engine = "metrc"
+	region = "mt"
+	version = 2015001
+	program-key = ""
+
+
+;
+; New Mexico
+[usa/nm]
+	name = "New Mexico / BioTrack"
+	engine = "biotrack"
+	region = "nm"
+	version = 2014001
+
+
+;
+; Nevada
+[usa/nv]
+	name = "Nevada / METRC"
+	engine = "metrc"
+	region = "nv"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Oklahoma
+[usa/ok]
+	name = "Oklahoma / OpenTHC"
+	engine = "openthc"
+	region = "ok"
+	version = 2017001
+	program-key = "A_SECRET"
+
+
+;
+; Washington / BioTrack / UCS
+[usa/wa/ucs]
+	name = "Washington / BioTrack / UCS"
+	engine = "biotrack"
+	region = "wa"
+	version = 2014001
+
+;
+; Washington / BioTrack / UCS Test
+[usa/wa/ucs/test]
+	name = "Washington / BioTrack / UCS / Test"
+	engine = "biotrack"
+	region = "wa"
+	version = 2014001
+
+
+;
+; Washington
+[usa/wa]
+	name = "Washington / LeafData"
+	engine = "leafdata"
+	region = "wa"
+	version = 2019157
+
+
+;
+; LeafData Test System
+[usa/wa/test]
+	name = "Washington / LeafData / Test"
+	engine = "leafdata"
+	region = "wa"
+	version = 2019157
+	endpoint = "https://watest.leafdatazone.com/api/v1"
+
+
+;
+;
+[can]
+	name = "Canada / OpenTHC"
+	engine = "openthc"
+	region = "can"
+	version = 2017001
+	program-key = ""
+
+
+;
+;
+[openthc]
+	name = "OpenTHC"
+	engine = "openthc"
+	version = 2017001
+	program-key = ""
+
+
+;
+; Test Interfaces
+;
+
+;;;
+;;; OpenTHC Mock BioTrack
+[openthc/biotrack/mock]
+	name = "OpenTHC / BioTrack / Bunk"
+	engine = "biotrack"
+	region = "*"
+	version = 2014001
+	endpoint = "https://bunk.openthc.org/biotrack"
+
+
+;;;
+;;; OpenTHC Mock METRC
+[openthc/metrc/mock]
+	name = "OpenTHC / METRC / Bunk"
+	engine = "metrc"
+	region = "*"
+	version = 2015001
+	program-key = "A_SECRET"
+	endpoint = "https://bunk.openthc.org/metrc"
+
+
+;;;
+;;; OpenTHC Mock LeafData
+[openthc/leafdata/mock]
+	name = "OpenTHC / LeafData / Bunk"
+	engine = "leafdata"
+	region = "*"
+	version = 2018031
+	endpoint = "https://bunk.openthc.org/leafdata"

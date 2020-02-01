@@ -4,9 +4,7 @@
 	@see http://www.biotrackthc.com/api/xml
 */
 
-namesapce OpenTHC\CRE;
-
-use Edoceo\Radix\DB\SQL;
+namespace OpenTHC\CRE\Adapter;
 
 class BioTrack extends Base
 {
@@ -17,7 +15,7 @@ class BioTrack extends Base
 	protected $_name = 'BioTrack';
 	protected $_api_base = 'https://<server>/serverjson.asp';
 
-	protected $_mode = 'live';
+	protected $_training = false;
 
 	protected $_inf;
 	protected $_raw;
@@ -54,7 +52,7 @@ class BioTrack extends Base
 	public static $obj_list = array(
 		'vendor' => 'Vendor',
 		'qa_lab' => 'QA Lab',
-		'third_party_transporter' => 'Third Party Transporter',
+		// 'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
 		'employee' => 'Contacts',
 		'vehicle' => 'Vehicle',
 		'inventory_room' => 'Room/Inventory',
@@ -70,7 +68,7 @@ class BioTrack extends Base
 		'inventory_adjust' => 'Inventory Adjustment',
 		'sale' => 'Sale',
 		'tax_report' => 'Tax Reporting',
-		'id_preassign' => 'IDs',
+		// 'id_preassign' => 'IDs', // WA-UCS Only
 	);
 
 	// Deprecated
@@ -175,6 +173,9 @@ class BioTrack extends Base
 		case 11:
 			return 'MMJ/CO-OP';
 		}
+
+		return $t;
+
 	}
 
 	/**
@@ -236,6 +237,7 @@ class BioTrack extends Base
 	{
 		if (!empty($x)) {
 			if (is_array($x)) {
+				$this->_company = $x['company'];
 				$this->_username = $x['username'];
 				$this->_password = $x['password'];
 			} elseif (is_string($x)) {
@@ -272,10 +274,9 @@ class BioTrack extends Base
 	/**
 	 * Set Test mode
 	 */
-	function setTestMode($opt=true)
+	function setTestMode()
 	{
-		//syslog(LOG_NOTICE, "{$this->_name}::setTestMode({$opt})");
-		$this->_mode = 'test';
+		$this->_training = true;
 	}
 
 	/**
@@ -296,7 +297,7 @@ class BioTrack extends Base
 		$arg = array(
 			'action' => 'login',
 			'license_number' => $company,
-			'username' => strtolower(trim($username)),
+			'username' => $username,
 			'password' => $password,
 		);
 
@@ -313,11 +314,10 @@ class BioTrack extends Base
 		}
 
 		$ret = $this->_curl_exec($arg);
+		$ret['success'] = intval($ret['success']);
 
 		if (1 == $ret['success']) {
 			$this->_sid = $ret['sessionid'];
-		} else {
-			//print_r($ret);
 		}
 
 		return $ret;
@@ -327,12 +327,14 @@ class BioTrack extends Base
 	{
 		if (empty($this->_sid)) {
 			return array(
+				'code' => 403,
 				'status' => 'failure',
 				'detail' => 'No Session is Active [LRB#319]',
 			);
 		}
 
 		return array(
+			'code' => 200,
 			'status' => 'success',
 			'detail' => 'Everything is Awesome',
 		);
@@ -639,11 +641,13 @@ class BioTrack extends Base
 		@param $rid Room ID
 		@param $ida ID Scalar of Array of IDs
 	*/
-	function inventory_move($id_list, $room_id)
+	function inventory_move($id_list, $rid)
 	{
 		if (!is_array($id_list)) {
 			$id_list = array($id_list);
 		}
+
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
 
 		$arg = array(
 			'action' => 'inventory_move',
@@ -654,7 +658,7 @@ class BioTrack extends Base
 		foreach ($id_list as $x) {
 			$arg['data'][] = array(
 				'barcodeid' => $x,
-				'room' => $room_id,
+				'room' => $rid,
 			);
 		}
 
@@ -705,8 +709,10 @@ class BioTrack extends Base
 	*/
 	function inventory_split($x)
 	{
+		$loc = $this->_License['guid'];
 		$res = $this->_curl_exec(array(
 			'action' => 'inventory_split',
+			'location' => $loc,
 			'data' => $x,
 		));
 		return $res;
@@ -826,7 +832,6 @@ class BioTrack extends Base
 			'location' => $l,
 			'third_party_license' => $c,
 			'stop_overview' => $sd,
-		//	'new_room' => null,
 		);
 		$res = $this->_curl_exec($arg);
 		return $res;
@@ -989,16 +994,17 @@ class BioTrack extends Base
 		return $res;
 	}
 
-	function inventory_room_add($arg)
+	function inventory_room_add($arg) // @deprecated
 	{
 		return $this->_curl_exec(array_merge(array('action' => 'inventory_room_add'), $arg));
 	}
 
-	function inventory_room_modify($id, $name, $loc, $q)
+	function inventory_room_modify($rid, $name, $loc, $q) // @deprecated
 	{
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
 		$arg = array(
 			'action' => 'inventory_room_modify',
-			'id' => $id,
+			'id' => $rid,
 			'name' => trim($name),
 			'location' => $loc,
 			'quarantine' => intval($q)
@@ -1011,12 +1017,14 @@ class BioTrack extends Base
 		@param @loc Location License ID
 		@param $id Room ID
 	*/
-	function inventory_room_remove($loc, $id)
+	function inventory_room_remove($loc, $rid)
 	{
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
+
 		$res = $this->_curl_exec(array(
 			'action' => 'inventory_room_remove',
 			'location' => $loc,
-			'id' => $id,
+			'id' => $rid,
 		));
 		return $res;
 	}
@@ -1171,6 +1179,7 @@ class BioTrack extends Base
 		if (empty($cts)) {
 			$cts = $_SERVER['REQUEST_TIME'];
 		}
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
 
 		// echo "plant_cure($pid, $rid, $inv06_q, $inv09_q, $inv27_q)\n";
 		$arg = array(
@@ -1250,18 +1259,20 @@ class BioTrack extends Base
 		@param $id Plant ID or Array of Plant IDs
 		@param $cts Collection Time
 		@param $wd Weight Data
-		@param $room Room ID
+		@param $rid Room ID
 		@param $add Additional Collecitons?
 		@param $wet Is Wet 1/0
 	*/
-	function plant_harvest($pid, $cts, $weights, $room=null, $add=0, $wet=0)
+	function plant_harvest($pid, $cts, $weights, $rid=null, $add=0, $wet=0)
 	{
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
+
 		$arg = array(
 			'action' => 'plant_harvest',
 			'barcodeid' => $pid,
 			'collectiontime' => $cts,
 			'weights' => $weights,
-			'new_room' => $room,
+			'new_room' => $rid,
 			'collectadditional' => intval($add),
 			'wet' => intval($wet),
 		);
@@ -1352,17 +1363,19 @@ class BioTrack extends Base
 
 	/**
 		@param $id One or More Plant IDs
-		@param $room Room Integer ID
+		@param $rid Room Integer ID
 	*/
-	function plant_move($id_list, $room_id)
+	function plant_move($id_list, $rid)
 	{
 		if (!is_array($id_list)) {
 			$id_list = array($id_list);
 		}
 
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
+
 		$arg = array(
 			'action' => 'plant_move',
-			'room' => $room_id,
+			'room' => $rid,
 			'barcodeid' => $id_list,
 		);
 		$res = $this->_curl_exec($arg);
@@ -1371,7 +1384,9 @@ class BioTrack extends Base
 
 	function plant_new($arg)
 	{
-		$res = $this->_curl_exec(array_merge(array('action' => 'plant_new'), $arg));
+		$arg['room'] = (preg_match('/^(I|P)([0-9a-f]+)$/', $arg['room'], $m) ?  hexdec($m[2]) : $arg['room']);
+		$arg = array_merge(array('action' => 'plant_new'), $arg);
+		$res = $this->_curl_exec($arg);
 		return $res;
 
 	}
@@ -1451,7 +1466,7 @@ class BioTrack extends Base
 	/**
 		Room Functions
 	*/
-	function plant_room_add($arg)
+	function plant_room_add($arg) // @deprecated
 	{
 		$arg = array_merge(array('action' => 'plant_room_add'), $arg);
 		$res = $this->_curl_exec($arg);
@@ -1463,11 +1478,13 @@ class BioTrack extends Base
 		@param $n Name
 		@parma $l Location Identifier
 	*/
-	function plant_room_modify($id, $n, $l)
+	function plant_room_modify($rid, $n, $l) // @deprecated
 	{
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
+
 		$arg = array(
 			'action' => 'plant_room_modify',
-			'id' => $id,
+			'id' => $rid,
 			'name' => trim($n),
 			'location' => $l,
 		);
@@ -1479,12 +1496,14 @@ class BioTrack extends Base
 		@param @loc Location License ID
 		@param $id Room ID
 	*/
-	function plant_room_remove($loc, $id)
+	function plant_room_remove($loc, $rid) // @deprecated
 	{
+		$rid = (preg_match('/^(I|P)([0-9a-f]+)$/', $rid, $m) ?  hexdec($m[2]) : $rid);
+
 		$res = $this->_curl_exec(array(
 			'action' => 'plant_room_remove',
 			'location' => $loc,
-			'id' => $id,
+			'id' => $rid,
 		));
 		return $res;
 	}
@@ -1660,7 +1679,7 @@ class BioTrack extends Base
 	/**
 
 	*/
-	private function _sync_object($act, $opt=null)
+	function _sync_object($act, $opt=null)
 	{
 		if (is_array($opt)) {
 			$arg = array(
@@ -1727,15 +1746,6 @@ class BioTrack extends Base
 	function sync_inventory_qa_sample($min=null)
 	{
 		$arg = $this->_sync_object('sync_inventory_qa_sample', $min);
-		return $this->_curl_exec($arg);
-	}
-
-	/**
-		@param $arg array of data for Sync Check
-	*/
-	function sync_inventory_room($min=null)
-	{
-		$arg = $this->_sync_object('sync_inventory_room', $min);
 		return $this->_curl_exec($arg);
 	}
 
@@ -1815,6 +1825,15 @@ class BioTrack extends Base
 	/**
 		@param $arg array of data for Sync Check
 	*/
+	function sync_inventory_room($min=null)
+	{
+		$arg = $this->_sync_object('sync_inventory_room', $min);
+		return $this->_curl_exec($arg);
+	}
+
+	/**
+		@param $arg array of data for Sync Check
+	*/
 	function sync_qa_lab($min=null)
 	{
 		$arg = $this->_sync_object('sync_qa_lab', $min);
@@ -1866,10 +1885,18 @@ class BioTrack extends Base
 		return $this->_curl_exec($arg);
 	}
 
+	/**
+	 * Interface for Strains
+	 */
+	function strain()
+	{
+		$r = new RBE_BioTrack_Strain($this);
+		return $r;
+	}
 
 	/**
-		Interface for Zones
-	*/
+	 * Interface for Zones
+	 */
 	function zone()
 	{
 		$r = new RBE_BioTrack_Zone($this);
@@ -1880,14 +1907,14 @@ class BioTrack extends Base
 		Executue the Request with the given Arguments
 		@param $arg Array of Arguments for API call
 	*/
-	protected function _curl_exec($arg)
+	function _curl_exec($arg)
 	{
 		$arg['API'] = '4.0';
 		if (!empty($this->_sid)) {
 			$arg['sessionid'] = $this->_sid;
 		}
 
-		if ('test' == $this->_mode) {
+		if (!empty($this->_training)) {
 			$arg['training'] = 1;
 		}
 
@@ -1917,35 +1944,7 @@ class BioTrack extends Base
 
 		$t1 = microtime(true);
 
-		$log = array(
-			'action' => $this->_arg['action'],
-			'nonce' => $this->_arg['nonce'],
-			'request' => $this->_req,
-			'response' => $this->_raw,
-			'duration' => ($t1 - $t0),
-		);
-
-		// All Non-Sync Calls are Logged
-		if (preg_match('/^sync_/', $this->_arg['action'])) {
-			// No Log
-		} else {
-			App::log('RBE_BioTrack/' . $this->_arg['action'], $log);
-		}
-
-		// File Log on Dump
-		$_ENV['rbe-log-verbose'] = true;
-		$_ENV['sync-dump'] = true;
-		if (!empty($_ENV['rbe-log-verbose'])) {
-			$fx = sprintf('/tmp/biotrack-%s-%s.dump', $this->_arg['action'], $this->_arg['nonce']);
-			$dx = json_encode(array(
-				'_arg' => $this->_arg,
-				'_raw' => $this->_raw,
-				'_ret' => $this->_ret,
-			), JSON_PRETTY_PRINT);
-			$dx = print_r($this, true);
-			file_put_contents($fx, $dx);
-		}
-
+		// Handle Response
 		switch ($this->_inf['http_code']) {
 		case 200:
 			// OK
@@ -1958,29 +1957,19 @@ class BioTrack extends Base
 					'errorcode' => $this->_inf['http_code'],
 					'error' => 'BioTrack System Error: Empty Response: Please try your request again.',
 				);
-				App::log('BioTrack/Empty Response', array(
-					'nonce' => $this->_arg['nonce'],
-					'detail' => $this->_ret,
-					'curl' => $this->_inf
-				));
 			} else {
 				$this->_ret = array(
 					'success' => 0,
 					'errorcode' => $this->_inf['http_code'],
 					'error' => sprintf('BioTrack System Error; Code #%03d: Please try your request again.', $this->_inf['http_code']), //Invalid Response from WSLCB',
 				);
-				App::log('BioTrack/Server Error', array(
-					'nonce' => $this->_arg['nonce'],
-					'detail' => $this->_ret,
-					'curl' => $this->_inf
-				));
 			}
 		}
 
 		// @todo Plugin::notify_run('rbe-error-handler');
 		if (!empty($this->_ret['error'])) {
 			if (preg_match('/session.+expired/', $this->_ret['error'])) {
-				unset($_SESSION['rbe-auth']);
+				$this->_sid = null;
 			}
 		}
 
@@ -1997,17 +1986,12 @@ class BioTrack extends Base
 
 		$h = parse_url($uri, PHP_URL_HOST);
 
-		// radix::dump($head);
 		$head = array(
 			'Content-Type: text/JSON', // Not Really Accurate - Should be application/json
 			sprintf('Host: %s', $h),
-			sprintf('User-Agent: WeedTraQR/%s', APP_BUILD),
+			sprintf('User-Agent: OpenTHC/%s', APP_BUILD),
 		);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-
-		// Verbose?
-		//curl_setopt($ch, CURLOPT_VERBOSE, true);
-		//curl_setopt($ch, CURLOPT_STDERR, fopen('/tmp/curl.log', 'a'));
 
 		return $ch;
 	}
