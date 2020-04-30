@@ -31,9 +31,12 @@ class LeafData extends Base
 	private $_raw;
 	private $_res;
 
-	protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
-	protected $_api_host = 'traceability.lcb.wa.gov';
+	// protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
+	// protected $_api_host = 'traceability.lcb.wa.gov';
 
+	protected $_api_base = 'https://pipe.openthc.com/stem/leafdata/wa';
+
+	protected $_license_code = '';
 	protected $_license_auth = '';
 
 	protected $_lic_type = array(
@@ -44,6 +47,7 @@ class LeafData extends Base
 		'cultivator_production' => '(J) Producer/Processor',
 		'tribe' => '(T) Tribe',
 		'co-op' => '(E) Co-op',
+		//'transpoter' => '(Z) Transporter', // They have it spelled incorrectly in the UI
 		'transporter' => '(Z) Transporter',
 	);
 
@@ -193,6 +197,13 @@ class LeafData extends Base
 
 		$this->_license_auth = $x['license-key'];
 
+		if (!empty($x['mode'])) {
+			throw new Exception('Invalid Parameter [LRL#188]');
+			if ('test' == $x['mode']) {
+				$this->setTestMode();
+			}
+		}
+
 	}
 
 	/**
@@ -213,11 +224,11 @@ class LeafData extends Base
 	protected function _curl_init($uri)
 	{
 		if (empty($this->_license_auth)) {
-			throw new \Exception('LRL#177 Invalid API Secret');
+			throw new \Exception('Invalid API Secret [LRL#177]');
 		}
 
 		if (empty($this->_License['code'])) {
-			throw new \Exception('LRL#113 Invalid API License');
+			throw new \Exception('Invalid API License [LRL#113]');
 		}
 
 		if (empty($this->_api_host)) {
@@ -349,10 +360,10 @@ class LeafData extends Base
 				'detail' => sprintf('LRL#%03d: %s', $this->_inf['http_code'], $this->formatError($this->_res)),
 			);
 			break;
-		// case 405:
-		// 	var_dump($this);
-		// 	break;
+
+		case 405:
 		case 422:
+		case 423:
 
 			return array(
 				'code' => $this->_inf['http_code'],

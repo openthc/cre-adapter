@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Adapter;
 
-class METRC extends Base
+class Metrc extends Base
 {
 	const ENGINE = 'metrc';
 
@@ -26,6 +26,7 @@ class METRC extends Base
 	protected static $obj_list = array(
 		'uom' => 'Units of Measure',
 		'license' => 'License',
+		'contact' => 'Contact/Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
 		'room' => 'Room',
 		'strain' => 'Strain',
@@ -69,11 +70,11 @@ class METRC extends Base
 	function __construct($x)
 	{
 		if (empty($x['program-key'])) {
-			throw new \Exception('Invalid Program Key [LRM#048]');
+			throw new Exception('Invalid Program Key [LRM#048]');
 		}
 
 		if (empty($x['license-key'])) {
-			throw new \Exception('Invalid License Key [LRM#052]');
+			throw new Exception('Invalid License Key [LRM#052]');
 		}
 
 		$this->_api_key_vendor = $x['program-key'];
@@ -195,6 +196,16 @@ class METRC extends Base
 	}
 
 	/**
+	*/
+	function adjustList()
+	{
+		$url = $this->_make_url('/packages/v1/adjust/reasons');
+		$req = $this->_curl_init($url);
+		$res = $this->_curl_exec($req);
+		return $res;
+	}
+
+	/**
 		Adjust the Unit of Measure on one or more items
 		@see https://api-or.metrc.com/Documentation#Packages.post_packages_v1_adjust
 	*/
@@ -209,16 +220,16 @@ class METRC extends Base
 	function packageChangeItem($arg)
 	{
 		$url = $this->_make_url('/packages/v1/change/item');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
+		$req = $this->_curl_init($url);
+		$res = $this->_curl_exec($req, $arg);
 		return $res;
 	}
 
 	function packageCreate($arg)
 	{
 		$url = $this->_make_url('/packages/v1/create');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
+		$req = $this->_curl_init($url);
+		$res = $this->_curl_exec($req, $arg);
 		return $res;
 	}
 
@@ -276,10 +287,7 @@ class METRC extends Base
 
 	function plantbatchChangePhase($arg)
 	{
-		$url = $this->_make_url('/plantbatches/v1/changegrowthphase');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
+		throw new Exception('@deprecated');
 	}
 
 	/**
@@ -287,34 +295,12 @@ class METRC extends Base
 	*/
 	function plantbatchCreatePlantings($arg)
 	{
-		$url = $this->_make_url('/plantbatches/v1/createplantings');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
+		throw new Exception('@deprecated');
 	}
 
 	function plantbatchDestroy($arg)
 	{
-		$url = $this->_make_url('/plantbatches/v1/destroy');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
-	}
-
-	/**
-		@param $id ID of Strain to get, default 'active'
-	*/
-	function plantbatchList($id=null)
-	{
-		if (empty($id)) {
-			$id = 'active';
-		}
-
-		$url = sprintf('/plantbatches/v1/%s', $id);
-		$url = $this->_make_url($url);
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x);
-		return $res;
+		throw new Exception('@deprecated');
 	}
 
 	/**
@@ -339,40 +325,6 @@ class METRC extends Base
 		$req = $this->_curl_init($url);
 		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'DELETE');
 		$res = $this->_curl_exec($req);
-		return $res;
-	}
-
-	/**
-	*/
-	function itemGet($id)
-	{
-		$url = sprintf('/items/v1/%d', $id);
-		$url = $this->_make_url($url);
-		$req = $this->_curl_init($url);
-		$res = $this->_curl_exec($req);
-		return $res;
-	}
-
-	/**
-	*/
-	function itemCreate($arg)
-	{
-		$url = '/items/v1/create';
-		$url = $this->_make_url($url);
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
-	}
-
-	/**
-	*/
-	function itemUpdate($arg)
-	{
-		$url = '/items/v1/update';
-		$url = $this->_make_url($url);
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		print_r($res);
 		return $res;
 	}
 
@@ -415,6 +367,24 @@ class METRC extends Base
 
 		return $url . '?' . http_build_query($arg);
 
+	}
+
+	function b2c()
+	{
+		$o = new RBE_Metrc_B2C($this);
+		return $o;
+	}
+
+	function batch()
+	{
+		$o = new RBE_Metrc_Batch($this);
+		return $o;
+	}
+
+	function contact()
+	{
+		$o = new RBE_Metrc_Contact($this);
+		return $o;
 	}
 
 	function labresult()
@@ -491,7 +461,7 @@ class METRC extends Base
 
 			$verb = 'POST';
 
-			$arg = json_encode($arg);
+			$arg = json_encode($arg, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arg);
@@ -537,12 +507,14 @@ class METRC extends Base
 			throw new Exception($this->formatError($this->_res));
 			break;
 		case 401:
-			return array(
-				'status' => 'warning',
-				'detail' => 'Access Denied',
-			);
+			return [
+				'code' => 401,
+				'data' => null,
+				'meta' => [ 'Access Denied' ]
+			];
 			break;
 		default:
+			var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE#735]', $code);
 			throw new Exception($msg);
 		}

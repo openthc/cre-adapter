@@ -3,9 +3,6 @@
 	"description": "OpenTHC Cannabis Reporting Engine API Adapters",
 	"license": "MIT",
 	"autoload": {
-		"files": [
-			"lib/cre.php"
-		],
 		"psr-4": {
 			"OpenTHC\\CRE\\Adapter\\": "./lib"
 		}
