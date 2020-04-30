@@ -7,11 +7,48 @@ namespace OpenTHC\CRE\Adapter;
 
 class Base
 {
-	protected $_api_base;
+	protected $_c; // Guzzle Connection;
 
 	protected $_License;
 
 	const ENGINE = null;
+
+	/**
+	 * Array of Arguments
+	 */
+	function __construct($cfg)
+	{
+		if (empty($cfg['host'])) {
+			$cfg['host'] = parse_url($cfg['server'], PHP_URL_HOST);
+		}
+
+		$jar = new \GuzzleHttp\Cookie\CookieJar();
+
+		if (!empty($cfg['cookie'])) {
+			$c = new \GuzzleHttp\Cookie\SetCookie(array(
+				'Domain' => $cfg['host'],
+				'Name' => $cfg['cookie']['name'],
+				'Value' => $cfg['cookie']['value'],
+				'Secure' => true,
+				'HttpOnly' => true,
+			));
+			$jar->setCookie($c);
+		}
+
+		$cfg = array(
+			'base_uri' => $cfg['server'],
+			'allow_redirects' => false,
+			'cookies' => $jar,
+			'headers' => array(
+				'user-agent' => 'OpenTHC/420.20.121',
+			),
+			'http_errors' => false,
+			'verify' => false,
+		);
+
+		$this->_c = new \GuzzleHttp\Client($cfg);
+
+	}
 
 	/**
 	 * Get Configuration of a Specific Engine
@@ -69,6 +106,7 @@ class Base
 		$this->_License = $l;
 
 		return $this->_License;
+
 	}
 
 	/**
@@ -76,7 +114,10 @@ class Base
 	 */
 	function ping()
 	{
-		return false;
+		return [
+			'data' => null,
+			'meta' => [ 'detail' => 'not implemented' ],
+		];
 	}
 
 	/**
@@ -90,8 +131,6 @@ class Base
 			if (is_object($a)) {
 				if (method_exists($a, 'toArray')) {
 					$a = $a->toArray();
-				} else {
-					// JSON?
 				}
 			}
 		}
@@ -100,13 +139,13 @@ class Base
 	}
 
 	/*
-	* Key-Sort Array, Recursively
-	*/
+	 * Key-Sort Array, Recursively
+	 */
 	static function ksort_r($a)
 	{
 		foreach ($a as &$v) {
 			if (is_array($v)) {
-					self::_ksort_r($v);
+				self::ksort_r($v);
 			}
 		}
 

@@ -16,7 +16,6 @@ foreach ($res as $rec) {
 }
 ```
 
-
 ## Supported Cannabis Reporting Engines
 
 * \OpenTHC\CRE\BioTrack
@@ -31,6 +30,9 @@ foreach ($res as $rec) {
 * \OpenTHC\CRE\METRC\CA
 * \OpenTHC\CRE\METRC\CO
 * \OpenTHC\CRE\METRC\NV
+* \OpenTHC\CRE\METRC\ME
+* \OpenTHC\CRE\METRC\MI
+* \OpenTHC\CRE\METRC\MT
 * \OpenTHC\CRE\METRC\OR
 
 Other engines will be added, of course :)
