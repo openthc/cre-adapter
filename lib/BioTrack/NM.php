@@ -1,19 +1,15 @@
 <?php
 /**
  * BioTrackTHC Interface - New Mexico
- * socat -v TCP-LISTEN:8080,bind=localhost,fork OPENSSL:mcp-tracking.nmhealth.org:443,verify=0 2>&1|tee -a nm-api.log
  */
 
-namesapce OpenTHC\CRE\BioTrack;
+namespace OpenTHC\CRE\Adapter\Biotrack;
 
-class NM extends \OpenTHC\CRE\BioTrack
+class NM extends \OpenTHC\CRE\Adapter\BioTrack
 {
-	// SSL Cert uses this name
-	protected $_name = 'NMDOH';
-	protected $_api_base = 'https://mcp-tracking.nmhealth.org/serverjson.asp';
-	protected $_api_host = 'mcp-tracking.nmhealth.org';
-
-	//protected $_api_base = 'http://localhost:8080/serverjson.asp';
+	protected $_api_base = 'https://pipe.openthc.com/stem/biotrack/nm';
+	// protected $_api_base = 'https://mcp-tracking.nmhealth.org/serverjson.asp';
+	// protected $_api_host = 'mcp-tracking.nmhealth.org';
 
 	/**
 	 * listSyncObjects but strips out the two objects not used in New Mexito

@@ -69,12 +69,14 @@ class Metrc extends Base
 	*/
 	function __construct($x)
 	{
+		parent::__construct($x);
+
 		if (empty($x['program-key'])) {
-			throw new Exception('Invalid Program Key [LRM#048]');
+			throw new \Exception('Invalid Program Key [LRM#048]');
 		}
 
 		if (empty($x['license-key'])) {
-			throw new Exception('Invalid License Key [LRM#052]');
+			throw new \Exception('Invalid License Key [LRM#052]');
 		}
 
 		$this->_api_key_vendor = $x['program-key'];
@@ -124,7 +126,7 @@ class Metrc extends Base
 	{
 		try {
 			$res = $this->uomList();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
 				'status' => 'failure',
@@ -134,7 +136,7 @@ class Metrc extends Base
 
 		try {
 			$res = $this->packageTypeList();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
 				'status' => 'failure',
@@ -172,7 +174,7 @@ class Metrc extends Base
 		header('Content-Type: text/plain');
 		var_dump($res);
 		var_dump(debug_print_backtrace());
-		throw new Exception('METRC Really Broken [LRM#159]');
+		throw new \Exception('METRC Really Broken [LRM#159]');
 		exit(0);
 	}
 
@@ -190,8 +192,7 @@ class Metrc extends Base
 	*/
 	function uomList()
 	{
-		$x = $this->_curl_init('/unitsofmeasure/v1/active');
-		$res = $this->_curl_exec($x);
+		$res = $this->get('/unitsofmeasure/v1/active');
 		return $res;
 	}
 
@@ -279,15 +280,14 @@ class Metrc extends Base
 //
 	function packageTypeList()
 	{
-		$x = $this->_curl_init('/packages/v1/types');
-		$res = $this->_curl_exec($x);
+		$res = $this->get('/packages/v1/types');
 		return $res;
 	}
 
 
 	function plantbatchChangePhase($arg)
 	{
-		throw new Exception('@deprecated');
+		throw new \Exception('@deprecated');
 	}
 
 	/**
@@ -295,12 +295,12 @@ class Metrc extends Base
 	*/
 	function plantbatchCreatePlantings($arg)
 	{
-		throw new Exception('@deprecated');
+		throw new \Exception('@deprecated');
 	}
 
 	function plantbatchDestroy($arg)
 	{
-		throw new Exception('@deprecated');
+		throw new \Exception('@deprecated');
 	}
 
 	/**
@@ -504,7 +504,7 @@ class Metrc extends Base
 			break;
 		case 400:
 		case 405:
-			throw new Exception($this->formatError($this->_res));
+			throw new \Exception($this->formatError($this->_res));
 			break;
 		case 401:
 			return [
@@ -516,7 +516,7 @@ class Metrc extends Base
 		default:
 			var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE#735]', $code);
-			throw new Exception($msg);
+			throw new \Exception($msg);
 		}
 
 		if (empty($this->_res)) {
@@ -531,30 +531,4 @@ class Metrc extends Base
 
 	}
 
-	/**
-		Executes the Single or Multiple Requests
-	*/
-	function _curl_init($uri, $head=null)
-	{
-		$uri = $this->_api_base . $uri;
-
-		$ch = _curl_init($uri);
-
-		$auth = sprintf('%s:%s', $this->_api_key_vendor, $this->_api_key_client);
-		curl_setopt($ch, CURLOPT_USERPWD, $auth);
-
-		// radix::dump($head);
-		$head = array(
-			'accept: application/json',
-			'content-type: application/json',
-		);
-		if (!empty($this->_api_host)) {
-			$head[] = sprintf('host: %s', $this->_api_host);
-		}
-		if ( (!empty($head)) && (is_array($head)) ) {
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-		}
-
-		return $ch;
-	}
 }

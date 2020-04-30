@@ -9,6 +9,12 @@ class Base
 {
 	protected $_c; // Guzzle Connection;
 
+	protected $_err;
+	protected $_inf; // @deprecated
+	protected $_raw;
+	protected $_req_head = [];
+	protected $_res;
+
 	protected $_License;
 
 	const ENGINE = null;
@@ -118,6 +124,50 @@ class Base
 			'data' => null,
 			'meta' => [ 'detail' => 'not implemented' ],
 		];
+	}
+
+	function get($url)
+	{
+		$req = new \GuzzleHttp\Psr7\Request('GET', $url);
+		// Add Headers?
+		foreach ($this->_req_head as $k => $v) {
+			$req = $req->withHeader($k, $v);
+		}
+
+		$this->_res = $this->_c->send($req);
+		$this->_raw = $this->_res->getBody()->getContents();
+		$ret = json_decode($this->_raw, true);
+		$this->_err = json_last_error();
+		$this->_err_msg = json_last_error_msg();
+		return $ret;
+	}
+
+	function post($url, $data, $type='auto')
+	{
+		$req = new \GuzzleHttp\Psr7\Request('POST', $url, $data);
+		// Add Headers?
+		foreach ($this->_req_head as $k => $v) {
+			$req = $req->withHeader($k, $v);
+		}
+
+		$this->_res = $this->_c->send($req);
+		$this->_raw = $this->_res->getBody()->getContents();
+		$ret = json_decode($this->_raw, true);
+		$this->_err = json_last_error();
+		$this->_err_msg = json_last_error_msg();
+
+		return $ret;
+	}
+
+	static function getEngineList()
+	{
+		$dir = __DIR__;
+		$dir = dirname($dir);
+
+		$ini_file = sprintf('%s/etc/cre.ini', $dir);
+		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
+
+		return $ini_data;
 	}
 
 	/**

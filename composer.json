@@ -13,7 +13,7 @@
 		"ext-date": "*",
 		"ext-json": "*",
 		"ext-sockets": "*",
-		"guzzlehttp/guzzle": "6.5.2"
+		"guzzlehttp/guzzle": "6.5.3"
 	},
 	"require-dev": {
 		"phpstan/phpstan": "0.12.8",

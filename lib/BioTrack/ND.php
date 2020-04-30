@@ -4,10 +4,9 @@
  * @see https://www.biotrack.com/north-dakota/
  */
 
-namesapce OpenTHC\CRE\BioTrack;
+namespace OpenTHC\CRE\Adapter\Biotrack;
 
-class ND extends \OpenTHC\CRE\BioTrack
+class ND extends \OpenTHC\CRE\Adapter\BioTrack
 {
-	protected $_name = 'NDDOH';
 	protected $_api_base = 'https://mminventory.health.nd.gov/serverxml.asp';
 }

@@ -3,11 +3,11 @@
  * Interface to the OpenTHC CRE
  */
 
-class RBE_OpenTHC extends RBE_Base
+namespace OpenTHC\CRE\Adapter;
+
+class OpenTHC extends Base
 {
 	const ENGINE = 'openthc';
-
-	private $_c; // Client Connection
 
 	protected $_api_base = 'https://cre.openthc.com';
 	protected $_api_host = 'cre.openthc.com';
@@ -17,30 +17,19 @@ class RBE_OpenTHC extends RBE_Base
 	 */
 	function __construct($sid=null)
 	{
-		// @todo Make this Session Persistent?
-		$jar = new \GuzzleHttp\Cookie\CookieJar();
+		$cfg = [
+			'host' => $this->_api_host,
+			'server' => $this->_api_base,
+		];
+
 		if (!empty($sid)) {
-			$c = new \GuzzleHttp\Cookie\SetCookie(array(
-				'Domain' => $this->_api_host,
-				'Name' => 'openthc',
-				'Value' => $sid,
-				'Secure' => true,
-				'HttpOnly' => true,
-			));
-			$jar->setCookie($c);
+			$cfg['cookie'] = [
+				'name' => 'openthc',
+				'value' => $sid,
+			];
 		}
 
-		$cfg = array(
-			'base_uri' => $this->_api_base,
-			'allow_redirects' => false,
-			'cookies' => $jar,
-			'headers' => array(
-				'user-agent' => sprintf('OpenTHC/%s', APP_BUILD),
-			),
-			'http_errors' => false,
-			'verify' => false,
-		);
-		//var_dump($cfg);
+		parent::__construct($cfg);
 
 		// Override Host Header Here
 		// @see https://github.com/guzzle/guzzle/issues/1678#issuecomment-281921604
@@ -50,8 +39,6 @@ class RBE_OpenTHC extends RBE_Base
 		// 	return $R->withHeader('host', $host);
 		// }));
 		// $cfg['handler'] = $ghhs;
-
-		$this->_c = new \GuzzleHttp\Client($cfg);
 
 	}
 
@@ -122,7 +109,7 @@ class RBE_OpenTHC extends RBE_Base
 	/**
 	 * HTTP POST Utility
 	 */
-	function post($url, $arg)
+	function post($url, $data, $type='auto')
 	{
 		$res = $this->_c->post($url, [ 'form_params' => $arg ]);
 

@@ -27,9 +27,6 @@ class LeafData extends Base
 	const FORMAT_DATE_TIME = 'm/d/Y g:i:s a';
 
 	private $_arg;
-	private $_err;
-	private $_raw;
-	private $_res;
 
 	// protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
 	// protected $_api_host = 'traceability.lcb.wa.gov';
@@ -191,9 +188,16 @@ class LeafData extends Base
 	*/
 	function __construct($x)
 	{
+		parent::__construct($x);
+
 		if (!empty($x['license'])) {
 			$this->setLicense($x['license']);
 		}
+
+		$this->_req_head = [
+			'x-mjf-key' => $x['license'],
+			'x-mjf-mme-code' => $x['license-key'],
+		];
 
 		$this->_license_auth = $x['license-key'];
 
@@ -219,41 +223,6 @@ class LeafData extends Base
 	}
 
 	/**
-		@return Curl Handle
-	*/
-	protected function _curl_init($uri)
-	{
-		if (empty($this->_license_auth)) {
-			throw new \Exception('Invalid API Secret [LRL#177]');
-		}
-
-		if (empty($this->_License['code'])) {
-			throw new \Exception('Invalid API License [LRL#113]');
-		}
-
-		if (empty($this->_api_host)) {
-			$this->_api_host = parse_url($uri, PHP_URL_HOST);
-		}
-
-		$ch = _curl_init($uri);
-
-		$head = array(
-			'content-type: application/json',
-			sprintf('host: %s', $this->_api_host),
-			sprintf('x-mjf-key: %s', $this->_license_auth),
-			sprintf('x-mjf-mme-code: %s', $this->_License['code']),
-		);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-		// curl_setopt($ch, CURLOPT_USERPWD, "username:password");
-
-		// Verbose?
-		//curl_setopt($ch, CURLOPT_VERBOSE, true);
-		//curl_setopt($ch, CURLOPT_STDERR, fopen('/tmp/curl.log', 'a'));
-
-		return $ch;
-	}
-
-	/**
 		@param HTTP VERB
 		@param $path the API Path
 		@param $post The API Data to POST, as Array or String
@@ -261,58 +230,56 @@ class LeafData extends Base
 	public function call($verb, $path, $post=null)
 	{
 		$path = trim($path, '/');
-		$url  = sprintf('%s/%s', $this->_api_base, $path);
-		$urla = parse_url($url);
-		$ch = $this->_curl_init($url);
+		// $url  = sprintf('%s/%s', $this->_api_base, $path);
+		// $urla = parse_url($url);
+		// $ch = $this->_curl_init($url);
+
+		$t0 = microtime(true);
+
+		$res = null;
 
 		switch ($verb) {
 		case 'GET':
 			// Nothing Special
+			$res = $this->get($path);
 			break;
 		case 'POST':
 
-			if (!empty($post)) {
-				$this->_arg = $post;
-				if (!is_string($this->_arg)) {
-					$this->_arg = json_encode($this->_arg);
-				}
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_arg);
-			}
+			// if (!empty($post)) {
+			// 	$this->_arg = $post;
+			// 	if (!is_string($this->_arg)) {
+			// 		$this->_arg = json_encode($this->_arg);
+			// 	}
+			// 	curl_setopt($ch, CURLOPT_POST, true);
+			// 	curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_arg);
+			// }
+			$res = $this->post($path, [ 'json' => $post ]);
 
 			break;
 
 		case 'DELETE':
-
-			$this->_arg = null;
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-
+			$res = $this->delete($path);
+			// $this->_arg = null;
+			// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			break;
 		}
 
-		$t0 = microtime(true);
-		$this->_raw = curl_exec($ch);
-		$this->_inf = curl_getinfo($ch);
-		$err = curl_errno($ch);
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
 
-		App::metric()->counter(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
-		App::metric()->timing(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
+		// App::metric()->counter(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
+		// App::metric()->timing(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
 
-		if ($err) {
-			return array(
-				'code' => 500,
-				'status' => 'failure',
-				'result' => null,
-				'detail' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)),
-			);
-		}
+		// if ($err) {
+		// 	return array(
+		// 		'code' => 500,
+		// 		'status' => 'failure',
+		// 		'result' => null,
+		// 		'detail' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)),
+		// 	);
+		// }
 
-		$this->_res = json_decode($this->_raw, true);
-
-		$this->_err = json_last_error();
-		$this->_err_msg = json_last_error_msg();
+		// $this->_res = json_decode($this->_raw, true);
 
 		//echo "url:{$this->_inf['url']}\n";
 		//echo "keys: " . implode(',', array_keys($this->_res)) . "\n";
@@ -322,42 +289,42 @@ class LeafData extends Base
 		//$tmp = $this->_res;
 		//$tmp['data'] = count($tmp['data']);
 		//echo json_encode($tmp, JSON_PRETTY_PRINT);
+		$res_code = $this->_res->getStatusCode();
 
-		switch ($this->_inf['http_code']) {
+		switch ($res_code) {
 		case 200:
 		case 201:
-
 			// OK
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'success',
-				'result' => $this->_res,
+				'result' => $res,
 				//'detail' => $this,
 			);
 
 			break;
 
-		case 302:
+		// case 302:
 
-			// The API Call Worked, but gives this odd response that is HTML
-			if (('inventory_transfers/update' == $path) && ('POST' == $verb)) {
-				return array(
-					'code' => $this->_inf['http_code'],
-					'status' => 'success',
-					'result' => $this->_res,
-					//'detail' => $this,
-				);
-			}
+		// 	// The API Call Worked, but gives this odd response that is HTML
+		// 	if (('inventory_transfers/update' == $path) && ('POST' == $verb)) {
+		// 		return array(
+		// 			'code' => $res_code,
+		// 			'status' => 'success',
+		// 			'result' => $this->_res,
+		// 			//'detail' => $this,
+		// 		);
+		// 	}
 
-			break;
+		// 	break;
 
 		case 401:
 		// case 403:
 		case 404:
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'failure',
-				'detail' => sprintf('LRL#%03d: %s', $this->_inf['http_code'], $this->formatError($this->_res)),
+				'detail' => sprintf('LRL#%03d: %s', $res_code, $this->formatError($res)),
 			);
 			break;
 
@@ -366,7 +333,7 @@ class LeafData extends Base
 		case 423:
 
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'failure',
 				'result' => null,
 				'detail' => sprintf('LRL#422: %s', $this->formatError($this->_res)),
@@ -388,16 +355,16 @@ class LeafData extends Base
 			}
 
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'failure',
 				'result' => $this->_res,
-				'detail' => sprintf('LRL#%03d: LeafData Server Error', $this->_inf['http_code']),
+				'detail' => sprintf('LRL#%03d: LeafData Server Error', $res_code),
 			);
 
 		case 502:
 
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'failure',
 				'result' => null,
 				'detail' => 'LeafData Server Error 502: Bad Gateway [LRL#502]',
@@ -406,28 +373,15 @@ class LeafData extends Base
 		case 504:
 
 			return array(
-				'code' => $this->_inf['http_code'],
+				'code' => $res_code,
 				'status' => 'failure',
 				'result' => null,
 				'detail' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]',
 			);
 
-		//default:
-			//print_r($this);
-			//Radix::dump($this->_inf['http_code']);
-			//Radix::dump($post);
-			//Radix::dump($this->_raw);
-			//throw new Exception(sprintf('Invalid Response #%03d from LeafData', $this->_inf['http_code']));
 		}
 
-		throw new Exception(sprintf('LRL#240: Invalid Response #%03d from LeafData', $this->_inf['http_code']));
-
-		// JSON Decode Failed?
-		//if (!empty($this->_raw) && empty($this->_res)) {
-		//if (!empty($this->_err)) {
-		//	Radix::dump($this);
-		//	throw new Exception(sprintf('LRL#152: JSON Decode Failure: %d:%s', $this->_err, $this->_err_msg));
-		//}
+		throw new Exception(sprintf('LRL#240: Invalid Response #%03d from LeafData', $res_code));
 
 		return $this->_raw;
 

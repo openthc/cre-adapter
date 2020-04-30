@@ -235,6 +235,8 @@ class BioTrack extends Base
 	*/
 	function __construct($x=null)
 	{
+		parent::__construct($x);
+
 		if (!empty($x)) {
 			if (is_array($x)) {
 				$this->_company = $x['company'];
