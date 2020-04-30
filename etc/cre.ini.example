@@ -7,6 +7,7 @@
 [usa/ak]
 	name = "Alaska / METRC"
 	engine = "metrc"
+	server = "https://api-ak.metrc.com"
 	region = "ak"
 	version = 2015001
 	program-key = "A_SECRET"
@@ -17,6 +18,7 @@
 [usa/ak/test]
 	name = "Alaska / METRC / Test"
 	engine = "metrc"
+	server = "https://sandbox-api-ak.metrc.com"
 	region = "ak"
 	version = 2015001
 	program-key = "A_SECRET"
@@ -27,6 +29,7 @@
 [usa/ca]
 	name = "California / METRC"
 	engine = "metrc"
+	server = "https://api-ca.metrc.com"
 	region = "ca"
 	version = 2015001
 
@@ -36,6 +39,7 @@
 [usa/ca/test]
 	name = "California / METRC / Test"
 	engine = "metrc"
+	server = "https://sandbox-api-ca.metrc.com"
 	region = "ca"
 	version = 2015001
 	program-key = "A_SECRET"
@@ -46,6 +50,7 @@
 [usa/co]
 	name = "Colorado / METRC"
 	engine = "metrc"
+	server = "https://api-co.metrc.com"
 	region = "co"
 	version = 2015001
 	program-key = "A_SECRET"
@@ -56,6 +61,7 @@
 [usa/co/test]
 	name = "Colorado / METRC / Test"
 	engine = "metrc"
+	server = "https://sandbox-api-co.metrc.com"
 	region = "co"
 	version = 2015001
 	program-key = "A_SECRET"
@@ -85,8 +91,8 @@
 ; Hawaii
 [usa/hi]
 	name = "Hawaii / BioTrack"
-	host = "hicsts.hawaii.gov"
 	engine = "biotrack"
+	server = "https://hicsts.hawaii.gov/serverjson.asp"
 	region = "hi"
 	version = 2014001
 
@@ -96,8 +102,27 @@
 [usa/il]
 	name = "Illinois / BioTrack"
 	engine = "biotrack"
+	server = "https://mcmonitoring.agr.illinois.gov/serverjson.asp"
 	region = "il"
 	version = 2014001
+
+
+;
+; Maine
+[usa/me]
+	name = "Maine / METRC"
+	engine = "metrc"
+	server = ""
+	version = 2019270
+
+
+;
+; Maine
+[usa/me/test]
+	name = "Maine / METRC / Test"
+	engine = "metrc"
+	server = ""
+	version = 2019270
 
 
 ;
@@ -132,6 +157,7 @@
 [usa/mt]
 	name = "Montana / METRC"
 	engine = "metrc"
+	server = "https://api-mt.metrc.com"
 	region = "mt"
 	version = 2015001
 	program-key = ""
@@ -142,6 +168,7 @@
 [usa/mt/test]
 	name = "Montana / METRC / Test"
 	engine = "metrc"
+	server = "https://sandbox-api-co.metrc.com"
 	region = "mt"
 	version = 2015001
 	program-key = ""
@@ -152,6 +179,7 @@
 [usa/nm]
 	name = "New Mexico / BioTrack"
 	engine = "biotrack"
+	server = "https://mcp-tracking.nmhealth.org/serverjson.asp"
 	region = "nm"
 	version = 2014001
 
@@ -161,9 +189,20 @@
 [usa/nv]
 	name = "Nevada / METRC"
 	engine = "metrc"
+	server = "https://api-nv.metrc.com"
 	region = "nv"
 	version = 2015001
 	program-key = "A_SECRET"
+
+
+;
+; Nevada / Test
+[usa/nv/test]
+	name = "Nevada / METRC / Test"
+	engine = "metrc"
+	server = "https://sandbox-api-nv.metrc.com"
+	version = 2015001
+	program-key = ""
 
 
 ;
@@ -174,6 +213,43 @@
 	region = "ok"
 	version = 2017001
 	program-key = "A_SECRET"
+
+;
+; Oregon
+;
+; Oregon
+[usa/or]
+	name = "Oregon / METRC"
+	engine = "metrc"
+	server = "https://api-or.metrc.com"
+	version = 2015001
+	program-key = "A_SECRET"
+
+
+;
+; Oregon / Test
+[usa/or/test]
+	name = "Oregon / METRC / Test"
+	engine = "metrc"
+	server = "https://sandbox-api-or.metrc.com"
+	version = 2015001
+	program-key = "A_SCRET"
+
+
+;
+; Pennsylvania
+[usa/pa]
+	name = "Pennsylvania / LeafData"
+	engine = "leafdata"
+	server = "https://pa.leafdatazone.com/api/v1"
+	version = 2018031
+
+
+;
+; Utah (pending)
+[usa/ut]
+	name = "Utah / LeafData"
+	engine = "leafdata"
 
 
 ;
@@ -198,6 +274,7 @@
 [usa/wa]
 	name = "Washington / LeafData"
 	engine = "leafdata"
+	server = "https://wa.leafdatazone.com/api/v1"
 	region = "wa"
 	version = 2019157
 
@@ -207,9 +284,9 @@
 [usa/wa/test]
 	name = "Washington / LeafData / Test"
 	engine = "leafdata"
+	server = "https://watest.leafdatazone.com/api/v1"
 	region = "wa"
 	version = 2019157
-	endpoint = "https://watest.leafdatazone.com/api/v1"
 
 
 ;
@@ -229,38 +306,3 @@
 	engine = "openthc"
 	version = 2017001
 	program-key = ""
-
-
-;
-; Test Interfaces
-;
-
-;;;
-;;; OpenTHC Mock BioTrack
-[openthc/biotrack/mock]
-	name = "OpenTHC / BioTrack / Bunk"
-	engine = "biotrack"
-	region = "*"
-	version = 2014001
-	endpoint = "https://bunk.openthc.org/biotrack"
-
-
-;;;
-;;; OpenTHC Mock METRC
-[openthc/metrc/mock]
-	name = "OpenTHC / METRC / Bunk"
-	engine = "metrc"
-	region = "*"
-	version = 2015001
-	program-key = "A_SECRET"
-	endpoint = "https://bunk.openthc.org/metrc"
-
-
-;;;
-;;; OpenTHC Mock LeafData
-[openthc/leafdata/mock]
-	name = "OpenTHC / LeafData / Bunk"
-	engine = "leafdata"
-	region = "*"
-	version = 2018031
-	endpoint = "https://bunk.openthc.org/leafdata"
