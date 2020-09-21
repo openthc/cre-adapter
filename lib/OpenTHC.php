@@ -9,7 +9,9 @@ class OpenTHC extends Base
 {
 	const ENGINE = 'openthc';
 
-	protected $_api_base = 'https://cre.openthc.com';
+	private $_c; // Client Connection
+
+	protected $_api_base = 'https://cre.openthc.dev';
 	protected $_api_host = 'cre.openthc.com';
 
 	/**
@@ -17,19 +19,30 @@ class OpenTHC extends Base
 	 */
 	function __construct($sid=null)
 	{
-		$cfg = [
-			'host' => $this->_api_host,
-			'server' => $this->_api_base,
-		];
-
+		// @todo Make this Session Persistent?
+		$jar = new \GuzzleHttp\Cookie\CookieJar();
 		if (!empty($sid)) {
-			$cfg['cookie'] = [
-				'name' => 'openthc',
-				'value' => $sid,
-			];
+			$c = new \GuzzleHttp\Cookie\SetCookie(array(
+				'Domain' => $this->_api_host,
+				'Name' => 'openthc',
+				'Value' => $sid,
+				'Secure' => true,
+				'HttpOnly' => true,
+			));
+			$jar->setCookie($c);
 		}
 
-		parent::__construct($cfg);
+		$cfg = array(
+			'base_uri' => $this->_api_base,
+			'allow_redirects' => false,
+			'cookies' => $jar,
+			'headers' => array(
+				'user-agent' => sprintf('OpenTHC/%s', APP_BUILD),
+			),
+			'http_errors' => false,
+			'verify' => false,
+		);
+		//var_dump($cfg);
 
 		// Override Host Header Here
 		// @see https://github.com/guzzle/guzzle/issues/1678#issuecomment-281921604
@@ -39,6 +52,8 @@ class OpenTHC extends Base
 		// 	return $R->withHeader('host', $host);
 		// }));
 		// $cfg['handler'] = $ghhs;
+
+		$this->_c = new \GuzzleHttp\Client($cfg);
 
 	}
 
@@ -109,7 +124,7 @@ class OpenTHC extends Base
 	/**
 	 * HTTP POST Utility
 	 */
-	function post($url, $data, $type='auto')
+	function post($url, $arg)
 	{
 		$res = $this->_c->post($url, [ 'form_params' => $arg ]);
 
@@ -262,15 +277,16 @@ class OpenTHC extends Base
 	{
 		return new RBE_OpenTHC_Lot($this);
 	}
+	function inventory() // Legacy Alias
+	{
+		return new RBE_OpenTHC_Lot($this);
+	}
 
 	/**
 		Get the Plant interface
 	*/
 	function plant()
 	{
-		//$r = $this->_c->get('/plant');
-		//echo $r->getBody()->__toString();
-		//return json_decode($r->getBody(), true);
 		return new RBE_OpenTHC_Plant($this);
 	}
 
@@ -285,6 +301,10 @@ class OpenTHC extends Base
 	/**
 		Wholesale & Retail
 	*/
+	function b2c()
+	{
+		return new RBE_OpenTHC_Sales($this);
+	}
 	function sales()
 	{
 		return new RBE_OpenTHC_Sales($this);
@@ -301,12 +321,13 @@ class OpenTHC extends Base
 	/**
 		Get the Zone interface
 	*/
-	function transfer()
+	function b2b()
 	{
-		//$r = $this->_c->get('/config/zone');
-		//return json_decode($r->getBody(), true);
 		return new RBE_OpenTHC_Transfer($this);
-
+	}
+	function transfer() // Legacy Name
+	{
+		return new RBE_OpenTHC_Transfer($this);
 	}
 
 	/**
