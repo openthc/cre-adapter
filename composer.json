@@ -4,11 +4,11 @@
 	"license": "MIT",
 	"autoload": {
 		"psr-4": {
-			"OpenTHC\\CRE\\Adapter\\": "./lib"
+			"OpenTHC\\CRE\\": "./lib"
 		}
 	},
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=7.3.0",
 		"ext-curl": "*",
 		"ext-date": "*",
 		"ext-json": "*",

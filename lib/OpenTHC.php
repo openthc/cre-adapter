@@ -3,16 +3,14 @@
  * Interface to the OpenTHC CRE
  */
 
-namespace OpenTHC\CRE\Adapter;
+namespace OpenTHC\CRE;
 
-class OpenTHC extends Base
+class OpenTHC extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
 
-	private $_c; // Client Connection
-
 	protected $_api_base = 'https://cre.openthc.dev';
-	protected $_api_host = 'cre.openthc.com';
+	protected $_api_host = 'cre.openthc.dev';
 
 	/**
 	 * Array of Arguments
@@ -78,7 +76,7 @@ class OpenTHC extends Base
 	{
 		return array(
 			'license' => 'License',
-			'zone' => 'Zone',
+			'section' => 'Section',
 			'plant' => 'Plant',
 			'lot' => 'Lot',
 			'transfer' => 'Transfer',
@@ -319,7 +317,7 @@ class OpenTHC extends Base
 	}
 
 	/**
-		Get the Zone interface
+		Get the B2B interface
 	*/
 	function b2b()
 	{
@@ -331,11 +329,11 @@ class OpenTHC extends Base
 	}
 
 	/**
-		Get the Zone interface
+		Get the Section interface
 	*/
-	function zone()
+	function section()
 	{
-		return new RBE_OpenTHC_Zone($this);
+		return new RBE_OpenTHC_Section($this);
 	}
 
 }

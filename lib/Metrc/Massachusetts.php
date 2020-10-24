@@ -3,9 +3,9 @@
  * Franwell / Metrc Interface for Massachusetts
  */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class MA extends \OpenTHC\CRE\Adapter\Metrc
+class Massachusetts extends \OpenTHC\CRE\Metrc\Base
 {
 	protected $_api_base = 'https://api-ma.metrc.com';
 

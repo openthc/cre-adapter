@@ -3,9 +3,9 @@
  * Franwell / METRC Interface
  */
 
-namespace OpenTHC\CRE\Adapter;
+namespace OpenTHC\CRE;
 
-class Metrc extends Base
+class Metrc extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'metrc';
 
@@ -156,8 +156,6 @@ class Metrc extends Base
 	*/
 	function formatError($res)
 	{
-		//var_dump($res);
-
 		if (!is_array($res)) {
 			$chk = json_decode($res, true);
 			if (is_array($chk)) {
@@ -192,7 +190,8 @@ class Metrc extends Base
 	*/
 	function uomList()
 	{
-		$res = $this->get('/unitsofmeasure/v1/active');
+		$x = $this->_curl_init('/unitsofmeasure/v1/active');
+		$res = $this->_curl_exec($x);
 		return $res;
 	}
 
@@ -201,6 +200,16 @@ class Metrc extends Base
 	function adjustList()
 	{
 		$url = $this->_make_url('/packages/v1/adjust/reasons');
+		$req = $this->_curl_init($url);
+		$res = $this->_curl_exec($req);
+		return $res;
+	}
+
+	/**
+	*/
+	function locationsTypesList()
+	{
+		$url = $this->_make_url('/locations/v1/types');
 		$req = $this->_curl_init($url);
 		$res = $this->_curl_exec($req);
 		return $res;
@@ -280,14 +289,9 @@ class Metrc extends Base
 //
 	function packageTypeList()
 	{
-		$res = $this->get('/packages/v1/types');
+		$x = $this->_curl_init('/packages/v1/types');
+		$res = $this->_curl_exec($x);
 		return $res;
-	}
-
-
-	function plantbatchChangePhase($arg)
-	{
-		throw new \Exception('@deprecated');
 	}
 
 	/**
@@ -297,23 +301,6 @@ class Metrc extends Base
 	{
 		throw new \Exception('@deprecated');
 	}
-
-	function plantbatchDestroy($arg)
-	{
-		throw new \Exception('@deprecated');
-	}
-
-	/**
-		Taking Clone or Seed into Package for Sale
-	*/
-	function plantbatchPackageCreate($arg)
-	{
-		$url = $this->_make_url('/plantbatches/v1/createpackages');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
-	}
-
 
 	/**
 		Delete an Item (an SKU like thing)
@@ -432,21 +419,20 @@ class Metrc extends Base
 	/**
 		Interface for One Transfer
 	*/
-	function transfer()
+	function b2b()
 	{
-		$r = new RBE_Metrc_Transfer($this);
+		$r = new RBE_Metrc_B2B($this);
 		return $r;
 	}
 
 	/**
-		Interface for Zones
+		Interface for Sections
 	*/
-	function zone()
+	function section()
 	{
-		$r = new RBE_Metrc_Zone($this);
+		$r = new RBE_Metrc_Section($this);
 		return $r;
 	}
-
 
 	/**
 
@@ -461,13 +447,14 @@ class Metrc extends Base
 
 			$verb = 'POST';
 
-			$arg = json_encode($arg, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$arg = json_encode($arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arg);
 
 		}
 
+		$this->_res = null;
 		$this->_raw = curl_exec($ch);
 		$this->_inf = curl_getinfo($ch);
 		$this->_err = curl_errno($ch);
@@ -483,11 +470,10 @@ class Metrc extends Base
 
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
-		App::metric()->timing(sprintf('rbe.metrc.time.%s.%03d', $verb, $code), $tx);
 
-		// echo "\n{$code} {$this->_inf['url']} {$tx}\n";
-		// echo "\n<<<<\n{$this->_raw}\n####\n";
-		// var_dump($this->_inf);
+		// @todo Update Names
+		_stat_count(sprintf('rbe.metrc.code.%s.%03d', $verb, $code), 1);
+		_stat_timer(sprintf('rbe.metrc.time.%s.%03d', $verb, $code), $tx);
 
 		$result = array();
 
@@ -496,8 +482,9 @@ class Metrc extends Base
 			if ('DELETE' == $verb) {
 				if (0 == $this->_inf['download_content_length']) {
 					return array(
-						'status' => 'success',
-						'result' => array(),
+						'code' => 200,
+						'data' => null,
+						'meta' => [],
 					);
 				}
 			}
@@ -525,10 +512,36 @@ class Metrc extends Base
 
 		return array(
 			'code' => $code,
-			'status' => (200 == $code ? 'success' : 'failure'),
-			'result' => $this->_res,
+			'data' => $this->_res,
+			'meta' => [],
 		);
 
 	}
 
+	/**
+		Executes the Single or Multiple Requests
+	*/
+	function _curl_init($uri, $head=null)
+	{
+		$uri = $this->_api_base . $uri;
+
+		$ch = _curl_init($uri);
+
+		$auth = sprintf('%s:%s', $this->_api_key_vendor, $this->_api_key_client);
+		curl_setopt($ch, CURLOPT_USERPWD, $auth);
+
+		// radix::dump($head);
+		$head = array(
+			'accept: application/json',
+			'content-type: application/json',
+		);
+		if (!empty($this->_api_host)) {
+			$head[] = sprintf('host: %s', $this->_api_host);
+		}
+		if ( (!empty($head)) && (is_array($head)) ) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
+		}
+
+		return $ch;
+	}
 }

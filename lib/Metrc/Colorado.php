@@ -3,9 +3,9 @@
  * Franwell / Metrc Interface for Colorado
  */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class CO extends \OpenTHC\CRE\Adapter\Metrc
+class Colorado extends \OpenTHC\CRE\Metrc\Base
 {
 	protected $_api_base = 'https://api-co.metrc.com';
 

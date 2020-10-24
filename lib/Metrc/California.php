@@ -3,9 +3,9 @@
  * Franwell / Metrc Interface for California
  */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class CA extends \OpenTHC\CRE\Adapter\Metrc
+class RBE_Metrc_CA extends \OpenTHC\CRE\Metrc\Base
 {
 	protected $_api_base = 'https://api-ca.metrc.com';
 

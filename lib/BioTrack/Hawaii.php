@@ -4,9 +4,9 @@
  * @see https://www.biotrack.com/hawaii/
  */
 
-namespace OpenTHC\CRE\Adapter\Biotrack;
+namespace OpenTHC\CRE\BioTrack;
 
-class HI extends \OpenTHC\CRE\Adapter\BioTrack
+class Hawaii extends \OpenTHC\CRE\BioTrack\Base
 {
 	protected $_api_base = 'https://hicsts.hawaii.gov/serverjson.asp';
 

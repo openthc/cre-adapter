@@ -4,9 +4,9 @@
  * @see https://www.biotrack.com/illinois/
  */
 
-namespace OpenTHC\CRE\Adapter\Biotrack;
+namespace OpenTHC\CRE\BioTrack;
 
-class IL extends \OpenTHC\CRE\Adapter\BioTrack
+class Illinois extends \OpenTHC\CRE\BioTrack\Base
 {
 	protected $_api_base = 'https://mcmonitoring.agr.illinois.gov/serverjson.asp';
 }

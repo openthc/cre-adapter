@@ -3,9 +3,9 @@
  * Franwell / Metrc Interface for Alaska
 */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class AK extends \OpenTHC\CRE\Adapter\Metrc
+class Alaska extends \OpenTHC\CRE\Metrc\Base
 {
 	protected $_api_base = 'https://api-ak.metrc.com';
 

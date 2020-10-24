@@ -3,9 +3,9 @@
  * BioTrackTHC Interface - New Mexico
  */
 
-namespace OpenTHC\CRE\Adapter\Biotrack;
+namespace OpenTHC\CRE\BioTrack;
 
-class NM extends \OpenTHC\CRE\Adapter\BioTrack
+class NewMexico extends \OpenTHC\CRE\BioTrack\Base
 {
 	protected $_api_base = 'https://pipe.openthc.com/stem/biotrack/nm';
 	// protected $_api_base = 'https://mcp-tracking.nmhealth.org/serverjson.asp';

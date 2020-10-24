@@ -3,11 +3,12 @@
  * Franwell / Metrc Interface for Montana
  */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class MT extends \OpenTHC\CRE\Adapter\Metrc
+class Montana extends \OpenTHC\CRE\Metrc\Base
 {
-	protected $_api_base = 'https://api-mt.metrc.com';
+	// protected $_api_base = 'https://api-mt.metrc.com';
+	protected $_api_base = 'https://pipe.openthc.com/stem/metrc/api-mt';
 
 	function setTestMode()
 	{

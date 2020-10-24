@@ -5,9 +5,9 @@
  * @see http://media.wix.com/ugd/73c73e_e930c713c46f4c08b07e7c2e2d29a2b5.pdf
 */
 
-namespace OpenTHC\CRE\Adapter\Metrc;
+namespace OpenTHC\CRE\Metrc;
 
-class Oregon extends \OpenTHC\CRE\Adapter\Metrc
+class Oregon extends RBE_Metrc
 {
 	protected $_api_base = 'https://api-or.metrc.com';
 

@@ -4,9 +4,11 @@
 	@see http://www.biotrackthc.com/api/xml
 */
 
-namespace OpenTHC\CRE\Adapter;
+namespace OpenTHC\CRE;
 
-class BioTrack extends Base
+use Edoceo\Radix\DB\SQL;
+
+class BioTrack extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'biotrack';
 
@@ -235,8 +237,6 @@ class BioTrack extends Base
 	*/
 	function __construct($x=null)
 	{
-		parent::__construct($x);
-
 		if (!empty($x)) {
 			if (is_array($x)) {
 				$this->_company = $x['company'];
@@ -1897,11 +1897,11 @@ class BioTrack extends Base
 	}
 
 	/**
-	 * Interface for Zones
+	 * Interface for Section
 	 */
-	function zone()
+	function section()
 	{
-		$r = new RBE_BioTrack_Zone($this);
+		$r = new RBE_BioTrack_Section($this);
 		return $r;
 	}
 

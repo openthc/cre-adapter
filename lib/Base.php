@@ -3,7 +3,7 @@
  * A Base Class for an RBE
  */
 
-namespace OpenTHC\CRE\Adapter;
+namespace OpenTHC\CRE;
 
 class Base
 {

@@ -1,11 +1,13 @@
 ;
-; RBE Definitions
+; CRE Definitions
+; Example CRE Definitions -- copy to cre.ini and edit
 ;
 
 ;
 ; Alaska
 [usa/ak]
 	name = "Alaska / METRC"
+	class = "\OpenTHC\CRE\Metrc\Alaska"
 	engine = "metrc"
 	server = "https://api-ak.metrc.com"
 	region = "ak"
@@ -14,9 +16,10 @@
 
 
 ;
-; Alaska Test
+; Alaska / Test
 [usa/ak/test]
 	name = "Alaska / METRC / Test"
+	class = "\OpenTHC\CRE\Metrc\Alaska"
 	engine = "metrc"
 	server = "https://sandbox-api-ak.metrc.com"
 	region = "ak"

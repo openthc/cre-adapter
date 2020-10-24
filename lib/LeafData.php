@@ -18,9 +18,9 @@
 
 */
 
-namespace OpenTHC\CRE\Adapter;
+namespace OpenTHC\CRE;
 
-class LeafData extends Base
+class LeafData extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'leafdata';
 
@@ -104,7 +104,7 @@ class LeafData extends Base
 
 			$d = strtotime($d);
 			if ($d > 0) {
-				$rec[$f] = strftime('%Y-%m-%d %H:%M:%S', $d);
+				$rec[$f] = date('Y-m-d H:i:s', $d);
 			} else {
 				// Handle Stupid Shit
 				if (preg_match('/^(.+ )(\d+):(\d+)(am|pm)$/i', $rec[$f], $m)) {
@@ -120,9 +120,9 @@ class LeafData extends Base
 					}
 					$d = strtotime($d);
 					if ($d > 0) {
-						$rec[$f] = strftime('%Y-%m-%d %H:%M:%S', $d);
+						$rec[$f] = date('Y-m-d H:i:s', $d);
 					} else {
-						throw new Exception('Really Bad Date');
+						throw new \Exception('Really Bad Date');
 					}
 				}
 			}
@@ -202,7 +202,7 @@ class LeafData extends Base
 		$this->_license_auth = $x['license-key'];
 
 		if (!empty($x['mode'])) {
-			throw new Exception('Invalid Parameter [LRL#188]');
+			throw new \Exception('Invalid Parameter [LRL#188]');
 			if ('test' == $x['mode']) {
 				$this->setTestMode();
 			}
@@ -223,6 +223,41 @@ class LeafData extends Base
 	}
 
 	/**
+		@return Curl Handle
+	*/
+	protected function _curl_init($uri)
+	{
+		if (empty($this->_license_auth)) {
+			throw new \Exception('LRL#177 Invalid API Secret');
+		}
+
+		if (empty($this->_License['code'])) {
+			throw new \Exception('LRL#113 Invalid API License');
+		}
+
+		if (empty($this->_api_host)) {
+			$this->_api_host = parse_url($uri, PHP_URL_HOST);
+		}
+
+		$ch = _curl_init($uri);
+
+		$head = array(
+			'content-type: application/json',
+			sprintf('host: %s', $this->_api_host),
+			sprintf('x-mjf-key: %s', $this->_license_auth),
+			sprintf('x-mjf-mme-code: %s', $this->_License['code']),
+		);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
+		// curl_setopt($ch, CURLOPT_USERPWD, "username:password");
+
+		// Verbose?
+		//curl_setopt($ch, CURLOPT_VERBOSE, true);
+		//curl_setopt($ch, CURLOPT_STDERR, fopen('/tmp/curl.log', 'a'));
+
+		return $ch;
+	}
+
+	/**
 		@param HTTP VERB
 		@param $path the API Path
 		@param $post The API Data to POST, as Array or String
@@ -230,56 +265,57 @@ class LeafData extends Base
 	public function call($verb, $path, $post=null)
 	{
 		$path = trim($path, '/');
-		// $url  = sprintf('%s/%s', $this->_api_base, $path);
-		// $urla = parse_url($url);
-		// $ch = $this->_curl_init($url);
-
-		$t0 = microtime(true);
-
-		$res = null;
+		$url  = sprintf('%s/%s', $this->_api_base, $path);
+		$urla = parse_url($url);
+		$ch = $this->_curl_init($url);
 
 		switch ($verb) {
 		case 'GET':
 			// Nothing Special
-			$res = $this->get($path);
 			break;
 		case 'POST':
 
-			// if (!empty($post)) {
-			// 	$this->_arg = $post;
-			// 	if (!is_string($this->_arg)) {
-			// 		$this->_arg = json_encode($this->_arg);
-			// 	}
-			// 	curl_setopt($ch, CURLOPT_POST, true);
-			// 	curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_arg);
-			// }
-			$res = $this->post($path, [ 'json' => $post ]);
+			if (!empty($post)) {
+				$this->_arg = $post;
+				if (!is_string($this->_arg)) {
+					$this->_arg = json_encode($this->_arg);
+				}
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_arg);
+			}
 
 			break;
 
 		case 'DELETE':
-			$res = $this->delete($path);
-			// $this->_arg = null;
-			// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+			$this->_arg = null;
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
 			break;
 		}
 
+		$t0 = microtime(true);
+		$this->_raw = curl_exec($ch);
+		$this->_inf = curl_getinfo($ch);
+		$err = curl_errno($ch);
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
 
-		// App::metric()->counter(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
-		// App::metric()->timing(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
+		_stat_count(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
+		_stat_timer(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
 
-		// if ($err) {
-		// 	return array(
-		// 		'code' => 500,
-		// 		'status' => 'failure',
-		// 		'result' => null,
-		// 		'detail' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)),
-		// 	);
-		// }
+		if ($err) {
+			return array(
+				'code' => 500,
+				'data' => null,
+				'meta' => [ 'detail' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)) ],
+			);
+		}
 
-		// $this->_res = json_decode($this->_raw, true);
+		$this->_res = json_decode($this->_raw, true);
+
+		$this->_err = json_last_error();
+		$this->_err_msg = json_last_error_msg();
 
 		//echo "url:{$this->_inf['url']}\n";
 		//echo "keys: " . implode(',', array_keys($this->_res)) . "\n";
@@ -289,43 +325,45 @@ class LeafData extends Base
 		//$tmp = $this->_res;
 		//$tmp['data'] = count($tmp['data']);
 		//echo json_encode($tmp, JSON_PRETTY_PRINT);
-		$res_code = $this->_res->getStatusCode();
 
-		switch ($res_code) {
+		switch ($this->_inf['http_code']) {
 		case 200:
 		case 201:
+
 			// OK
 			return array(
-				'code' => $res_code,
-				'status' => 'success',
-				'result' => $res,
-				//'detail' => $this,
+				'code' => $this->_inf['http_code'],
+				'data' => $this->_res,
+				'meta' => [],
 			);
 
 			break;
 
-		// case 302:
+		case 302:
 
-		// 	// The API Call Worked, but gives this odd response that is HTML
-		// 	if (('inventory_transfers/update' == $path) && ('POST' == $verb)) {
-		// 		return array(
-		// 			'code' => $res_code,
-		// 			'status' => 'success',
-		// 			'result' => $this->_res,
-		// 			//'detail' => $this,
-		// 		);
-		// 	}
+			// The API Call Worked, but gives this odd response that is HTML
+			if (('inventory_transfers/update' == $path) && ('POST' == $verb)) {
+				return array(
+					'code' => $this->_inf['http_code'],
+					'data' => $this->_res,
+				);
+			}
 
-		// 	break;
+			break;
 
 		case 401:
 		// case 403:
 		case 404:
+
 			return array(
-				'code' => $res_code,
-				'status' => 'failure',
-				'detail' => sprintf('LRL#%03d: %s', $res_code, $this->formatError($res)),
+				'code' => $this->_inf['http_code'],
+				'data' => null,
+				'meta' => [
+					'detail' => sprintf('LRL#%03d: %s', $this->_inf['http_code'], $this->formatError($this->_res)),
+					'source' => $this->_res,
+				],
 			);
+
 			break;
 
 		case 405:
@@ -333,13 +371,14 @@ class LeafData extends Base
 		case 423:
 
 			return array(
-				'code' => $res_code,
-				'status' => 'failure',
-				'result' => null,
-				'detail' => sprintf('LRL#422: %s', $this->formatError($this->_res)),
+				'code' => $this->_inf['http_code'],
+				'data' => null,
+				'meta' => [
+					'detail' => sprintf('LRL#422: %s', $this->formatError($this->_res)),
+					'source' => $this->_res,
+				],
 			);
-			// var_dump($this);
-			//exit;
+
 			break;
 
 		case 500:
@@ -350,50 +389,60 @@ class LeafData extends Base
 				$res = substr($res, 0, 256);
 			}
 
-			if (preg_match('/SQLSTATE/', $this->_raw)) {
-				Session::flash('fail', 'This indicates a database error in LeafData, you may want to retry your request');
-			}
+			// if (preg_match('/SQLSTATE/', $this->_raw)) {
+			// 	Session::flash('fail', 'This indicates a database error in LeafData, you may want to retry your request');
+			// }
 
 			return array(
-				'code' => $res_code,
-				'status' => 'failure',
-				'result' => $this->_res,
-				'detail' => sprintf('LRL#%03d: LeafData Server Error', $res_code),
+				'code' => $this->_inf['http_code'],
+				'data' => $this->_res,
+				'meta' => [ 'detail' => sprintf('LRL#%03d: LeafData Server Error', $this->_inf['http_code']) ],
 			);
 
 		case 502:
 
 			return array(
-				'code' => $res_code,
-				'status' => 'failure',
-				'result' => null,
-				'detail' => 'LeafData Server Error 502: Bad Gateway [LRL#502]',
+				'code' => $this->_inf['http_code'],
+				'data' => null,
+				'meta' => [ 'detail' => 'LeafData Server Error 502: Bad Gateway [LRL#502]' ],
 			);
 
 		case 504:
 
 			return array(
-				'code' => $res_code,
-				'status' => 'failure',
-				'result' => null,
-				'detail' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]',
+				'code' => $this->_inf['http_code'],
+				'data' => null,
+				'meta' => [' detail' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]' ],
 			);
 
+		//default:
+			//print_r($this);
+			//Radix::dump($this->_inf['http_code']);
+			//Radix::dump($post);
+			//Radix::dump($this->_raw);
+			//throw new \Exception(sprintf('Invalid Response #%03d from LeafData', $this->_inf['http_code']));
 		}
 
-		throw new Exception(sprintf('LRL#240: Invalid Response #%03d from LeafData', $res_code));
+		throw new \Exception(sprintf('LRL#240: Invalid Response #%03d from LeafData', $this->_inf['http_code']));
 
 		return $this->_raw;
 
 	}
 
 	/**
-		Implement Formatting of Error
-	*/
+	 * Implement Formatting of Error
+	 * @return String of Error
+	 */
 	function formatError($err)
 	{
 		$ret = array();
 
+		// v2 Way
+		if (!empty($err['meta'])) {
+			return ($err['meta']['detail']);
+		}
+
+		// v1 Way
 		if (empty($err['status'])) {
 
 			$ret[] = $this->formatError_from_response($err);
@@ -410,6 +459,7 @@ class LeafData extends Base
 
 		}
 
+		// v1 Explicit Error
 		if ('failure' == $err['status']) {
 
 			if (!empty($err['detail'])) {
@@ -455,13 +505,13 @@ class LeafData extends Base
 						} elseif (is_string($vmd)) {
 							$ret[] = $vmd;
 						} else {
-							throw new Exception('LRL#262 Fuck LeafData');
+							throw new \Exception('LRL#262 Fuck LeafData');
 						}
 					}
 				} elseif (is_string($err_sub['validation_messages'])) {
 					$ret[] = $err_sub['validation_messages'];
 				} else {
-					throw new Exception('LRL#262 Fuck LeafData');
+					throw new \Exception('LRL#262 Fuck LeafData');
 				}
 			}
 		} elseif (is_string($err_sub)) {
@@ -491,7 +541,7 @@ class LeafData extends Base
 			'license' => 'License',
 			'contact' => 'Contact',
 
-			'zone' => 'Zone',
+			'section' => 'Section',
 			'product' => 'InventoryType',
 			'strain' => 'Strain',
 			'batch' => 'Batch',
@@ -501,7 +551,7 @@ class LeafData extends Base
 			'inventory' => 'Inventory',
 			'inventory-adjustment' => 'InventoryAdjustment',
 
-			'qa' => 'QA',
+			'lab_result' => 'LabResult',
 
 			'disposal' => 'Disposal',
 
@@ -559,7 +609,7 @@ class LeafData extends Base
 				break;
 			}
 
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			// Ignore
 		}
 
@@ -571,11 +621,11 @@ class LeafData extends Base
 	}
 
 	/**
-		Area == Room == Zone
-	*/
-	function zone()
+	 * Section (Area, Room, Zone)
+	 */
+	function section()
 	{
-		return new RBE_LeafData_Zone($this);
+		return new RBE_LeafData_Section($this);
 	}
 
 	function batch()
@@ -586,14 +636,14 @@ class LeafData extends Base
 	function contact()
 	{
 		return new RBE_LeafData_Contact($this);
-		//throw new Exception('Not Used in Washington');
+		//throw new \Exception('Not Used in Washington');
 	}
 	//function user() { }
 
 	function customer()
 	{
 		require_once(__DIR__ . '/LeafData/Customer.php');
-		throw new Exception('Not Used in Washington');
+		throw new \Exception('Not Used in Washington');
 	}
 
 	function disposal()
@@ -631,9 +681,9 @@ class LeafData extends Base
 		return new RBE_LeafData_Inventory_Transfer($this);
 	}
 
-	function qa()
+	function lab_result()
 	{
-		return new RBE_LeafData_QA($this);
+		return new RBE_LeafData_Lab_Result($this);
 	}
 
 	/**
