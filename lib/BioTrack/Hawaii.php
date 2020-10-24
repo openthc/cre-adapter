@@ -10,9 +10,9 @@ class Hawaii extends \OpenTHC\CRE\BioTrack\Base
 {
 	protected $_api_base = 'https://hicsts.hawaii.gov/serverjson.asp';
 
-	function listSyncObjects()
+	function getObjectList()
 	{
-		$obj_list = parent::listSyncObjects();
+		$obj_list = parent::getObjectList();
 
 		unset($obj_list['id_preassign']);
 		unset($obj_list['inventory_sample']);

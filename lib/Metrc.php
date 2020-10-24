@@ -117,7 +117,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		$this->_time_omega = $x;
 	}
 
-	public static function listSyncObjects()
+	public static function getObjectList()
 	{
 		return self::$obj_list;
 	}

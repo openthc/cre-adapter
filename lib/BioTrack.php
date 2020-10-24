@@ -284,7 +284,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	/**
 		Return list of Objects to Sync
 	*/
-	function listSyncObjects()
+	function getObjectList()
 	{
 		return self::$obj_list;
 	}

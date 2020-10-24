@@ -115,6 +115,11 @@ class Base
 
 	}
 
+	function getObjectList()
+	{
+		throw new \Exception('Not Implemented');
+	}
+
 	/**
 	 * Everyone else should implement this
 	 */

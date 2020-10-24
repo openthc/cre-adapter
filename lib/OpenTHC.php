@@ -72,14 +72,16 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 	/**
 	*/
-	function listSyncObjects()
+	function getObjectList()
 	{
 		return array(
 			'license' => 'License',
 			'section' => 'Section',
-			'plant' => 'Plant',
+			'variety' => 'Variety',
+			'crop' => 'Crop',
 			'lot' => 'Lot',
-			'transfer' => 'Transfer',
+			'b2b' => 'B2B Sales',
+			'b2c' => 'B2C Sales',
 		);
 	}
 

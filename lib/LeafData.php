@@ -535,7 +535,7 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	/**
 	*/
-	function listSyncObjects()
+	function getObjectList()
 	{
 		return array(
 			'license' => 'License',

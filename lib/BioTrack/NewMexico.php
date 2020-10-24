@@ -15,7 +15,7 @@ class NewMexico extends \OpenTHC\CRE\BioTrack\Base
 	 * listSyncObjects but strips out the two objects not used in New Mexito
 	 * @return array of syncObjects
 	 */
-	function listSyncObjects()
+	function getObjectList()
 	{
 		$ret = parent::listSyncObjects();
 		unset($ret['third_party_transporter']);
