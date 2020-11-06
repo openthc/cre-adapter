@@ -56,22 +56,6 @@ class Base
 
 	}
 
-	/**
-	 * Get Configuration of a Specific Engine
-	 */
-	function getConfig($key)
-	{
-		$dir = __DIR__;
-		$dir = dirname($dir);
-
-		$ini_file = sprintf('%s/etc/cre.ini', $dir);
-		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
-
-		$cfg = $ini_data[$key];
-
-		return $cfg;
-	}
-
 	function getLicense()
 	{
 		return $this->_License;
@@ -164,15 +148,45 @@ class Base
 		return $ret;
 	}
 
+	/**
+	 * Return CRE Engine Configuration
+	 */
 	static function getEngineList()
 	{
 		$dir = __DIR__;
 		$dir = dirname($dir);
 
+		// Override if Defined
+		if (defined('APP_ROOT')) {
+			$dir = APP_ROOT;
+		}
+
 		$ini_file = sprintf('%s/etc/cre.ini', $dir);
 		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
 
-		return $ini_data;
+		// Patch data to always have two fields
+		$ret_data = [];
+		foreach ($ini_data as $cre_code => $cre_info) {
+			if (empty($cre_info['id'])) {
+				$cre_info['id'] = $cre_code;
+			}
+			if (empty($cre_info['code'])) {
+				$cre_info['code'] = $cre_code;
+			}
+			$ret_data[$cre_code] = $cre_info;
+		}
+
+		return $ret_data;
+	}
+
+	/**
+	 * Get one Engine Config
+	 */
+	static function getEngine($code)
+	{
+		$res = self::getEngineList();
+		$ret = $res[$code];
+		return $ret;
 	}
 
 	/**
