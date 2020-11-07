@@ -28,16 +28,16 @@ class Metrc extends \OpenTHC\CRE\Base
 		'license' => 'License',
 		'contact' => 'Contact/Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
-		'room' => 'Room',
-		'strain' => 'Strain',
+		'section' => 'Room',
 		'product' => 'Product',
+		'variety'  => 'Strain',
 		'plantbatch' => 'Plant Batches',
 		'plant' => 'Plant',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
-		'labresult' => 'Lab Results',
-		'retail' => 'Retail',
-		'transfer' => 'Transfer',
+		'lab_result' => 'Lab Results',
+		'b2b' => 'B2B Sales',
+		'b2c' => 'B2C Sales',
 	);
 
 	/**
@@ -98,7 +98,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function setTestMode()
 	{
-		throw new Exception('LRM#063: Not Implemented');
+		throw new \Exception('LRM#063: Not Implemented');
 	}
 
 	/**
@@ -117,13 +117,16 @@ class Metrc extends \OpenTHC\CRE\Base
 		$this->_time_omega = $x;
 	}
 
-	public static function getObjectList()
+	function getObjectList()
 	{
 		return self::$obj_list;
 	}
 
 	function ping()
 	{
+		$res = $this->license()->search();
+		return $res;
+
 		try {
 			$res = $this->uomList();
 		} catch (\Exception $e) {
@@ -316,15 +319,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@param $x {id} or {date}
-	*/
-	function sales($x=null)
-	{
-		$r = new RBE_Metrc_Sales($this);
-		return $r;
-	}
-
-	/**
 	 * Prepare a URL for Use with METRC (adds licenseNumber to QS)
 	 */
 	function _make_url($url, $arg=[])
@@ -358,61 +352,61 @@ class Metrc extends \OpenTHC\CRE\Base
 
 	function b2c()
 	{
-		$o = new RBE_Metrc_B2C($this);
+		$o = new Metrc\B2C($this);
 		return $o;
 	}
 
 	function batch()
 	{
-		$o = new RBE_Metrc_Batch($this);
+		$o = new Metrc\Batch($this);
 		return $o;
 	}
 
 	function contact()
 	{
-		$o = new RBE_Metrc_Contact($this);
+		$o = new Metrc\Contact($this);
 		return $o;
 	}
 
-	function labresult()
+	function lab_result()
 	{
-		$o = new RBE_Metrc_Lab_Result($this);
+		$o = new Metrc\Lab_Result($this);
 		return $o;
 	}
 
 	function license()
 	{
-		$o = new RBE_Metrc_License($this);
+		$o = new Metrc\License($this);
 		return $o;
 	}
 
 	function lot()
 	{
-		$o = new RBE_Metrc_Lot($this);
+		$o = new Metrc\Lot($this);
 		return $o;
 	}
 
 	function plant()
 	{
-		$o = new RBE_Metrc_Plant($this);
+		$o = new Metrc\Plant($this);
 		return $o;
 	}
 
 	function plant_collect()
 	{
-		$o = new RBE_Metrc_Plant_Collect($this);
+		$o = new Metrc\Plant_Collect($this);
 		return $o;
 	}
 
 	function product()
 	{
-		$o = new RBE_Metrc_Product($this);
+		$o = new Metrc\Product($this);
 		return $o;
 	}
 
-	function strain()
+	function variety()
 	{
-		$o = new RBE_Metrc_Strain($this);
+		$o = new Metrc\Variety($this);
 		return $o;
 	}
 
@@ -421,7 +415,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function b2b()
 	{
-		$r = new RBE_Metrc_B2B($this);
+		$r = new Metrc\B2B($this);
 		return $r;
 	}
 
@@ -430,7 +424,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function section()
 	{
-		$r = new RBE_Metrc_Section($this);
+		$r = new Metrc\Section($this);
 		return $r;
 	}
 
@@ -497,9 +491,15 @@ class Metrc extends \OpenTHC\CRE\Base
 			return [
 				'code' => 401,
 				'data' => null,
-				'meta' => [ 'Access Denied' ]
+				'meta' => [ 'detail' => 'Access Denied' ]
 			];
 			break;
+		case 404:
+			return [
+				'code' => 404,
+				'data' => $this->_raw,
+				'meta' => [ 'detail' => 'Not Found ']
+			];
 		default:
 			var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE#735]', $code);
