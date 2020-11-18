@@ -3,6 +3,8 @@
 	OpenTHC PHPUnit Configuration File
 -->
 <phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 	backupGlobals="false"
 	backupStaticAttributes="false"
 	bootstrap="boot.php"
@@ -12,14 +14,16 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	processIsolation="false"
-	stopOnError="true"
-	stopOnFailure="true"
-	stopOnRisky="true"
-	timeoutForSmallTests="1"
-	timeoutForMediumTests="10"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnRisky="false"
+	timeoutForSmallTests="2"
+	timeoutForMediumTests="20"
 	timeoutForLargeTests="60"
 	verbose="false"
 	>
+
+	<coverage />
 
 	<php>
 
@@ -28,6 +32,49 @@
 		<env name="api-uri" value="SET_YOUR_API_BASE_HERE" />
 		<env name="api-vendor-key" value="SET_YOUR_VENDOR_KEY_HERE" />
 		<env name="api-client-key" value="SET_YOUR_CLIENT_KEY_HERE" />
+
+		<!--
+			BioTrack Options
+		-->
+		<env name="biotrack-url" value="" />
+
+		<env name="biotrack-c0-id" value="" />
+		<env name="biotrack-c0-username" value="" />
+		<env name="biotrack-c0-password" value="" />
+
+		<env name="biotrack-c1-id" value="" />
+		<env name="biotrack-c1-username" value="" />
+		<env name="biotrack-c1-password" value="" />
+
+		<env name="biotrack-c2-id" value="" />
+		<env name="biotrack-c2-username" value="" />
+		<env name="biotrack-c3-password" value="" />
+
+		<!--
+			LeafData Options
+		-->
+		<env name="leafdata-url" value="" />
+
+		<env name="leafdata-g0-public" value="" />
+		<env name="leafdata-g0-secret" value="" />
+
+		<env name="leafdata-l0-public" value="" />
+		<env name="leafdata-l0-secret" value="" />
+
+		<env name="leafdata-13-lot" value="" />
+		<env name="leafdata-53-source-lot" value="" />
+
+		<!-- Selling to Processor -->
+		<env name="leafdata-81-source-lot" value="" />
+
+		<!--
+			METRC Options
+		-->
+		<env name="metrc-tag-file" value="./metrc-tags.tab" />
+		<env name="metrc-license-g" value="" />
+		<env name="metrc-license-p" value="" />
+		<env name="metrc-license-l" value="" />
+		<env name="metrc-license-r" value="" />
 
 	</php>
 
@@ -49,8 +96,8 @@
 
 	<logging>
 		<!-- <log type="coverage-html" target="../webroot/test-output" /> -->
-		<log type="junit" target="../webroot/test-output/output.xml" />
-		<log type="testdox-html" target="../webroot/test-output/testdox.html" />
+		<junit outputFile="../webroot/test-output/output.xml" />
+		<!-- <log type="testdox-html" target="../webroot/test-output/testdox.html" /> -->
 	</logging>
 
 </phpunit>
