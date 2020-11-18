@@ -64,22 +64,22 @@ class Metrc extends \OpenTHC\CRE\Base
 	/**
 		@param $x RBE Options
 			license
-			program-key
+			service-key
 			license-key
 	*/
 	function __construct($x)
 	{
 		parent::__construct($x);
 
-		if (empty($x['program-key'])) {
-			throw new \Exception('Invalid Program Key [LRM#048]');
+		if (empty($x['service-key'])) {
+			throw new \Exception('Invalid Service Key [LRM#048]');
 		}
 
 		if (empty($x['license-key'])) {
 			throw new \Exception('Invalid License Key [LRM#052]');
 		}
 
-		$this->_api_key_vendor = $x['program-key'];
+		$this->_api_key_vendor = $x['service-key'];
 		$this->_api_key_client = $x['license-key'];
 
 		if (!empty($x['license'])) {

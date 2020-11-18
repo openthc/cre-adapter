@@ -3,7 +3,9 @@
  * Test Class Loading
  */
 
-class Base_Test extends \PHPUnit\Framework\TestCase
+namespace Test\Core;
+
+class Fire_Test extends \Test\OpenTHC_Base_TestCase
 {
 
 	function test_class()
@@ -40,7 +42,7 @@ class Base_Test extends \PHPUnit\Framework\TestCase
 
 		$c = new \OpenTHC\CRE\Adapter\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
-			'program-key' => '-',
+			'service-key' => '-',
 			'license-key' => '-',
 		]);
 		$l0 = $c->setLicense('L1');

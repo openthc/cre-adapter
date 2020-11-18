@@ -5,7 +5,7 @@
 
 namespace Test;
 
-class Engine_Test extends \PHPUnit\Framework\TestCase
+class Engine_Test extends \Test\OpenTHC_Base_TestCase
 {
 	function test_engine_ping()
 	{
@@ -15,7 +15,7 @@ class Engine_Test extends \PHPUnit\Framework\TestCase
 			'password' => 'fdsafdsafsda',
 			'license' => '123123123',
 			'license-key' => 'fdsafdsafsda',
-			'program-key' => 'fdsajklrewcsd',
+			'service-key' => 'fdsajklrewcsd',
 		];
 
 		$cre_list = \OpenTHC\CRE\Adapter\Base::getEngineList();
