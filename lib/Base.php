@@ -153,15 +153,27 @@ class Base
 	 */
 	static function getEngineList()
 	{
-		$dir = __DIR__;
-		$dir = dirname($dir);
+		$ini_file = '';
 
-		// Override if Defined
+		// Use Application Specific
 		if (defined('APP_ROOT')) {
 			$dir = APP_ROOT;
+			$ini_file = sprintf('%s/etc/cre.ini', $dir);
+			if (!is_file($ini_file)) {
+				$ini_file = '';
+			}
 		}
 
-		$ini_file = sprintf('%s/etc/cre.ini', $dir);
+		// Use Default
+		if (empty($ini_file)) {
+			$dir = dirname(__DIR__);
+			$ini_file = sprintf('%s/etc/cre.ini', $dir);
+		}
+
+		if (!is_file($ini_file)) {
+			throw new \Exception('CRE configuration file not found [ALB#174]');
+		}
+
 		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
 
 		// Patch data to always have two fields

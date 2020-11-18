@@ -28,10 +28,8 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	private $_arg;
 
-	// protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
-	// protected $_api_host = 'traceability.lcb.wa.gov';
-
-	protected $_api_base = 'https://pipe.openthc.com/stem/leafdata/wa';
+	protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
+	protected $_api_host = null;
 
 	protected $_license_code = '';
 	protected $_license_auth = '';
@@ -44,8 +42,10 @@ class LeafData extends \OpenTHC\CRE\Base
 		'cultivator_production' => '(J) Producer/Processor',
 		'tribe' => '(T) Tribe',
 		'co-op' => '(E) Co-op',
-		//'transpoter' => '(Z) Transporter', // They have it spelled incorrectly in the UI
 		'transporter' => '(Z) Transporter',
+		// They have it spelled incorrectly in the UI, you may see this data
+		// Remove after 20210401 /djb
+		//'transpoter' => '(Z) Transporter',
 	);
 
 	public static function de_fuck($obj)
@@ -214,10 +214,10 @@ class LeafData extends \OpenTHC\CRE\Base
 	*/
 	function setTestMode()
 	{
-		$this->_api_base = 'https://watest.leafdatazone.com/api/v1';
-		$this->_api_host = null;
+		// $this->_api_base = 'https://watest.leafdatazone.com/api/v1';
+		// $this->_api_host = null;
 
-		$this->_api_base = 'https://pipe.openthc.com/stem/leafdata/wa-test';
+		$this->_api_base = 'https://pipe.openthc.dev/leafdata/wa/test';
 		$this->_api_host = null;
 
 	}
@@ -316,15 +316,6 @@ class LeafData extends \OpenTHC\CRE\Base
 
 		$this->_err = json_last_error();
 		$this->_err_msg = json_last_error_msg();
-
-		//echo "url:{$this->_inf['url']}\n";
-		//echo "keys: " . implode(',', array_keys($this->_res)) . "\n";
-		// var_dump($this);
-		// exit;
-
-		//$tmp = $this->_res;
-		//$tmp['data'] = count($tmp['data']);
-		//echo json_encode($tmp, JSON_PRETTY_PRINT);
 
 		switch ($this->_inf['http_code']) {
 		case 200:
@@ -538,25 +529,26 @@ class LeafData extends \OpenTHC\CRE\Base
 	function getObjectList()
 	{
 		return array(
+
 			'license' => 'License',
 			'contact' => 'Contact',
-
 			'section' => 'Section',
+			'variety' => 'Variety',
 			'product' => 'InventoryType',
-			'strain' => 'Strain',
+
 			'batch' => 'Batch',
 
 			'plant' => 'Plant',
 
-			'inventory' => 'Inventory',
-			'inventory-adjustment' => 'InventoryAdjustment',
+			'lot' => 'Inventory',
+			// 'inventory-adjustment' => 'InventoryAdjustment',
 
 			'lab_result' => 'LabResult',
 
 			'disposal' => 'Disposal',
 
-			'transfer' => 'Transfer',
-			'sale' => 'Sale',
+			'b2b' => 'Transfer',
+			'b2c' => 'Sale',
 		);
 
 	}
@@ -620,47 +612,46 @@ class LeafData extends \OpenTHC\CRE\Base
 		);
 	}
 
-	/**
-	 * Section (Area, Room, Zone)
-	 */
-	function section()
+	function b2b()
 	{
-		return new RBE_LeafData_Section($this);
+		return new LeafData\B2B_Sale($this);
+	}
+
+	function b2c()
+	{
+		return new LeafData\B2C_Sale($this);
 	}
 
 	function batch()
 	{
-		return new RBE_LeafData_Batch($this);
+		return new LeafData\Batch($this);
 	}
 
 	function contact()
 	{
-		return new RBE_LeafData_Contact($this);
+		return new LeafData\Contact($this);
 		//throw new \Exception('Not Used in Washington');
 	}
-	//function user() { }
 
 	function customer()
 	{
-		require_once(__DIR__ . '/LeafData/Customer.php');
 		throw new \Exception('Not Used in Washington');
 	}
 
 	function disposal()
 	{
-		return new RBE_LeafData_Disposal($this);
+		return new LeafData\Disposal($this);
 	}
 
 	// Basically a Product or Product Type or SKU like thing
-	function inventory_type()
+	function product()
 	{
-		return new RBE_LeafData_InventoryType($this);
+		return new LeafData\Product($this);
 	}
 
-	// Basically a Lots/Inventory
-	function inventory()
+	function lot()
 	{
-		return new RBE_LeafData_Inventory($this);
+		return new LeafData\Inventory($this);
 	}
 
 	/**
@@ -668,22 +659,12 @@ class LeafData extends \OpenTHC\CRE\Base
 	*/
 	function inventory_adjustment()
 	{
-		return new RBE_LeafData_InventoryAdjustment($this);
-	}
-
-	function sale()
-	{
-		return new RBE_LeafData_Sale($this);
-	}
-
-	function transfer()
-	{
-		return new RBE_LeafData_Inventory_Transfer($this);
+		return new LeafData\InventoryAdjustment($this);
 	}
 
 	function lab_result()
 	{
-		return new RBE_LeafData_Lab_Result($this);
+		return new LeafData\Lab_Result($this);
 	}
 
 	/**
@@ -691,23 +672,25 @@ class LeafData extends \OpenTHC\CRE\Base
 	*/
 	function license()
 	{
-		require_once(__DIR__ . '/LeafData/MME.php');
-		return new RBE_LeafData_MME($this);
+		return new LeafData\License($this);
 	}
 
 	function plant()
 	{
-		return new RBE_LeafData_Plant($this);
+		return new LeafData\Plant($this);
 	}
 
-	function strain()
+	/**
+	 * Section (Area, Room, Zone)
+	 */
+	function section()
 	{
-		return new RBE_LeafData_Strain($this);
+		return new LeafData\Section($this);
 	}
 
-	function tax()
+	function variety()
 	{
-		return new RBE_LeafData_Taxes($this);
+		return new LeafData\Variety($this);
 	}
 
 }

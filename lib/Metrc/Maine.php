@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class Maine extends \OpenTHC\CRE\Metrc\Base
+class Maine extends \OpenTHC\CRE\Metrc
 {
 	protected $_api_base = 'https://api-me.metrc.com';
 
@@ -13,9 +13,9 @@ class Maine extends \OpenTHC\CRE\Metrc\Base
 
 	function setTestMode()
 	{
-		$this->_api_base = 'https://sandbox-api-or.metrc.com';
+		$this->_api_base = 'https://sandbox-api-md.metrc.com';
 		$this->_api_host = null;
 
-		$this->_api_base = 'https://pipe.openthc.com/stem/metrc/sandbox-api-or.metrc.com';
+		$this->_api_base = 'https://pipe.openthc.com/stem/metrc/sandbox-api-me.metrc.com';
 	}
 }

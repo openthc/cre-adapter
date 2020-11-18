@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class RBE_Metrc_CA extends \OpenTHC\CRE\Metrc\Base
+class California extends \OpenTHC\CRE\Metrc
 {
 	protected $_api_base = 'https://api-ca.metrc.com';
 

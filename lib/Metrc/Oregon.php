@@ -7,7 +7,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class Oregon extends RBE_Metrc
+class Oregon extends \OpenTHC\CRE\Metrc
 {
 	protected $_api_base = 'https://api-or.metrc.com';
 

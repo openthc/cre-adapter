@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class Montana extends \OpenTHC\CRE\Metrc\Base
+class Montana extends \OpenTHC\CRE\Metrc
 {
 	// protected $_api_base = 'https://api-mt.metrc.com';
 	protected $_api_base = 'https://pipe.openthc.com/stem/metrc/api-mt';

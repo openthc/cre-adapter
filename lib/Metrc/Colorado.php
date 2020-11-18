@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class Colorado extends \OpenTHC\CRE\Metrc\Base
+class Colorado extends \OpenTHC\CRE\Metrc
 {
 	protected $_api_base = 'https://api-co.metrc.com';
 

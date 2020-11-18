@@ -28,9 +28,9 @@ class Metrc extends \OpenTHC\CRE\Base
 		'license' => 'License',
 		'contact' => 'Contact/Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
-		'section' => 'Room',
+		'section' => 'Section/Room',
 		'product' => 'Product',
-		'variety'  => 'Strain',
+		'variety'  => 'Variety/Strain',
 		'plantbatch' => 'Plant Batches',
 		'plant' => 'Plant',
 		'harvest' => 'Harvest',
