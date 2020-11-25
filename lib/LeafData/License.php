@@ -15,7 +15,7 @@ class License extends \OpenTHC\CRE\LeafData\Base
 	 * Doesn't have the 'meta' and 'data' type responses like the others
 	 * So we fake it.
 	 */
-	function all($arg=null)
+	function search($arg=null)
 	{
 		$res = parent::all($arg);
 		return [
@@ -38,7 +38,7 @@ class License extends \OpenTHC\CRE\LeafData\Base
 	/**
 		@param $x the License GUID
 	*/
-	function one($x)
+	function single($x)
 	{
 		$url = sprintf('%s/%s', $this->_path, $x);
 		$res = $this->_client->call('GET', $url);
@@ -47,17 +47,6 @@ class License extends \OpenTHC\CRE\LeafData\Base
 
 	function create($x)
 	{
-		/*
-		{"mme" :[{
-			"name": "Simpsons Cultivator",
-			"type": "cultivator",
-			"code": "C999",
-			"certificate_number": "12345",
-			"address1": "742 Evergreen Terrace",
-			"city": "Springfield",
-			"state_code": "KY",
-			"postal_code": "12345"
-		}]}*/
 		$res = $this->_client->call('POST', '/mmes', $x);
 		return $res;
 	}

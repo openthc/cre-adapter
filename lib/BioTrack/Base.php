@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\BioTrack;
 
-class RBE_BioTrack_Base
+class Base
 {
 	protected $_client;
 	protected $_path = '';
