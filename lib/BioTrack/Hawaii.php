@@ -6,7 +6,7 @@
 
 namespace OpenTHC\CRE\BioTrack;
 
-class Hawaii extends \OpenTHC\CRE\BioTrack\Base
+class Hawaii extends \OpenTHC\CRE\BioTrack
 {
 	protected $_api_base = 'https://hicsts.hawaii.gov/serverjson.asp';
 

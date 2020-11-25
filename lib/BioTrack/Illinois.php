@@ -6,7 +6,7 @@
 
 namespace OpenTHC\CRE\BioTrack;
 
-class Illinois extends \OpenTHC\CRE\BioTrack\Base
+class Illinois extends \OpenTHC\CRE\BioTrack
 {
 	protected $_api_base = 'https://mcmonitoring.agr.illinois.gov/serverjson.asp';
 }

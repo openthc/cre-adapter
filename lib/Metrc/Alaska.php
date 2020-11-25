@@ -5,7 +5,7 @@
 
 namespace OpenTHC\CRE\Metrc;
 
-class Alaska extends \OpenTHC\CRE\Metrc\Base
+class Alaska extends \OpenTHC\CRE\Metrc
 {
 	protected $_api_base = 'https://api-ak.metrc.com';
 

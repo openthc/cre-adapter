@@ -6,7 +6,7 @@
 
 namespace OpenTHC\CRE\BioTrack;
 
-class NorthDakota extends \OpenTHC\CRE\BioTrack\Base
+class NorthDakota extends \OpenTHC\CRE\BioTrack
 {
 	protected $_api_base = 'https://mminventory.health.nd.gov/serverxml.asp';
 }
