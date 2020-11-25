@@ -328,18 +328,18 @@ class BioTrack extends \OpenTHC\CRE\Base
 	function ping()
 	{
 		if (empty($this->_sid)) {
-			return array(
+			return [
 				'code' => 403,
-				'status' => 'failure',
-				'detail' => 'No Session is Active [LRB#319]',
-			);
+				'data' => null,
+				'meta' => [ 'detail' => 'No Session is Active [LRB#319]' ],
+			];
 		}
 
-		return array(
+		return [
 			'code' => 200,
-			'status' => 'success',
-			'detail' => 'Everything is Awesome',
-		);
+			'data' => null,
+			'meta' => [ 'detail' => 'Everything is Awesome' ],
+		];
 
 	}
 

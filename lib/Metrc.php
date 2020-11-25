@@ -130,28 +130,28 @@ class Metrc extends \OpenTHC\CRE\Base
 		try {
 			$res = $this->uomList();
 		} catch (\Exception $e) {
-			return array(
+			return [
 				'code' => 500,
-				'status' => 'failure',
-				'detail' => $e->getMessage(),
-			);
+				'data' => null,
+				'meta' => [ 'detail' => $e->getMessage() ],
+			];
 		}
 
 		try {
 			$res = $this->packageTypeList();
 		} catch (\Exception $e) {
-			return array(
+			return [
 				'code' => 500,
-				'status' => 'failure',
-				'detail' => $e->getMessage(),
-			);
+				'data' => null,
+				'meta' => [ 'detail' => $e->getMessage() ],
+			];
 		}
 
-		return array(
+		return [
 			'code' => 200,
-			'status' => 'success',
-			'detail' => 'Everything is Awesome!',
-		);
+			'data' => null,
+			'meta' => [ 'detail' => 'Everything is Awesome!' ]
+		];
 	}
 
 	/**

@@ -304,6 +304,7 @@ class LeafData extends \OpenTHC\CRE\Base
 		_stat_count(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
 		_stat_timer(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
 
+		// This means a FATAL curl ERROR
 		if ($err) {
 			return array(
 				'code' => 500,
@@ -311,6 +312,8 @@ class LeafData extends \OpenTHC\CRE\Base
 				'meta' => [ 'detail' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)) ],
 			);
 		}
+
+		// Detect Type?
 
 		$this->_res = json_decode($this->_raw, true);
 
@@ -378,6 +381,14 @@ class LeafData extends \OpenTHC\CRE\Base
 			if (empty($res)) {
 				$res = strtok($this->_raw, "\n");
 				$res = substr($res, 0, 256);
+			}
+
+
+
+			// Special Trap for Retry
+			// Error: SQLSTATE[HY000] [2003] Can&#039;t connect to MySQL server on &#039;wa-prod-post-1.cljbi63ajzfp.us-gov-west-1.rds.amazonaws.com&#039; (4) (SQL: select * from `users` where `api_key` is not null and `users`.`deleted_at` is null)
+			if (preg_match('/connect to MySQL server/', $res)) {
+				// Would be cool to Trap
 			}
 
 			// if (preg_match('/SQLSTATE/', $this->_raw)) {
@@ -569,8 +580,8 @@ class LeafData extends \OpenTHC\CRE\Base
 					if (empty($res['error'])) {
 						return array(
 							'code' => 200,
-							'status' => 'success',
-							'detail' => 'Everything is Awesome!',
+							'data' => null,
+							'meta' => [ 'detail' => 'Everything is Awesome!' ],
 						);
 					}
 				}
@@ -583,19 +594,19 @@ class LeafData extends \OpenTHC\CRE\Base
 				// The Location header and the Body both contain the phrase 'enter-mfa'
 
 				if (strpos($this->_inf['redirect_url'], 'enter-mfa')) {
-					return array(
+					return [
 						'code' => 302,
-						'status' => 'failure',
-						'detail' => 'API requires that MFA is disabled in LeafData',
-					);
+						'data' => null,
+						'meta' => [ 'detail' => 'API requires that MFA is disabled in LeafData' ],
+					];
 				}
 
 				if (preg_match($this->_raw, 'enter-mfa')) {
-					return array(
+					return [
 						'code' => 302,
-						'status' => 'failure',
-						'detail' => 'API requires that MFA is disabled in LeafData',
-					);
+						'data' => null,
+						'meta' => [ 'detail' => 'API requires that MFA is disabled in LeafData' ],
+					];
 				}
 
 				break;
@@ -605,11 +616,11 @@ class LeafData extends \OpenTHC\CRE\Base
 			// Ignore
 		}
 
-		return array(
+		return [
 			'code' => 500,
-			'status' => 'failure',
-			'detail' => $this->formatError($res),
-		);
+			'data' => null,
+			'meta' => [  'detail' => $this->formatError($res) ],
+		];
 	}
 
 	function b2b()
