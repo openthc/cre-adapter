@@ -224,13 +224,15 @@ class Base
 	 */
 	static function ksort_r($a)
 	{
-		foreach ($a as &$v) {
+		foreach ($a as $k => $v) {
 			if (is_array($v)) {
-				self::ksort_r($v);
+				$a[$k] = self::ksort_r($v);
 			}
 		}
 
-		return ksort($a);
+		ksort($a);
+
+		return $a;
 	}
 
 }
