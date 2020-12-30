@@ -9,8 +9,10 @@ class OpenTHC extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
 
-	protected $_api_base = 'https://cre.openthc.dev';
-	protected $_api_host = 'cre.openthc.dev';
+	private $_c; // Client Connection
+
+	protected $_api_base = 'https://cre.openthc.com';
+	protected $_api_host = 'cre.openthc.com';
 
 	/**
 	 * Array of Arguments
@@ -72,16 +74,18 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 	/**
 	*/
-	function getObjectList()
+	function listSyncObjects()
 	{
 		return array(
 			'license' => 'License',
 			'section' => 'Section',
+			'product' => 'Product',
 			'variety' => 'Variety',
 			'crop' => 'Crop',
 			'lot' => 'Lot',
-			'b2b' => 'B2B Sales',
-			'b2c' => 'B2C Sales',
+			'lab_result' => 'Lab Result',
+			'b2b' => 'B2B Sale',
+			'b2c' => 'B2C Sale',
 		);
 	}
 

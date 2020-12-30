@@ -54,21 +54,21 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public static $obj_list = array(
 		'vendor' => 'Vendor',
 		'qa_lab' => 'QA Lab',
-		// 'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
+		'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
 		'employee' => 'Contacts',
 		'vehicle' => 'Vehicle',
-		'inventory_room' => 'Room/Inventory',
-		'plant_room' => 'Room/Plant',
+		'inventory_room' => 'Section/Inventory',
+		'plant_room' => 'Section/Plant',
 		'inventory' => 'Inventory',
 		'plant' => 'Plant',
 		'plant_derivative' => 'Plant Derivative',
 		'manifest' => 'Manifest',
-		'inventory_transfer' => 'Inventory Transfer - Outbound',
-		'inventory_transfer_inbound' => 'Inventory Transfer - Inbound',
+		'inventory_transfer' => 'B2B Sale / Outgoing',
+		'inventory_transfer_inbound' => 'B2B Sale / Incoming',
 		'inventory_sample' => 'Inventory Sample',
-		'inventory_qa_sample' => 'QA Sample',
+		'inventory_qa_sample' => 'Lab Result',
 		'inventory_adjust' => 'Inventory Adjustment',
-		'sale' => 'Sale',
+		'sale' => 'B2C Sale',
 		'tax_report' => 'Tax Reporting',
 		// 'id_preassign' => 'IDs', // WA-UCS Only
 	);
@@ -331,7 +331,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 			return [
 				'code' => 403,
 				'data' => null,
-				'meta' => [ 'detail' => 'No Session is Active [LRB#319]' ],
+				'meta' => [ 'detail' => 'No Session is Active [LRB-319]' ],
 			];
 		}
 
@@ -640,7 +640,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 		Move Inventory
-		@param $rid Room ID
+		@param $rid Section ID
 		@param $ida ID Scalar of Array of IDs
 	*/
 	function inventory_move($id_list, $rid)
@@ -1017,7 +1017,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 		@param @loc Location License ID
-		@param $id Room ID
+		@param $id Section ID
 	*/
 	function inventory_room_remove($loc, $rid)
 	{
@@ -1171,7 +1171,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	/**
 		Cures a Plant
 		@param $pid Plant ID
-		@param $rid Room the Collection is Happengin IN?
+		@param $rid Section the Collection is Happengin IN?
 		@param $weights Weight Data
 		@param $cts Collect Timestamp
 		@param $add Collect Additional 0|1
@@ -1261,7 +1261,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		@param $id Plant ID or Array of Plant IDs
 		@param $cts Collection Time
 		@param $wd Weight Data
-		@param $rid Room ID
+		@param $rid Section ID
 		@param $add Additional Collecitons?
 		@param $wet Is Wet 1/0
 	*/
@@ -1365,7 +1365,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 		@param $id One or More Plant IDs
-		@param $rid Room Integer ID
+		@param $rid Section Integer ID
 	*/
 	function plant_move($id_list, $rid)
 	{
@@ -1466,7 +1466,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Room Functions
+		Section Functions
 	*/
 	function plant_room_add($arg) // @deprecated
 	{
@@ -1496,7 +1496,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 		@param @loc Location License ID
-		@param $id Room ID
+		@param $id Section ID
 	*/
 	function plant_room_remove($loc, $rid) // @deprecated
 	{
