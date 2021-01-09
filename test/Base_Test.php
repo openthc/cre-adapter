@@ -10,10 +10,10 @@ class OpenTHC_Base_TestCase extends \PHPUnit\Framework\TestCase
 	protected $ghc; // API Guzzle HTTP Client
 	protected $raw; // Raw Response Buffer
 
-	protected function setUp() : void
-	{
-		$this->ghc = $this->_api();
-	}
+	// protected function setUp() : void
+	// {
+	// 	$this->ghc = $this->_api();
+	// }
 
 
 	/**
