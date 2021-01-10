@@ -54,7 +54,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public static $obj_list = array(
 		'vendor' => 'Vendor',
 		'qa_lab' => 'QA Lab',
-		'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
+		'third_party_transporter' => 'Third Party Transporter',
 		'employee' => 'Contacts',
 		'vehicle' => 'Vehicle',
 		'inventory_room' => 'Section/Inventory',
@@ -70,7 +70,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		'inventory_adjust' => 'Inventory Adjustment',
 		'sale' => 'B2C Sale',
 		'tax_report' => 'Tax Reporting',
-		// 'id_preassign' => 'IDs', // WA-UCS Only
+		'id_preassign' => 'IDs',
 	);
 
 	// Deprecated
