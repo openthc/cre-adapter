@@ -1,11 +1,11 @@
 <?php
 /**
- * Base Class for LeafData
+ * Base Class for LeafData Objects
  */
 
 namespace OpenTHC\CRE\LeafData;
 
-class Base extends \OpenTHC\CRE\Base
+class Base
 {
 	protected $_client;
 	protected $_path = '';
