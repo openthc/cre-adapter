@@ -58,8 +58,8 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Format Error
-	*/
+	 * Format Error
+	 */
 	function formatError($e)
 	{
 		if (is_array($e)) {
@@ -73,7 +73,8 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	*/
+	 *
+	 */
 	function listSyncObjects()
 	{
 		return array(
@@ -89,10 +90,9 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		);
 	}
 
-
 	/**
 	 * HTTP GET Utility
-	*/
+	 */
 	function get($url)
 	{
 		$res = $this->_c->get($url);
@@ -118,7 +118,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 	/**
 	 * HTTP GET Utility
-	*/
+	 */
 	function head($url)
 	{
 		$res = $this->_c->head($url);
