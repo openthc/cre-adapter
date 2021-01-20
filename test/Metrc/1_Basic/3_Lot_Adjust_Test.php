@@ -3,7 +3,7 @@
  * Test Lot Adjust
  */
 
-namespace Test\LeafData\Basic;
+namespace Test\Metrc\Basic;
 
 class Lot_Adjust_Test extends \Test\OpenTHC_Metrc_Test
 {
