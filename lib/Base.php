@@ -170,7 +170,7 @@ class Base
 			}
 		}
 		$a = self::ksort_r($a);
-		return md5(json_encode($a));
+		return hash('sha256', json_encode($a));
 	}
 
 	/*
