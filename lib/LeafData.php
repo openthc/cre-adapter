@@ -531,8 +531,8 @@ class LeafData extends \OpenTHC\CRE\Base
 
 			'crop' => 'Crop',
 
-			'lot' => 'Inventory',
-			'lot_adjustment' => 'InventoryAdjustment',
+			'lot' => 'Lot',
+			'lot_delta' => 'InventoryAdjustment',
 
 			'lab_result' => 'LabResult',
 
@@ -640,16 +640,16 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Product($this);
 	}
 
-	// Basically a Lots/Inventory
+	// Basically a Lots
 	function lot()
 	{
-		return new LeafData\Inventory($this);
+		return new LeafData\Lot($this);
 	}
 
 	/**
-		Not sure why they didn't make this an UPDATE on the /inventory
-	*/
-	function lot_adjustment()
+	 * Not sure why they didn't make this an UPDATE on the /inventory
+	 */
+	function lot_delta()
 	{
 		return new LeafData\InventoryAdjustment($this);
 	}
