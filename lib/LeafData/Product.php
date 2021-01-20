@@ -27,16 +27,4 @@ class Product extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	/**
-		Sync this Object
-	*/
-	function sync($x, $m)
-	{
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Product($rls, $this->_client);
-		$o = $this->one($x);
-		$r = $rlsx->one($o, $m);
-		return $r;
-	}
-
 }

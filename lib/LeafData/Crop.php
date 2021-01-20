@@ -56,22 +56,6 @@ class Crop extends \OpenTHC\CRE\LeafData\Base
 	}
 
 	/**
-	 * Sync this Object
-	 */
-	function sync($x, $m)
-	{
-		if (is_string($x)) {
-			$x = $this->one($x);
-		}
-
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Plant($rls, $this->_client);
-		$r = $rlsx->one($x, $m);
-
-		return $r;
-	}
-
-	/**
 	*/
 	function waste()
 	{

@@ -28,34 +28,6 @@ class B2B_Sale extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	/**
-		Sync this Object
-		@param $x Object GUID
-		@param $m Message for Sync-Log
-	*/
-	function sync($x, $m)
-	{
-		$try_idx = 0;
-		$try_max = 3;
-
-		do {
-			$try_idx++;
-
-			$rls = new RBE_LeafData_Sync($this->_client);
-			$rlsx = new RBE_LeafData_Sync_Transfer($rls, $this->_client);
-			$o = $this->one($x);
-			if (!empty($o)) {
-				$r = $rlsx->one($o, $m);
-				return $r;
-			}
-			// $r = $rlsx->one($o, $m);
-		} while ($try_idx < $try_max);
-
-		throw new Exception(sprintf('Cannot Sync Transfer "%s" [RLT-045]', $x));
-
-
-	}
-
 	function addDriver() { }
 
 	/**

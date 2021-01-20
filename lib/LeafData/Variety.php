@@ -58,16 +58,4 @@ class Variety extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	/**
-		Sync this Object
-	*/
-	function sync($x, $m)
-	{
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Strain($rls, $this->_client);
-		$x = $this->one($x);
-		$r = $rlsx->one($x, $m);
-		return $r;
-	}
-
 }

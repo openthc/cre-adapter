@@ -83,23 +83,4 @@ class Section extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	/**
-		Sync this Object
-	*/
-	function sync($x, $m)
-	{
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Section($rls, $this->_client);
-		$o = $this->one($x);
-		$r = $rlsx->one($o, $m);
-		return $r;
-	}
-
-	function update($x)
-	{
-		$arg = array('area' => $x);
-		$res = $this->_client->call('POST', '/areas/update', $arg);
-		return $res;
-	}
-
 }

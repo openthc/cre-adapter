@@ -38,13 +38,4 @@ class Disposal extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function sync($x, $m)
-	{
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Disposal($rls, $this->_client);
-		$o = $this->one($x);
-		$r = $rlsx->one($o, $m);
-		return $r;
-	}
-
 }
