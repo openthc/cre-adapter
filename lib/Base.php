@@ -164,6 +164,8 @@ class Base
 			if (is_object($a)) {
 				if (method_exists($a, 'toArray')) {
 					$a = $a->toArray();
+				} else {
+					$a = json_decode(json_encode($a), true);
 				}
 			}
 		}
