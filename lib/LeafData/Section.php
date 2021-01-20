@@ -30,7 +30,7 @@ class Section extends \OpenTHC\CRE\LeafData\Base
 		Have to over-ride this one cause the f_global_id filter don't work here
 		This call always returns the full list
 	*/
-	function one($x)
+	function single($x)
 	{
 		$url = $this->_path; // sprintf('%s?f_global_id=%s', $this->_path, $x);
 		$res = $this->_client->call('GET', $url);

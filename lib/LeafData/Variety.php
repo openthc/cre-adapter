@@ -9,12 +9,11 @@ class Variety extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/strains';
 
-
 	/**
 		@override
 		Had to Over-Ride this cause Strain doesn't filter in LeafData
 	*/
-	function one($x)
+	function single($x)
 	{
 		$arg = http_build_query(array(
 			'f_global_id' => $x,

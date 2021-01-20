@@ -55,7 +55,7 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 
 		@param $x The GUID to Fetch
 	*/
-	function one($x)
+	function single($x)
 	{
 		$res = parent::one($x);
 		if (!empty($res)) {

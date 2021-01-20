@@ -16,9 +16,9 @@ class Base
 	}
 
 	/**
-		Find "all", need to maybe pass pages
-	*/
-	function all($arg=null)
+	 * Find "all", need to maybe pass pages
+	 */
+	function search($arg=null)
 	{
 		if (empty($arg)) {
 			$arg = array();
@@ -31,9 +31,9 @@ class Base
 	}
 
 	/**
-		@param $x The GUID to GET
-	*/
-	function one($x)
+	 * @param $x The GUID to GET
+	 */
+	function single($x)
 	{
 		$arg = http_build_query(array(
 			'f_global_id' => $x,

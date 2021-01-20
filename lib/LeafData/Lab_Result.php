@@ -29,7 +29,7 @@ class Lab_Result extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function one($x)
+	function single($x)
 	{
 		$arg = http_build_query(array(
 			'f_global_id' => $x,

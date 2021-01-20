@@ -17,7 +17,7 @@ class License extends \OpenTHC\CRE\LeafData\Base
 	 */
 	function search($arg=null)
 	{
-		$res = parent::all($arg);
+		$res = parent::search($arg);
 		return [
 			'code' => $res['code'],
 			'data' => [
