@@ -14,9 +14,6 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	private $_arg;
 
-	protected $_license_code = '';
-	protected $_license_auth = '';
-
 	protected $_lic_type = array(
 		'cultivator' => '(G) Producers',
 		'dispensary' => '(R) Retailers',
@@ -173,32 +170,21 @@ class LeafData extends \OpenTHC\CRE\Base
 	{
 		parent::__construct($x);
 
-		if (!empty($x['license'])) {
-			$this->setLicense($x['license']);
+		if (empty($x['license'])) {
+			throw new \Exception('Invalid API License [LRL-113]');
 		}
+
+		if (empty($x['license-key'])) {
+			throw new \Exception('Invalid API Secret [LRL-177]');
+		}
+
+		$this->setLicense($x['license']);
 
 		$this->_req_head = [
-			'x-mjf-key' => $x['license'],
-			'x-mjf-mme-code' => $x['license-key'],
+			'x-mjf-mme-code' => $x['license'],
+			'x-mjf-key' => $x['license-key'],
 		];
 
-		$this->_license_auth = $x['license-key'];
-
-		if (!empty($x['mode'])) {
-			throw new \Exception('Invalid Parameter [LRL-188]');
-			if ('test' == $x['mode']) {
-				$this->setTestMode();
-			}
-		}
-
-	}
-
-	/**
-	*/
-	function setTestMode()
-	{
-		$this->_api_base = 'https://watest.leafdatazone.com/api/v1';
-		$this->_api_host = null;
 	}
 
 	/**
@@ -206,26 +192,14 @@ class LeafData extends \OpenTHC\CRE\Base
 	*/
 	protected function _curl_init($uri)
 	{
-		if (empty($this->_license_auth)) {
-			throw new \Exception('Invalid API Secret [LRL-177]');
-		}
-
-		if (empty($this->_License['code'])) {
-			throw new \Exception('Invalid API License [LRL-113]');
-		}
-
-		if (empty($this->_api_host)) {
-			$this->_api_host = parse_url($uri, PHP_URL_HOST);
-		}
-
 		$ch = _curl_init($uri);
 
-		$head = array(
+		$head = [
 			'content-type: application/json',
-			sprintf('host: %s', $this->_api_host),
-			sprintf('x-mjf-key: %s', $this->_license_auth),
-			sprintf('x-mjf-mme-code: %s', $this->_License['code']),
-		);
+		];
+		foreach ($this->_req_head as $k => $v) {
+			$head[] = sprintf('%s: %s', $k, $v);
+		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
 		// curl_setopt($ch, CURLOPT_USERPWD, "username:password");
 
