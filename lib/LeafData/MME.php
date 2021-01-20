@@ -3,7 +3,9 @@
 	A License in the LeafData World
 */
 
-class RBE_LeafData_MME extends RBE_LeafData_Base
+namespace OpenTHC\CRE\LeafData;
+
+class MME extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/mmes';
 
