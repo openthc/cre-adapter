@@ -651,7 +651,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	 */
 	function lot_delta()
 	{
-		return new LeafData\InventoryAdjustment($this);
+		return new LeafData\Lot_Delta($this);
 	}
 
 	function b2c()
