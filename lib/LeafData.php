@@ -645,7 +645,6 @@ class LeafData extends \OpenTHC\CRE\Base
 	 */
 	function license()
 	{
-		require_once(__DIR__ . '/LeafData/MME.php');
 		return new LeafData\License($this);
 	}
 

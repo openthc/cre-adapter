@@ -47,13 +47,13 @@ class License extends \OpenTHC\CRE\LeafData\Base
 
 	function create($x)
 	{
-		$res = $this->_client->call('POST', '/mmes', $x);
+		$res = $this->_client->call('POST', $this->_path, $x);
 		return $res;
 	}
 
 	function update($x)
 	{
-		$res = $this->_client->call('POST', '/mmes/update', $x);
+		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $x);
 		return $res;
 	}
 
