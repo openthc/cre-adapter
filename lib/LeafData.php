@@ -201,11 +201,6 @@ class LeafData extends \OpenTHC\CRE\Base
 			$head[] = sprintf('%s: %s', $k, $v);
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-		// curl_setopt($ch, CURLOPT_USERPWD, "username:password");
-
-		// Verbose?
-		//curl_setopt($ch, CURLOPT_VERBOSE, true);
-		//curl_setopt($ch, CURLOPT_STDERR, fopen('/tmp/curl.log', 'a'));
 
 		return $ch;
 	}
