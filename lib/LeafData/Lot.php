@@ -1,11 +1,11 @@
 <?php
 /**
- *
+ * An Inventory Lot
  */
 
 namespace OpenTHC\CRE\LeafData;
 
-class Inventory extends \OpenTHC\CRE\LeafData\Base
+class Lot extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/inventories';
 
@@ -51,22 +51,6 @@ class Inventory extends \OpenTHC\CRE\LeafData\Base
 	{
 		$res = $this->_client->call('POST', '/move_inventory_to_plants', $arg);
 		return $res;
-	}
-
-	/**
-		Sync this Object
-	*/
-	function sync($x, $m)
-	{
-		if (is_string($x)) {
-			$x = $this->one($x);
-		}
-
-		$rls = new RBE_LeafData_Sync($this->_client);
-		$rlsx = new RBE_LeafData_Sync_Lot($rls, $this->_client);
-		$r = $rlsx->one($x, $m);
-
-		return $r;
 	}
 
 }
