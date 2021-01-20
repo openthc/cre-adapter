@@ -14,9 +14,6 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	private $_arg;
 
-	protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
-	protected $_api_host = null;
-
 	protected $_license_code = '';
 	protected $_license_auth = '';
 

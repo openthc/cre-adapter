@@ -9,54 +9,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
 
-	private $_c; // Client Connection
-
-	protected $_api_base = 'https://cre.openthc.com';
-	protected $_api_host = 'cre.openthc.com';
-
-	/**
-	 * Array of Arguments
-	 */
-	function __construct($sid=null)
-	{
-		// @todo Make this Session Persistent?
-		$jar = new \GuzzleHttp\Cookie\CookieJar();
-		if (!empty($sid)) {
-			$c = new \GuzzleHttp\Cookie\SetCookie(array(
-				'Domain' => $this->_api_host,
-				'Name' => 'openthc',
-				'Value' => $sid,
-				'Secure' => true,
-				'HttpOnly' => true,
-			));
-			$jar->setCookie($c);
-		}
-
-		$cfg = array(
-			'base_uri' => $this->_api_base,
-			'allow_redirects' => false,
-			'cookies' => $jar,
-			'headers' => array(
-				'user-agent' => sprintf('OpenTHC/%s', APP_BUILD),
-			),
-			'http_errors' => false,
-			'verify' => false,
-		);
-		//var_dump($cfg);
-
-		// Override Host Header Here
-		// @see https://github.com/guzzle/guzzle/issues/1678#issuecomment-281921604
-		// $host = $this->_api_host;
-		// $ghhs = \GuzzleHttp\HandlerStack::create();
-		// $ghhs->push(\GuzzleHttp\Middleware::mapRequest(function (\Psr\Http\Message\RequestInterface $R) use ($host) {
-		// 	return $R->withHeader('host', $host);
-		// }));
-		// $cfg['handler'] = $ghhs;
-
-		$this->_c = new \GuzzleHttp\Client($cfg);
-
-	}
-
 	/**
 	 * Format Error
 	 */

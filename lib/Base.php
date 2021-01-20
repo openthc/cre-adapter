@@ -7,6 +7,9 @@ namespace OpenTHC\CRE;
 
 class Base
 {
+	protected $_api_base = '';
+	protected $_api_host = '';
+
 	protected $_c; // Guzzle Connection;
 
 	protected $_err;
@@ -24,15 +27,17 @@ class Base
 	 */
 	function __construct($cfg)
 	{
-		if (empty($cfg['host'])) {
-			$cfg['host'] = parse_url($cfg['server'], PHP_URL_HOST);
+		$this->_api_base = $cfg['server'];
+
+		if (empty($this->_api_host)) {
+			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
 		}
 
 		$jar = new \GuzzleHttp\Cookie\CookieJar();
 
 		if (!empty($cfg['cookie'])) {
 			$c = new \GuzzleHttp\Cookie\SetCookie(array(
-				'Domain' => $cfg['host'],
+				'Domain' => $this->_api_host,
 				'Name' => $cfg['cookie']['name'],
 				'Value' => $cfg['cookie']['value'],
 				'Secure' => true,
@@ -42,7 +47,7 @@ class Base
 		}
 
 		$cfg = array(
-			'base_uri' => $cfg['server'],
+			'base_uri' => $this->_api_base,
 			'allow_redirects' => false,
 			'cookies' => $jar,
 			'headers' => array(
@@ -145,59 +150,6 @@ class Base
 		$this->_err = json_last_error();
 		$this->_err_msg = json_last_error_msg();
 
-		return $ret;
-	}
-
-	/**
-	 * Return CRE Engine Configuration
-	 */
-	static function getEngineList()
-	{
-		$ini_file = '';
-
-		// Use Application Specific
-		if (defined('APP_ROOT')) {
-			$dir = APP_ROOT;
-			$ini_file = sprintf('%s/etc/cre.ini', $dir);
-			if (!is_file($ini_file)) {
-				$ini_file = '';
-			}
-		}
-
-		// Use Default
-		if (empty($ini_file)) {
-			$dir = dirname(__DIR__);
-			$ini_file = sprintf('%s/etc/cre.ini', $dir);
-		}
-
-		if (!is_file($ini_file)) {
-			throw new \Exception('CRE configuration file not found [ALB#174]');
-		}
-
-		$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
-
-		// Patch data to always have two fields
-		$ret_data = [];
-		foreach ($ini_data as $cre_code => $cre_info) {
-			if (empty($cre_info['id'])) {
-				$cre_info['id'] = $cre_code;
-			}
-			if (empty($cre_info['code'])) {
-				$cre_info['code'] = $cre_code;
-			}
-			$ret_data[$cre_code] = $cre_info;
-		}
-
-		return $ret_data;
-	}
-
-	/**
-	 * Get one Engine Config
-	 */
-	static function getEngine($code)
-	{
-		$res = self::getEngineList();
-		$ret = $res[$code];
 		return $ret;
 	}
 

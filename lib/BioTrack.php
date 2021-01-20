@@ -15,7 +15,6 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public $_sid = null;
 
 	protected $_name = 'BioTrack';
-	protected $_api_base = 'https://<server>/serverjson.asp';
 
 	protected $_training = false;
 
@@ -237,6 +236,8 @@ class BioTrack extends \OpenTHC\CRE\Base
 	*/
 	function __construct($x=null)
 	{
+		parent::__construct($x);
+
 		if (!empty($x)) {
 			if (is_array($x)) {
 				$this->_company = $x['company'];

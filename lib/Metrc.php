@@ -9,8 +9,6 @@ class Metrc extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'metrc';
 
-	protected $_api_base = null;
-	protected $_api_host = null;
 	protected $_api_name = 'metrc';
 	protected $_api_key_vendor = null;
 	protected $_api_key_client = null;
@@ -28,16 +26,16 @@ class Metrc extends \OpenTHC\CRE\Base
 		'license' => 'License',
 		'contact' => 'Contact/Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
-		'section' => 'Section/Room',
+		'room' => 'Room',
+		'strain' => 'Variety',
 		'product' => 'Product',
-		'variety'  => 'Variety/Strain',
 		'plantbatch' => 'Plant Batches',
 		'plant' => 'Plant',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
-		'lab_result' => 'Lab Results',
-		'b2b' => 'B2B Sales',
-		'b2c' => 'B2C Sales',
+		'lab-result' => 'Lab Result',
+		'retail' => 'Retail',
+		'transfer' => 'Transfer',
 	);
 
 	/**
@@ -69,15 +67,15 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function __construct($x)
 	{
-		parent::__construct($x);
-
 		if (empty($x['service-key'])) {
-			throw new \Exception('Invalid Service Key [LRM#048]');
+			throw new \Exception('Invalid Service Key [LRM-048]');
 		}
 
 		if (empty($x['license-key'])) {
-			throw new \Exception('Invalid License Key [LRM#052]');
+			throw new \Exception('Invalid License Key [LRM-052]');
 		}
+
+		parent::__construct($x);
 
 		$this->_api_key_vendor = $x['service-key'];
 		$this->_api_key_client = $x['license-key'];
@@ -98,7 +96,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function setTestMode()
 	{
-		throw new \Exception('LRM#063: Not Implemented');
+		throw new Exception('LRM#063: Not Implemented');
 	}
 
 	/**
@@ -117,41 +115,38 @@ class Metrc extends \OpenTHC\CRE\Base
 		$this->_time_omega = $x;
 	}
 
-	function getObjectList()
+	public static function listSyncObjects()
 	{
 		return self::$obj_list;
 	}
 
 	function ping()
 	{
-		$res = $this->license()->search();
-		return $res;
-
 		try {
 			$res = $this->uomList();
-		} catch (\Exception $e) {
-			return [
+		} catch (Exception $e) {
+			return array(
 				'code' => 500,
-				'data' => null,
-				'meta' => [ 'detail' => $e->getMessage() ],
-			];
+				'status' => 'failure',
+				'detail' => $e->getMessage(),
+			);
 		}
 
 		try {
 			$res = $this->packageTypeList();
-		} catch (\Exception $e) {
-			return [
+		} catch (Exception $e) {
+			return array(
 				'code' => 500,
-				'data' => null,
-				'meta' => [ 'detail' => $e->getMessage() ],
-			];
+				'status' => 'failure',
+				'detail' => $e->getMessage(),
+			);
 		}
 
-		return [
+		return array(
 			'code' => 200,
-			'data' => null,
-			'meta' => [ 'detail' => 'Everything is Awesome!' ]
-		];
+			'status' => 'success',
+			'detail' => 'Everything is Awesome!',
+		);
 	}
 
 	/**
@@ -159,6 +154,8 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function formatError($res)
 	{
+		//var_dump($res);
+
 		if (!is_array($res)) {
 			$chk = json_decode($res, true);
 			if (is_array($chk)) {
@@ -175,7 +172,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		header('Content-Type: text/plain');
 		var_dump($res);
 		var_dump(debug_print_backtrace());
-		throw new \Exception('METRC Really Broken [LRM#159]');
+		throw new Exception('METRC Really Broken [LRM#159]');
 		exit(0);
 	}
 
@@ -302,7 +299,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function plantbatchCreatePlantings($arg)
 	{
-		throw new \Exception('@deprecated');
+		throw new Exception('@deprecated');
 	}
 
 	/**
@@ -310,12 +307,21 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function itemDelete($id)
 	{
-		$url = sprintf('/items/v1/%d', $id);
+		$url = sprintf('/items/v1/%s', $id);
 		$url = $this->_make_url($url);
 		$req = $this->_curl_init($url);
 		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'DELETE');
 		$res = $this->_curl_exec($req);
 		return $res;
+	}
+
+	/**
+		@param $x {id} or {date}
+	*/
+	function sales($x=null)
+	{
+		$r = new RBE_Metrc_Sales($this);
+		return $r;
 	}
 
 	/**
@@ -352,61 +358,61 @@ class Metrc extends \OpenTHC\CRE\Base
 
 	function b2c()
 	{
-		$o = new Metrc\B2C($this);
+		$o = new RBE_Metrc_B2C($this);
 		return $o;
 	}
 
 	function batch()
 	{
-		$o = new Metrc\Batch($this);
+		$o = new RBE_Metrc_Batch($this);
 		return $o;
 	}
 
 	function contact()
 	{
-		$o = new Metrc\Contact($this);
+		$o = new RBE_Metrc_Contact($this);
 		return $o;
 	}
 
-	function lab_result()
+	function labresult()
 	{
-		$o = new Metrc\Lab_Result($this);
+		$o = new RBE_Metrc_Lab_Result($this);
 		return $o;
 	}
 
 	function license()
 	{
-		$o = new Metrc\License($this);
+		$o = new RBE_Metrc_License($this);
 		return $o;
 	}
 
 	function lot()
 	{
-		$o = new Metrc\Lot($this);
+		$o = new RBE_Metrc_Lot($this);
 		return $o;
 	}
 
 	function plant()
 	{
-		$o = new Metrc\Plant($this);
+		$o = new RBE_Metrc_Plant($this);
 		return $o;
 	}
 
 	function plant_collect()
 	{
-		$o = new Metrc\Plant_Collect($this);
+		$o = new RBE_Metrc_Plant_Collect($this);
 		return $o;
 	}
 
 	function product()
 	{
-		$o = new Metrc\Product($this);
+		$o = new RBE_Metrc_Product($this);
 		return $o;
 	}
 
-	function variety()
+	function strain()
 	{
-		$o = new Metrc\Variety($this);
+		$o = new RBE_Metrc_Strain($this);
 		return $o;
 	}
 
@@ -415,7 +421,16 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function b2b()
 	{
-		$r = new Metrc\B2B($this);
+		$r = new RBE_Metrc_B2B($this);
+		return $r;
+	}
+
+	/**
+		Interface for One Transfer
+	*/
+	function transfer() // @deprecated
+	{
+		$r = new RBE_Metrc_B2B($this);
 		return $r;
 	}
 
@@ -424,9 +439,10 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function section()
 	{
-		$r = new Metrc\Section($this);
+		$r = new RBE_Metrc_Section($this);
 		return $r;
 	}
+
 
 	/**
 
@@ -441,7 +457,7 @@ class Metrc extends \OpenTHC\CRE\Base
 
 			$verb = 'POST';
 
-			$arg = json_encode($arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$arg = json_encode($arg, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arg);
@@ -485,25 +501,19 @@ class Metrc extends \OpenTHC\CRE\Base
 			break;
 		case 400:
 		case 405:
-			throw new \Exception($this->formatError($this->_res));
+			throw new Exception($this->formatError($this->_res));
 			break;
 		case 401:
 			return [
 				'code' => 401,
 				'data' => null,
-				'meta' => [ 'detail' => 'Access Denied' ]
+				'meta' => [ 'Access Denied' ]
 			];
 			break;
-		case 404:
-			return [
-				'code' => 404,
-				'data' => $this->_raw,
-				'meta' => [ 'detail' => 'Not Found ']
-			];
 		default:
 			var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE#735]', $code);
-			throw new \Exception($msg);
+			throw new Exception($msg);
 		}
 
 		if (empty($this->_res)) {
@@ -519,8 +529,8 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Executes the Single or Multiple Requests
-	*/
+	 * Executes the Single or Multiple Requests
+	 */
 	function _curl_init($uri, $head=null)
 	{
 		$uri = $this->_api_base . $uri;
@@ -530,7 +540,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		$auth = sprintf('%s:%s', $this->_api_key_vendor, $this->_api_key_client);
 		curl_setopt($ch, CURLOPT_USERPWD, $auth);
 
-		// radix::dump($head);
 		$head = array(
 			'accept: application/json',
 			'content-type: application/json',
