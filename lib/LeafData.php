@@ -532,9 +532,9 @@ class LeafData extends \OpenTHC\CRE\Base
 			'crop' => 'Crop',
 
 			'lot' => 'Lot',
-			'lot_delta' => 'InventoryAdjustment',
+			'lot_delta' => 'Lot_Delta',
 
-			'lab_result' => 'LabResult',
+			'lab_result' => 'Lab_Result',
 
 			'disposal' => 'Disposal',
 
