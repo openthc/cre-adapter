@@ -3,9 +3,9 @@
  * Test Lot Adjust
  */
 
-namespace Test\Metrc\Basic;
+namespace Test\Metrc\G_Process;
 
-class Lot_Adjust_Test extends \Test\OpenTHC_Metrc_Test
+class C_Lot_Adjust_Test extends \Test\OpenTHC_Metrc_Test
 {
 	protected function setUp() : void
 	{

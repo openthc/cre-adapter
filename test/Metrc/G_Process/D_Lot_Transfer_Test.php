@@ -3,9 +3,9 @@
  * Test Lot Transfer
  */
 
-namespace Test\Metrc\Lot_Process;
+namespace Test\Metrc\G_Process;
 
-class Lot_Transfer_Test extends \Test\OpenTHC_Metrc_Test
+class D_Lot_Transfer_Test extends \Test\OpenTHC_Metrc_Test
 {
 	public function testTransferBasic()
 	{

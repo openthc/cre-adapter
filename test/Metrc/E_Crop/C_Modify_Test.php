@@ -3,9 +3,9 @@
  * Plant Modify
  */
 
-namespace Test\Metrc\Plant;
+namespace Test\Metrc\E_Crop;
 
-class Modify_Test extends \Test\OpenTHC_Metrc_Test
+class C_Modify_Test extends \Test\OpenTHC_Metrc_Test
 {
 	/**
 	 * Get a random Plant by the GUID suffix only

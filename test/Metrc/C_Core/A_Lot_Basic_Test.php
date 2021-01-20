@@ -3,9 +3,9 @@
  * Test Lot
  */
 
-namespace Test\Metrc\Basic;
+namespace Test\Metrc\C_Core;
 
-class Lot_Basic_Test extends \Test\OpenTHC_Metrc_Test
+class A_Lot_Basic_Test extends \Test\OpenTHC_Metrc_Test
 {
 	public function testLotPackageCreate()
 	{
