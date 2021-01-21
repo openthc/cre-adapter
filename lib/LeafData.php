@@ -188,8 +188,8 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@return Curl Handle
-	*/
+	 * @return Curl Handle
+	 */
 	protected function _curl_init($uri)
 	{
 		$ch = _curl_init($uri);
@@ -206,10 +206,10 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@param HTTP VERB
-		@param $path the API Path
-		@param $post The API Data to POST, as Array or String
-	*/
+	 * @param HTTP VERB
+	 * @param $path the API Path
+	 * @param $post The API Data to POST, as Array or String
+	 */
 	public function call($verb, $path, $post=null)
 	{
 		$path = trim($path, '/');
