@@ -30,9 +30,17 @@ class Engine_Test extends \Test\OpenTHC_Base_TestCase
 			if (!empty($n)) {
 				echo "Class: $n\n";
 				$cre = new $n($cfg);
+				$this->assertTrue( implements );
+				$htis->assertTrue(has_function($cfg, 'search'));
+				$this->assertTrue(has_func($cfg, 'single');
+				'update';
+				'delete';
+				'ping';
+
+				$res = $cre->ping();
+				// Assewrt Good
 			}
 
-			// CRE::factory($cfg);
 		}
 
 	}
