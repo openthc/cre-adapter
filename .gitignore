@@ -1,2 +1,6 @@
+etc/
+var/
 vendor/
 webroot/
+
+.env*
