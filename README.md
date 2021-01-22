@@ -6,15 +6,18 @@ These scripts expose a common interface for these different API interfaces.
 
 ## Examples
 
+There is a convenience factory method to use with the proper configuration (loaded from `etc/cre.ini`).
+
+
 ```php
-$cfg = [ /* CRE Specific */ ];
-$cre = new \OpenTHC\CRE\BioTrack\NM($cfg);
-$res = $cre->plant()->search();
+$cfg = \OpenTHC\CRE::getEngine('usa/wa');
+$cre = \OpenTHC\CRE::factory($cfg);
+$res = $cre->license()->search();
+$res = $cre->crop()->search();
 foreach ($res as $rec) {
 	echo $rec['variety']['name'] . "\n";
 }
 
-$cre = new \OpenTHC\CRE\METRC\Oregon($cfg);
 $res = $cre->lot()->search();
 foreach ($res as $rec) {
 	echo $rec['id'] . ' ' . $rec['product_id'] . "\n";
@@ -24,27 +27,16 @@ foreach ($res as $rec) {
 
 ## Supported Cannabis Reporting Engines
 
-* \OpenTHC\CRE\BioTrack
-* \OpenTHC\CRE\BioTrack\HI
-* \OpenTHC\CRE\BioTrack\IL
-* \OpenTHC\CRE\BioTrack\NM
-* \OpenTHC\CRE\BioTrack\WAUCS
-* \OpenTHC\CRE\LeafData
-* \OpenTHC\CRE\LeafData\PA
-* \OpenTHC\CRE\LeafData\WA
-* \OpenTHC\CRE\METRC
-* \OpenTHC\CRE\METRC\Alaska
-* \OpenTHC\CRE\METRC\California
-* \OpenTHC\CRE\METRC\Colorado
-* \OpenTHC\CRE\METRC\Maine
-* \OpenTHC\CRE\METRC\Massachusetts
-* \OpenTHC\CRE\METRC\Michigan
-* \OpenTHC\CRE\METRC\Montana
-* \OpenTHC\CRE\METRC\Nevada
-* \OpenTHC\CRE\METRC\Oregon
+* BioTrack: Hawai'i, Illinois, New Mexico, Puerto Rico, Washington*
+* LeafData: Pennsylvania*, Utah* Washington
+* METRC: Alaska, California, Colorado, Maine, Massachusetts, Michigan, Montana, Nevada, Oregon
 
 Other engines will be added, of course :)
 Some of the engine specific adapters are very thin layers, they really only exist for consistency.
+
+The services for BioTrack/Washington was for their official interface but is now for their system called UCS.
+For LeafData there is not yet an API available in Pennsylvania or Utah but we're keeping a watch on that.
+
 
 ## Connect
 
