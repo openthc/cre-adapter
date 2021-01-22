@@ -213,8 +213,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	public function call($verb, $path, $post=null)
 	{
 		$path = trim($path, '/');
-		$url  = sprintf('%s/%s', $this->_api_base, $path);
-		$urla = parse_url($url);
+		$url  = sprintf('%s/%s', trim($this->_api_base, '/'), $path);
 		$ch = $this->_curl_init($url);
 
 		switch ($verb) {
@@ -587,7 +586,6 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Contact($this);
 		//throw new Exception('Not Used in Washington');
 	}
-	//function user() { }
 
 	function customer()
 	{
@@ -635,9 +633,6 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Lab_Result($this);
 	}
 
-	/**
-	 * What I want it to Be on the Common Interface
-	 */
 	function license()
 	{
 		return new LeafData\License($this);
