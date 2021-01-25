@@ -14,9 +14,9 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	processIsolation="false"
-	stopOnError="true"
-	stopOnFailure="true"
-	stopOnRisky="true"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnRisky="false"
 	timeoutForSmallTests="1"
 	timeoutForMediumTests="10"
 	timeoutForLargeTests="60"
@@ -78,25 +78,30 @@
 
 	</php>
 
-	<!-- <testsuites>
+	<testsuites>
 
-		<testsuite name="money">
-			<directory>OpenTHC</directory>
-			<exclude>OpenTHC/Components</exclude>
-			<exclude>OpenTHC/OLD</exclude>
-			<exclude>OpenTHC/CRE</exclude>
+		<testsuite name="system">
+			<directory>A_System</directory>
 		</testsuite>
 
-		<testsuite name="OpenTHC_CRE">
-			<directory>OpenTHC/CRE/</directory>
+		<testsuite name="config">
+			<directory>B_Config</directory>
+		</testsuite>
+
+		<testsuite name="core">
+			<directory>C_Core</directory>
+		</testsuite>
+
+		<testsuite name="leafData">
+			<directory>LeafData</directory>
 		</testsuite>
 
 	</testsuites>
- -->
+
 
 	<logging>
 		<!-- <log type="coverage-html" target="../webroot/test-output" /> -->
-		<junit outputFile="../webroot/test-output/output.xml" />
+		<junit outputFile="../test-output/output.xml" />
 		<!-- <log type="testdox-html" target="../webroot/test-output/testdox.html" /> -->
 	</logging>
 

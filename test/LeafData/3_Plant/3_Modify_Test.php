@@ -5,7 +5,7 @@
 
 namespace Test\LeafData\Plant;
 
-class Modify_Test extends \Test\OpenTHC_Bunk_LeafData_Test
+class Modify_Test extends \Test\OpenTHC_Base_TestCase
 {
 	/**
 	 * Get a random Plant by the GUID suffix only

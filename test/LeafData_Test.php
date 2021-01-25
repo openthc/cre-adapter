@@ -40,10 +40,10 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 		// $this->assertEquals('application/json', $res->getHeaderLine('content-type')); // RFCs
 		$this->assertEquals('text/json; charset=UTF-8', $res->getHeaderLine('content-type')); // LeafData
 		$this->assertIsArray($ret);
-		// $this->assertCount(2, $ret);
+		$this->assertCount(2, $ret);
 
-		// $this->assertIsArray($x['data']);
-		// $this->assertIsArray($x['meta']);
+		$this->assertIsArray($ret['data']);
+		$this->assertIsArray($ret['meta']);
 
 		return $ret;
 
