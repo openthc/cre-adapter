@@ -7,47 +7,6 @@ namespace Test;
 
 class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 {
-	/**
-	* Intends to become an assert wrapper for a bunch of common response checks
-	* @param $res, Response Object
-	* @return void
-	*/
-	function assertValidResponse($res, $code=200, $dump=null)
-	{
-		$this->assertNotEmpty($res);
-
-		// Dump on Errors
-		$hrc = $res->getStatusCode();
-		switch ($hrc) {
-		case 422:
-		case 500:
-			if (empty($dump)) {
-				$dump = sprintf('%d Response Code', $hrc);
-			}
-			break;
-		}
-
-		$this->raw = $res->getBody()->getContents();
-
-		if (!empty($dump)) {
-			echo "\n<<<$dump<<<\n{$this->raw}\n###\n";
-		}
-
-		$ret = \json_decode($this->raw, true);
-
-		//$this->assertEquals('HTTPS', $res->getProtocol());
-		$this->assertEquals($code, $res->getStatusCode());
-		// $this->assertEquals('application/json', $res->getHeaderLine('content-type')); // RFCs
-		$this->assertEquals('text/json; charset=UTF-8', $res->getHeaderLine('content-type')); // LeafData
-		$this->assertIsArray($ret);
-		$this->assertCount(2, $ret);
-
-		$this->assertIsArray($ret['data']);
-		$this->assertIsArray($ret['meta']);
-
-		return $ret;
-
-	}
 
 	function find_random_batch_of_type($t)
 	{

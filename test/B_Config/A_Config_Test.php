@@ -2,7 +2,7 @@
 /**
  */
 
-class A_Config_Test
+class A_Config_Test extends \Test\OpenTHC_Base_TestCase
 {
 	function test_config_app()
 	{
