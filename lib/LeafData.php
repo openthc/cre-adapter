@@ -248,9 +248,6 @@ class LeafData extends \OpenTHC\CRE\Base
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
 
-		_stat_count(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
-		_stat_timer(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
-
 		// This means a FATAL curl ERROR
 		if ($err) {
 			return array(
