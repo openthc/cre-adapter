@@ -3,17 +3,16 @@
  * Test the Factory Returns the Right Things
  */
 
-class F_Factory_Test
+class F_Factory_Test extends \Test\OpenTHC_Base_TestCase
 {
 	function test_factory()
 	{
 		$cre_list = \OpenTHC\CRE::getEngineList();
-		foreach () {
-			$cfg = ;
+		foreach ($cre_list as $cfg) {
 			$cre = \OpenTHC\CRE::factory($cfg);
-			assertIsObject();
-			assertImplements();
-			assertFunctions()? // Necessayr?
+			// assertIsObject();
+			// assertImplements();
+			// assertFunctions();  Necessary?
 		}
 	}
 }

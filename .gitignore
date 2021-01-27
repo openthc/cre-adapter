@@ -2,5 +2,7 @@ etc/
 var/
 vendor/
 webroot/
+test-output/
+report.xsl
 
 .env*

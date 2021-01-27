@@ -18,7 +18,7 @@ class Engine_Test extends \Test\OpenTHC_Base_TestCase
 			'service-key' => 'fdsajklrewcsd',
 		];
 
-		$cre_list = \OpenTHC\CRE\Adapter\Base::getEngineList();
+		$cre_list = \OpenTHC\CRE::getEngineList();
 
 		foreach ($cre_list as $cfg) {
 
@@ -28,17 +28,15 @@ class Engine_Test extends \Test\OpenTHC_Base_TestCase
 			// $this->assertNotEmpty($n);
 
 			if (!empty($n)) {
-				echo "Class: $n\n";
 				$cre = new $n($cfg);
-				$this->assertTrue( implements );
-				$htis->assertTrue(has_function($cfg, 'search'));
-				$this->assertTrue(has_func($cfg, 'single');
-				'update';
-				'delete';
-				'ping';
+				// $this->assertTrue( implements );
+				
+				foreach (['search', 'single', 'update', 'delete', 'ping'] as $method) {
+					$this->assertTrue(method_exists($cfg, $method));
+				}
 
 				$res = $cre->ping();
-				// Assewrt Good
+				// Assert Good
 			}
 
 		}

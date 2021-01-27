@@ -192,7 +192,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	 */
 	protected function _curl_init($uri)
 	{
-		$ch = _curl_init($uri);
+		$ch = curl_init($uri);
 
 		$head = [
 			'content-type: application/json',

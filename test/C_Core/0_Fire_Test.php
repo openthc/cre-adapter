@@ -10,7 +10,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 
 	function test_class()
 	{
-		$c = new \OpenTHC\CRE\Adapter\Base([
+		$c = new \OpenTHC\CRE\Base([
 			'server' => 'https://bunk.openthc.org/',
 		]);
 
@@ -19,7 +19,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 		// $p1 = $c->ping();
 		// var_dump($p1);
 
-		// $c = new \OpenTHC\CRE\Adapter\BioTrack([
+		// $c = new \OpenTHC\CRE\BioTrack([
 		// 	'server' => 'https://bunk.openthc.dev/biotrack',
 		// 	'company' => '123456789',
 		// 	'username' => 'test@openthc.dev',
@@ -30,7 +30,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 		// $p1 = $c->ping();
 		// var_dump($p1);
 
-		$c = new \OpenTHC\CRE\Adapter\LeafData([
+		$c = new \OpenTHC\CRE\LeafData([
 			'server' => 'https://bunk.openthc.org/leafdata',
 			'license' => 'L0',
 			'license-key' => 'L0-KEY',
@@ -40,7 +40,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 		$p1 = $c->ping();
 		var_dump($p1);
 
-		$c = new \OpenTHC\CRE\Adapter\Metrc([
+		$c = new \OpenTHC\CRE\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
 			'service-key' => '-',
 			'license-key' => '-',
@@ -50,7 +50,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 		$p1 = $c->ping();
 		var_dump($p1);
 
-		$c = new \OpenTHC\CRE\Adapter\OpenTHC([
+		$c = new \OpenTHC\CRE\OpenTHC([
 			'server' => 'https://bunk.openthc.org/openthc',
 		]);
 		$l0 = $c->setLicense('L1');
