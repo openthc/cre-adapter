@@ -40,6 +40,7 @@ class A_Config_Test extends \Test\OpenTHC_Base_TestCase
 			$this->assertArrayHasKey('epoch', $cre, sprintf('%s missing epoch', $cre['name']));
 			
 			$this->assertArrayHasKey('engine', $cre, sprintf('%s missing engine', $cre['name']));
+			$this->assertContains($cre['engine'], ['metrc', 'biotrack', 'leafdata']);
 			
 			$this->assertArrayHasKey('server', $cre, sprintf('%s missing server', $cre['name']));
 			
