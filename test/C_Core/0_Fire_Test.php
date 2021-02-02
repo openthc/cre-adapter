@@ -1,6 +1,7 @@
 <?php
 /**
  * Test Class Loading
+ * Remove this maybe
  */
 
 namespace Test\Core;
@@ -8,7 +9,7 @@ namespace Test\Core;
 class Fire_Test extends \Test\OpenTHC_Base_TestCase
 {
 
-	function test_class()
+	function test_base_class()
 	{
 		$c = new \OpenTHC\CRE\Base([
 			'server' => 'https://bunk.openthc.org/',
@@ -45,7 +46,7 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 			'service-key' => '-',
 			'license-key' => '-',
 		]);
-		$l0 = $c->setLicense('L1');
+		// $l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
 		$p1 = $c->ping();
 		var_dump($p1);
