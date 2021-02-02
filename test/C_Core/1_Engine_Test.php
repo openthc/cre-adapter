@@ -24,10 +24,10 @@ class Engine_Test extends \Test\OpenTHC_Base_TestCase
 
 			$cfg = array_merge($cfg_base, $cfg);
 
-			$n = $cfg['class'];
-			$this->assertNotEmpty($n);
+			$class = $cfg['class'];
+			$this->assertNotEmpty($class);
 
-			$cre = new $n($cfg);
+			$cre = new $class($cfg);
 			// $this->assertTrue( implements );
 			
 			foreach (['search', 'single', 'update', 'delete', 'ping'] as $method) {
