@@ -11,8 +11,7 @@ class F_Factory_Test extends \Test\OpenTHC_Base_TestCase
 		foreach ($cre_list as $cfg) {
 			$cre = \OpenTHC\CRE::factory($cfg);
 			// assertIsObject();
-			// assertImplements();
-			// assertFunctions();  Necessary?
+			// assertImplements(); instance OF
 		}
 	}
 }

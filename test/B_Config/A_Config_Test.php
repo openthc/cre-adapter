@@ -6,9 +6,7 @@
 class A_Config_Test extends \Test\OpenTHC_Base_TestCase
 {
 
-	private $cre_data;
-
-	protected function setUp(): void 
+	function test_config_lib()
 	{
 		$dir = dirname(dirname(__dir__))."/etc";
 
@@ -20,28 +18,20 @@ class A_Config_Test extends \Test\OpenTHC_Base_TestCase
 		$this->assertFileExists($ini_file_loc);
 		$this->assertFileIsReadable($ini_file_loc);
 
-		$this->cre_data = parse_ini_file($ini_file_loc, true, INI_SCANNER_RAW);
+		$cre_data = parse_ini_file($ini_file_loc, true, INI_SCANNER_RAW);
 
-		$this->assertNotNull($this->cre_data);
-		$this->assertNotEmpty($this->cre_data);
-		$this->assertIsArray($this->cre_data);
-	}
+		$this->assertNotNull($cre_data);
+		$this->assertNotEmpty($cre_data);
+		$this->assertIsArray($cre_data);
 
-	function test_config_lib()
-	{
-	 	foreach ($this->cre_data as $cre) {
-			//if engine is metrc assert service key
+	 	foreach ($cre_data as $cre) {
 
 			$this->assertNotEmpty($cre);
 			$this->assertArrayHasKey('name', $cre, sprintf('%s missing name', $cre['name']));
-			// $this->assertMatchesRegularExpression('/([A-Za-z])///',$cre['name']);
 			$this->assertArrayHasKey('class', $cre, sprintf('%s missing class', $cre['name']));
-			
 			$this->assertArrayHasKey('epoch', $cre, sprintf('%s missing epoch', $cre['name']));
-			
 			$this->assertArrayHasKey('engine', $cre, sprintf('%s missing engine', $cre['name']));
-			$this->assertContains($cre['engine'], ['metrc', 'biotrack', 'leafdata']);
-			
+			$this->assertContains($cre['engine'], ['metrc', 'biotrack', 'leafdata']);		
 			$this->assertArrayHasKey('server', $cre, sprintf('%s missing server', $cre['name']));
 			
 			if($cre['engine'] == 'metrc') {
