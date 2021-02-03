@@ -10,9 +10,10 @@ class F_Factory_Test extends \Test\OpenTHC_Base_TestCase
 		$cre_list = \OpenTHC\CRE::getEngineList();
 		foreach ($cre_list as $cfg) {
 			$cre = \OpenTHC\CRE::factory($cfg);
-			// assertIsObject();
-			// assertImplements();
-			// assertFunctions();  Necessary?
+			$this->assertIsObject($cre);
+			$this->assertTrue( 
+				$cre instanceof \OpenTHC\CRE\Base
+			);
 		}
 	}
 }
