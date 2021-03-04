@@ -6,8 +6,6 @@
 
 namespace OpenTHC\CRE;
 
-use Edoceo\Radix\DB\SQL;
-
 class BioTrack extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'biotrack';
@@ -62,14 +60,14 @@ class BioTrack extends \OpenTHC\CRE\Base
 		'plant' => 'Plant',
 		'plant_derivative' => 'Plant Derivative',
 		'manifest' => 'Manifest',
-		'inventory_transfer' => 'B2B Sale / Outgoing',
-		'inventory_transfer_inbound' => 'B2B Sale / Incoming',
+		'inventory_transfer' => 'B2B Outgoing',
+		'inventory_transfer_inbound' => 'B2B Incoming',
 		'inventory_sample' => 'Inventory Sample',
 		'inventory_qa_sample' => 'Lab Result',
 		'inventory_adjust' => 'Inventory Adjustment',
 		'sale' => 'B2C Sale',
 		'tax_report' => 'Tax Reporting',
-		'id_preassign' => 'IDs',
+		// 'id_preassign' => 'IDs', // WA-UCS Only
 	);
 
 	// Deprecated
@@ -332,14 +330,14 @@ class BioTrack extends \OpenTHC\CRE\Base
 			return [
 				'code' => 403,
 				'data' => null,
-				'meta' => [ 'detail' => 'No Session is Active [LRB-319]' ],
+				'meta' => [ 'detail' => 'No Session is Active [LRB-319]' ]
 			];
 		}
 
 		return [
 			'code' => 200,
 			'data' => null,
-			'meta' => [ 'detail' => 'Everything is Awesome' ],
+			'meta' => [ 'detail' => 'Everything is Awesome' ]
 		];
 
 	}
@@ -1983,20 +1981,20 @@ class BioTrack extends \OpenTHC\CRE\Base
 		Executes the Single or Multiple Requests
 		@return Curl Handle
 	*/
-	protected function _curl_init($uri)
+	function _curl_init($uri)
 	{
-		$ch = _curl_init($uri);
+		$req = parent::_curl_init($uri);
 
 		$h = parse_url($uri, PHP_URL_HOST);
 
 		$head = array(
-			'Content-Type: text/JSON', // Not Really Accurate - Should be application/json
-			sprintf('Host: %s', $h),
-			sprintf('User-Agent: OpenTHC/%s', APP_BUILD),
+			'content-type: text/JSON', // BT wants this (incorrect) value
+			sprintf('host: %s', $h),
+			sprintf('openthc-company: %s', $_SESSION['Company']['id']),
 		);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
+		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 
-		return $ch;
+		return $req;
 	}
 
 }

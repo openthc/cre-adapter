@@ -16,19 +16,21 @@ class Base
 	}
 
 	/**
-	 * Find "all", need to maybe pass pages
+	 * Search the Endpoint (GET)
 	 */
 	function search($arg=null)
 	{
 		if (empty($arg)) {
-			$arg = array();
+			$arg = [];
 		}
 
 		$url = sprintf('%s?%s', $this->_path, http_build_query($arg));
 		$url = trim($url, '?');
 		$res = $this->_client->call('GET', $url);
+
 		return $res;
 	}
+
 
 	/**
 	 * @param $x The GUID to GET

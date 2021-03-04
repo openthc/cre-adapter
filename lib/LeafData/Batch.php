@@ -27,10 +27,10 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 		if ('plant' == $x['type']) {
 			if (empty($x['origin'])) {
 				$x['origin'] = 'plant';
-			// 	throw new Exception('Missing "origin" [RLB#027]');
+			// 	throw new \Exception('Missing "origin" [RLB#027]');
 			}
 			if (!isset($x['num_plants'])) {
-				throw new Exception('Missing "num_plants" [RLB#030]');
+				throw new \Exception('Missing "num_plants" [RLB#030]');
 			}
 		}
 
@@ -57,7 +57,7 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 	*/
 	function single($x)
 	{
-		$res = parent::one($x);
+		$res = parent::single($x);
 		if (!empty($res)) {
 			return $res;
 		}
