@@ -285,6 +285,14 @@ class BioTrack extends \OpenTHC\CRE\Base
 	*/
 	function getObjectList()
 	{
+		// $obj_list = parent::getObjectList();
+		// Some Implementations Don't Have These
+		// unset($obj_list['id_preassign']); // -HI, -NM
+		// unset($obj_list['inventory_sample']); // -HI
+		// unset($obj_list['third_party_transporter']); // -HI, -NM
+
+		// return $obj_list;
+
 		return self::$obj_list;
 	}
 
