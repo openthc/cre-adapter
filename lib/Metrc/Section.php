@@ -32,7 +32,7 @@ class Section extends \OpenTHC\CRE\Metrc\Base
 	 * [search description]
 	 * @return [type] [description]
 	 */
-	function search()
+	function search($arg=null)
 	{
 		$url = sprintf('%s/active', $this->_path);
 		$url = $this->_client->_make_url($url);
@@ -50,6 +50,17 @@ class Section extends \OpenTHC\CRE\Metrc\Base
 	{
 		$url = sprintf('%s/%s', $this->_path, $x);
 		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
+
+	/**
+	 *
+	 */
+	function getTypeList()
+	{
+		$url = $this->_client->_make_url('/locations/v1/types');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
 		return $res;

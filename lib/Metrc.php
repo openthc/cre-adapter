@@ -26,16 +26,16 @@ class Metrc extends \OpenTHC\CRE\Base
 		'license' => 'License',
 		'contact' => 'Contact/Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
-		'room' => 'Room',
-		'strain' => 'Variety',
+		'section' => 'Section',
+		'variety' => 'Variety',
 		'product' => 'Product',
 		'plantbatch' => 'Plant Batches',
 		'plant' => 'Plant',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
 		'lab-result' => 'Lab Result',
-		'retail' => 'Retail',
-		'transfer' => 'Transfer',
+		'b2c' => 'B2C/Retail',
+		'b2b' => 'B2B/Transfer',
 	);
 
 	/**
@@ -62,26 +62,27 @@ class Metrc extends \OpenTHC\CRE\Base
 	/**
 		@param $x RBE Options
 			license
-			service-key
 			license-key
 	*/
-	function __construct($x)
+	function __construct($cfg)
 	{
-		if (empty($x['service-key'])) {
+		if (empty($cfg['service-key'])) {
 			throw new \Exception('Invalid Service Key [LRM-048]');
 		}
 
-		if (empty($x['license-key'])) {
+		if (empty($cfg['license-key'])) {
 			throw new \Exception('Invalid License Key [LRM-052]');
 		}
 
-		parent::__construct($x);
+		if (!empty($cfg['server'])) {
+			$this->_api_base = rtrim($cfg['server'], '/.');
+		}
 
-		$this->_api_key_vendor = $x['service-key'];
-		$this->_api_key_client = $x['license-key'];
+		$this->_api_key_vendor = $cfg['service-key'];
+		$this->_api_key_client = $cfg['license-key'];
 
-		if (!empty($x['license'])) {
-			$this->setLicense($x['license']);
+		if (!empty($cfg['license'])) {
+			$this->setLicense($cfg['license']);
 		}
 
 	}
@@ -89,14 +90,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	function getClientKey()
 	{
 		return $this->_api_key_client;
-	}
-
-	/**
-		Turns on Test Mode, Session Persistent
-	*/
-	function setTestMode()
-	{
-		throw new Exception('LRM#063: Not Implemented');
 	}
 
 	/**
@@ -169,10 +162,9 @@ class Metrc extends \OpenTHC\CRE\Base
 			}
 		}
 
-		header('Content-Type: text/plain');
 		var_dump($res);
-		var_dump(debug_print_backtrace());
-		throw new Exception('METRC Really Broken [LRM#159]');
+		// var_dump(debug_print_backtrace());
+		throw new \Exception('METRC Really Broken [LRM#159]');
 		exit(0);
 	}
 
@@ -190,8 +182,8 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function uomList()
 	{
-		$x = $this->_curl_init('/unitsofmeasure/v1/active');
-		$res = $this->_curl_exec($x);
+		$req = $this->_curl_init('/unitsofmeasure/v1/active');
+		$res = $this->_curl_exec($req);
 		return $res;
 	}
 
@@ -200,16 +192,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	function adjustList()
 	{
 		$url = $this->_make_url('/packages/v1/adjust/reasons');
-		$req = $this->_curl_init($url);
-		$res = $this->_curl_exec($req);
-		return $res;
-	}
-
-	/**
-	*/
-	function locationsTypesList()
-	{
-		$url = $this->_make_url('/locations/v1/types');
 		$req = $this->_curl_init($url);
 		$res = $this->_curl_exec($req);
 		return $res;
@@ -283,10 +265,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		return $res;
 	}
 
-//	function packageGet()
-//	{
-//	}
-//
 	function packageTypeList()
 	{
 		$x = $this->_curl_init('/packages/v1/types');
@@ -316,15 +294,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@param $x {id} or {date}
-	*/
-	function sales($x=null)
-	{
-		$r = new RBE_Metrc_Sales($this);
-		return $r;
-	}
-
-	/**
 	 * Prepare a URL for Use with METRC (adds licenseNumber to QS)
 	 */
 	function _make_url($url, $arg=[])
@@ -346,74 +315,18 @@ class Metrc extends \OpenTHC\CRE\Base
 		}
 
 		if (!empty($d0)) {
-			$arg['lastModifiedStart'] = $d0; //=> '', // 2018-01-17T06:30:00Z
+			$arg['lastModifiedStart'] = $d0;
 		}
+
 		if (!empty($d1)) {
 			$arg['lastModifiedEnd'] = $d1;
 		}
 
-		return $url . '?' . http_build_query($arg);
+		$url = $url . '?' . http_build_query($arg);
+		$url = trim($url, '?');
 
-	}
+		return $url;
 
-	function b2c()
-	{
-		$o = new RBE_Metrc_B2C($this);
-		return $o;
-	}
-
-	function batch()
-	{
-		$o = new RBE_Metrc_Batch($this);
-		return $o;
-	}
-
-	function contact()
-	{
-		$o = new RBE_Metrc_Contact($this);
-		return $o;
-	}
-
-	function labresult()
-	{
-		$o = new RBE_Metrc_Lab_Result($this);
-		return $o;
-	}
-
-	function license()
-	{
-		$o = new RBE_Metrc_License($this);
-		return $o;
-	}
-
-	function lot()
-	{
-		$o = new RBE_Metrc_Lot($this);
-		return $o;
-	}
-
-	function plant()
-	{
-		$o = new RBE_Metrc_Plant($this);
-		return $o;
-	}
-
-	function plant_collect()
-	{
-		$o = new RBE_Metrc_Plant_Collect($this);
-		return $o;
-	}
-
-	function product()
-	{
-		$o = new RBE_Metrc_Product($this);
-		return $o;
-	}
-
-	function strain()
-	{
-		$o = new RBE_Metrc_Strain($this);
-		return $o;
 	}
 
 	/**
@@ -421,17 +334,66 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function b2b()
 	{
-		$r = new RBE_Metrc_B2B($this);
-		return $r;
+		return new Metrc\B2B($this);
 	}
 
 	/**
-		Interface for One Transfer
-	*/
-	function transfer() // @deprecated
+	 * @deprecated but loads of folks use this, so can't clean up just yet
+	 * Preferred to use b2b()
+	 */
+	function transfer()
 	{
-		$r = new RBE_Metrc_B2B($this);
-		return $r;
+		return new Metrc\B2B($this);
+	}
+
+	function b2c()
+	{
+		return new Metrc\B2C($this);
+	}
+
+	function batch()
+	{
+		return new Metrc\Batch($this);
+	}
+
+	function contact()
+	{
+		return new Metrc\Contact($this);
+	}
+
+	function labresult()
+	{
+		return new Metrc\Lab_Result($this);
+	}
+
+	function license()
+	{
+		return new Metrc\License($this);
+	}
+
+	function lot()
+	{
+		return new Metrc\Lot($this);
+	}
+
+	function plant()
+	{
+		return new Metrc\Plant($this);
+	}
+
+	function plant_collect()
+	{
+		return new Metrc\Plant_Collect($this);
+	}
+
+	function product()
+	{
+		return new Metrc\Product($this);
+	}
+
+	function variety()
+	{
+		return new Metrc\Variety($this);
 	}
 
 	/**
@@ -439,8 +401,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	*/
 	function section()
 	{
-		$r = new RBE_Metrc_Section($this);
-		return $r;
+		return new Metrc\Section($this);
 	}
 
 
@@ -457,7 +418,7 @@ class Metrc extends \OpenTHC\CRE\Base
 
 			$verb = 'POST';
 
-			$arg = json_encode($arg, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			$arg = json_encode($arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arg);
@@ -481,10 +442,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
 
-		// @todo Update Names
-		_stat_count(sprintf('rbe.metrc.code.%s.%03d', $verb, $code), 1);
-		_stat_timer(sprintf('rbe.metrc.time.%s.%03d', $verb, $code), $tx);
-
 		$result = array();
 
 		switch ($code) {
@@ -500,20 +457,20 @@ class Metrc extends \OpenTHC\CRE\Base
 			}
 			break;
 		case 400:
-		case 405:
-			throw new Exception($this->formatError($this->_res));
-			break;
+			// throw new \Exception($this->formatError($this->_res));
+			// break;
 		case 401:
+		case 405:
 			return [
-				'code' => 401,
+				'code' => $code,
 				'data' => null,
-				'meta' => [ 'Access Denied' ]
+				'meta' => [ 'detail' => $this->formatError($this->_res) ]
 			];
 			break;
 		default:
-			var_dump($this);
-			$msg = sprintf('Server Error / Invalid Request: %d [RBE#735]', $code);
-			throw new Exception($msg);
+			// var_dump($this);
+			$msg = sprintf('Server Error / Invalid Request: %d [RBE-735]', $code);
+			throw new \Exception($msg);
 		}
 
 		if (empty($this->_res)) {
@@ -533,24 +490,21 @@ class Metrc extends \OpenTHC\CRE\Base
 	 */
 	function _curl_init($uri, $head=null)
 	{
-		$uri = $this->_api_base . $uri;
+		$uri = ltrim($uri, '/.');
+		$uri = sprintf('%s/%s', $this->_api_base, $uri);
 
-		$ch = _curl_init($uri);
+		$req = parent::_curl_init($uri);
 
 		$auth = sprintf('%s:%s', $this->_api_key_vendor, $this->_api_key_client);
-		curl_setopt($ch, CURLOPT_USERPWD, $auth);
+		curl_setopt($req, CURLOPT_USERPWD, $auth);
 
 		$head = array(
 			'accept: application/json',
 			'content-type: application/json',
+			sprintf('openthc-company: %s', $_SESSION['Company']['id']),
 		);
-		if (!empty($this->_api_host)) {
-			$head[] = sprintf('host: %s', $this->_api_host);
-		}
-		if ( (!empty($head)) && (is_array($head)) ) {
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-		}
+		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 
-		return $ch;
+		return $req;
 	}
 }

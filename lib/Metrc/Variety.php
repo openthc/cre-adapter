@@ -10,7 +10,7 @@ class Variety extends \OpenTHC\CRE\Metrc\Base
 	protected $_path = '/strains/v1';
 
 	/**
-	 * Delete Strain
+	 * Delete Variety
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
@@ -25,19 +25,17 @@ class Variety extends \OpenTHC\CRE\Metrc\Base
 
 	}
 
-	// function strainList()
-	// @param $id ID of Strain to get, default 'active'
-	function search($q=null)
+	// @param $id ID of Variety to get, default 'active'
+	function search($arg=null)
 	{
-		if (empty($q)) {
-			$q = 'active';
+		if (empty($arg)) {
+			$arg = 'active';
 		}
 
 		$url = sprintf('%s/%s', $this->_path, $q);
 		$url = $this->_client->_make_url($url);
-
-		$x = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($x);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
 
 		return $res;
 
