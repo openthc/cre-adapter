@@ -9,16 +9,6 @@ class Disposal extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/disposals';
 
-	function confirm($x)
-	{
-		$arg = array(
-			'global_id' => $x,
-			'disposal_at' => _date(RBE_LeafData::FORMAT_DATE_TIME, $_SERVER['REQUEST_TIME'], 'America/Los_Angeles'),
-		);
-		$res = $this->_client->call('POST', '/disposals/dispose', $arg);
-		return $res;
-	}
-
 	function create($x)
 	{
 		$arg = array('disposal' => array($x));
@@ -26,15 +16,20 @@ class Disposal extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function update($x)
+	function update($obj)
 	{
-		$res = $this->_client->call('POST', '/disposals/update', $x);
+		$arg = [ 'disposal' => [ $obj ] ];
+		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $arg);
 		return $res;
 	}
 
-	function delete($x)
+	function confirm($x)
 	{
-		$res = $this->_client->call('DELETE', sprintf('/disposals/%s', $x));
+		$arg = array(
+			'global_id' => $x,
+			'disposal_at' => _date(RBE_LeafData::FORMAT_DATE_TIME, $_SERVER['REQUEST_TIME'], 'America/Los_Angeles'),
+		);
+		$res = $this->_client->call('POST', '/disposals/dispose', $arg);
 		return $res;
 	}
 

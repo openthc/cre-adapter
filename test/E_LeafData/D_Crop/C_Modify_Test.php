@@ -3,9 +3,9 @@
  * Plant Modify
  */
 
-namespace Test\LeafData\Plant;
+namespace Test\E_LeafData\D_Crop;
 
-class Modify_Test extends \Test\OpenTHC_Base_TestCase
+class C_Modify_Test extends \Test\OpenTHC_LeafData_Test
 {
 	/**
 	 * Get a random Plant by the GUID suffix only
@@ -19,8 +19,8 @@ class Modify_Test extends \Test\OpenTHC_Base_TestCase
 		preg_match('/^WA\w+\.(\w+)$/', $plant_id, $matches);
 		$this->assertEqual(1, count($matches));
 		$plant_id = $matches[1];
-		
-		$P1 = $this->get(sprintf('/plants?f_global_id=%s', $plant_id));
+
+		$P1 = $this->cre->get(sprintf('/plants?f_global_id=%s', $plant_id));
 		$this->assertEqual($P['global_id'], $P1['global_id']);
 	}
 
@@ -49,12 +49,12 @@ class Modify_Test extends \Test\OpenTHC_Base_TestCase
 
 		// Update
 		$arg = array('plant' => $mod_plant);
-		$ret = $this->post('/plants/update', $arg);
+		$ret = $this->cre->post('/plants/update', $arg);
 
 		$this->assertEquals(200, $ret['code']);
 		$this->assertEquals('success', $ret['status']);
 
-		$P1 = $this->get('plants?f_global_id=' . $P['global_id']);
+		$P1 = $this->cre->get('plants?f_global_id=' . $P['global_id']);
 
 		$this->assertNotEqual($P['global_strain_id'], $P1['global_strain_id']);
 		$this->assertEqual($S['global_id'], $P1['global_strain_id']);
@@ -91,12 +91,12 @@ class Modify_Test extends \Test\OpenTHC_Base_TestCase
 
 		// Update
 		$arg = array('plant' => $mod_plant);
-		$ret = $this->post('/plants/update', $arg);
+		$ret = $this->cre->post('/plants/update', $arg);
 
 		$this->assertEquals(200, $ret['code']);
 		$this->assertEquals('success', $ret['status']);
 
-		$P1 = $this->get('plants?f_global_id=' . $P['global_id']);
+		$P1 = $this->cre->get('plants?f_global_id=' . $P['global_id']);
 
 		$this->assertNotEqual($P['global_strain_id'], $P1['global_strain_id']);
 		$this->assertEqual($S['global_id'], $P1['global_strain_id']);

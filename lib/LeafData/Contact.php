@@ -18,15 +18,10 @@ class Contact extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function delete($x)
+	function update($obj)
 	{
-		$res = $this->_client->call('DELETE', sprintf('%s/%s', $this->_path, $x));
-		return $res;
-	}
-
-	function update($x)
-	{
-		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $x);
+		$arg = [ 'users' => [ $obj ] ];
+		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $arg);
 		return $res;
 	}
 

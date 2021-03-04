@@ -3,14 +3,14 @@
  * Test that Lot Adjust Still Errors with Wacky Date
  */
 
-namespace Test\LeafData\Basic;
+namespace Test\E_LeafData\B_Basic;
 
-class Lot_Adjust_Test extends \Test\OpenTHC_LeafData_Test
+class C_Lot_Adjust_Test extends \Test\OpenTHC_LeafData_Test
 {
 	protected function setUp() : void
 	{
 		// Reset API Connection to Lab
-		$this->ghc = $this->_api([
+		$this->cre = $this->_api([
 			'license' => $_ENV['leafdata-g0-public'],
 			'license-secret' => $_ENV['leafdata-g0-secret'],
 		]);
@@ -30,7 +30,7 @@ class Lot_Adjust_Test extends \Test\OpenTHC_LeafData_Test
 			'memo' => 'TEST',
 		];
 		$arg = [ 'inventory_adjustment' => array($mod) ];
-		$res = $this->post('inventory_adjustments', $arg);
+		$res = $this->cre->post('inventory_adjustments', $arg);
 		$this->assertAdjustFailed($res);
 	}
 
@@ -50,7 +50,7 @@ class Lot_Adjust_Test extends \Test\OpenTHC_LeafData_Test
 			'memo' => 'TEST',
 		];
 		$arg = [ 'inventory_adjustment' => array($mod) ];
-		$res = $this->post('inventory_adjustments', $arg);
+		$res = $this->cre->post('inventory_adjustments', $arg);
 		$this->assertAdjustFailed($res);
 	}
 
@@ -68,7 +68,7 @@ class Lot_Adjust_Test extends \Test\OpenTHC_LeafData_Test
 			'memo' => 'TEST',
 		];
 		$arg = [ 'inventory_adjustment' => array($mod) ];
-		$res = $this->post('inventory_adjustments', $arg);
+		$res = $this->cre->post('inventory_adjustments', $arg);
 		$res = $this->assertValidResponse($res);
 		$this->assertIsArray($res);
 		$this->assertCount(1, $res);

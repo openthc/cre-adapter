@@ -15,6 +15,12 @@ class Base
 		$this->_client = $c;
 	}
 
+	function delete($oid)
+	{
+		$res = $this->_client->call('DELETE', sprintf('%s/%s', $this->_path, $oid));
+		return $res;
+	}
+
 	/**
 	 * Search the Endpoint (GET)
 	 */

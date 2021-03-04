@@ -181,6 +181,7 @@ class LeafData extends \OpenTHC\CRE\Base
 		$this->setLicense($x['license']);
 
 		$this->_req_head = [
+			'content-type' => 'application/json',
 			'x-mjf-mme-code' => $x['license'],
 			'x-mjf-key' => $x['license-key'],
 		];
@@ -188,33 +189,16 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 * @return Curl Handle
-	 */
-	protected function _curl_init($uri)
-	{
-		$ch = curl_init($uri);
-
-		$head = [
-			'content-type: application/json',
-		];
-		foreach ($this->_req_head as $k => $v) {
-			$head[] = sprintf('%s: %s', $k, $v);
-		}
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
-
-		return $ch;
-	}
-
-	/**
-	 * @param HTTP VERB
-	 * @param $path the API Path
-	 * @param $post The API Data to POST, as Array or String
-	 */
+		@param HTTP VERB
+		@param $path the API Path
+		@param $post The API Data to POST, as Array or String
+	*/
 	public function call($verb, $path, $post=null)
 	{
-		$path = trim($path, '/');
+		$path = trim($path, '/.');
 		$url  = sprintf('%s/%s', trim($this->_api_base, '/'), $path);
-		$ch = $this->_curl_init($url);
+
+		$req = $this->_curl_init($url);
 
 		switch ($verb) {
 		case 'GET':
@@ -227,8 +211,8 @@ class LeafData extends \OpenTHC\CRE\Base
 				if (!is_string($this->_arg)) {
 					$this->_arg = json_encode($this->_arg);
 				}
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_arg);
+				curl_setopt($req, CURLOPT_POST, true);
+				curl_setopt($req, CURLOPT_POSTFIELDS, $this->_arg);
 			}
 
 			break;
@@ -236,31 +220,32 @@ class LeafData extends \OpenTHC\CRE\Base
 		case 'DELETE':
 
 			$this->_arg = null;
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+			curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
 			break;
 		}
 
+		$head = [];
+		foreach ($this->_req_head as $k => $v) {
+			$head[] = sprintf('%s: %s', $k, $v);
+		}
+		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
+
 		$t0 = microtime(true);
-		$this->_raw = curl_exec($ch);
-		$this->_inf = curl_getinfo($ch);
-		$err = curl_errno($ch);
+		$this->_raw = curl_exec($req);
+		$this->_inf = curl_getinfo($req);
+		$err = curl_errno($req);
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
-
-		_stat_count(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
-		_stat_timer(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
 
 		// This means a FATAL curl ERROR
 		if ($err) {
 			return array(
 				'code' => 500,
-				'data' => null,
-				'meta' => [ 'detail' => sprintf('LeafData Server Error #%d [LRL-179]', curl_error($ch)) ],
+				'data' => $this->_raw,
+				'meta' => [ 'detail' => sprintf('LeafData Server Error #%d [CLD-245]', curl_error($req)) ]
 			);
 		}
-
-		// Detect Type?
 
 		$this->_res = json_decode($this->_raw, true);
 
@@ -275,7 +260,6 @@ class LeafData extends \OpenTHC\CRE\Base
 			return [
 				'code' => $this->_inf['http_code'],
 				'data' => $this->_res,
-				'meta' => [],
 			];
 
 			break;
@@ -287,7 +271,6 @@ class LeafData extends \OpenTHC\CRE\Base
 				return array(
 					'code' => $this->_inf['http_code'],
 					'data' => $this->_raw,
-					'meta' => [],
 				);
 			}
 
@@ -303,7 +286,7 @@ class LeafData extends \OpenTHC\CRE\Base
 				'meta' => [
 					'detail' => sprintf('LeafData Error: %03d:%s [LLD-339]]', $this->_inf['http_code'], $this->formatError($this->_res)),
 					'source' => $this->_raw,
-				],
+				]
 			);
 
 			break;
@@ -325,28 +308,24 @@ class LeafData extends \OpenTHC\CRE\Base
 
 		case 500:
 
-			$res = $this->_res;
-			if (empty($res)) {
-				$res = strtok($this->_raw, "\n");
-				$res = substr($res, 0, 256);
-			}
-
-			if (preg_match('/SQLSTATE/', $this->_raw)) {
-				// Session::flash('fail', 'This indicates a database error in LeafData, you may want to retry your request');
-			}
-
-			return array(
+			$ret = [
 				'code' => $this->_inf['http_code'],
 				'data' => $this->_raw,
-				'meta' => [ 'detail' => sprintf('LRL#%03d: LeafData Server Error', $this->_inf['http_code']) ],
-			);
+				'meta' => [ 'detail' => 'LeafData Server Error [CLD-315]' ],
+			];
+
+			if (preg_match('/SQLSTATE/', $this->_raw)) {
+				$ret['meta']['hint'] = 'This indicates a database error in LeafData, you may want to retry your request';
+			}
+
+			return $ret;
 
 		case 502:
 
 			return array(
 				'code' => $this->_inf['http_code'],
 				'data' => null,
-				'meta' => [ 'detail' => 'LeafData Server Error 502: Bad Gateway [LRL-502]' ],
+				'meta' => [ 'detail' => 'LeafData Server Error 502: Bad Gateway [LRL#502]' ]
 			);
 
 		case 504:
@@ -354,7 +333,7 @@ class LeafData extends \OpenTHC\CRE\Base
 			return array(
 				'code' => $this->_inf['http_code'],
 				'data' => null,
-				'meta' => [ 'detail' => 'LeafData Server Error 504: Gateway Timeout [LRL-504]' ],
+				'meta' => [ 'detail' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]' ]
 			);
 
 		//default:
@@ -366,13 +345,6 @@ class LeafData extends \OpenTHC\CRE\Base
 		}
 
 		throw new Exception(sprintf('LRL#240: Invalid Response #%03d from LeafData', $this->_inf['http_code']));
-
-		// JSON Decode Failed?
-		//if (!empty($this->_raw) && empty($this->_res)) {
-		//if (!empty($this->_err)) {
-		//	var_dump($this);
-		//	throw new Exception(sprintf('LRL#152: JSON Decode Failure: %d:%s', $this->_err, $this->_err_msg));
-		//}
 
 		return $this->_raw;
 
@@ -476,7 +448,6 @@ class LeafData extends \OpenTHC\CRE\Base
 		return array(
 			'url' => $this->_inf['url'],
 			'http_code' => $this->_inf['http_code'],
-			//'head' => '',
 			'_raw' => $this->_raw,
 			'_err' => $this->_err,
 		);
@@ -484,28 +455,30 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	/**
 	*/
-	function getObjectList()
+	function listSyncObjects()
 	{
-		return [
+		return array(
 			'license' => 'License',
 			'contact' => 'Contact',
+
 			'section' => 'Section',
 			'product' => 'Product',
 			'variety' => 'Variety',
+
 			'batch' => 'Batch',
 
 			'crop' => 'Crop',
 
 			'lot' => 'Lot',
-			'lot_delta' => 'Lot_Delta',
+			'lot_delta' => 'Lot Delta',
 
-			'lab_result' => 'Lab_Result',
+			'lab_result' => 'Lab Result',
 
 			'disposal' => 'Disposal',
 
-			'b2b' => 'Business Sale',
-			'b2c' => 'Consumer Sale',
-		];
+			'b2b' => 'B2B Sale',
+			'b2c' => 'B2C Sale',
+		);
 
 	}
 
@@ -584,13 +557,12 @@ class LeafData extends \OpenTHC\CRE\Base
 	function contact()
 	{
 		return new LeafData\Contact($this);
-		//throw new Exception('Not Used in Washington');
 	}
 
 	function customer()
 	{
-		throw new \Exception('Not Used in Washington');
 		require_once(__DIR__ . '/LeafData/Customer.php');
+		throw new Exception('Not Used in Washington');
 	}
 
 	function disposal()
@@ -604,7 +576,7 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Product($this);
 	}
 
-	// Basically a Lots
+	// Basically a Lots/Inventory
 	function lot()
 	{
 		return new LeafData\Lot($this);
@@ -647,10 +619,5 @@ class LeafData extends \OpenTHC\CRE\Base
 	{
 		return new LeafData\Variety($this);
 	}
-
-	// function tax()
-	// {
-	// 	return new RBE_LeafData_Taxes($this);
-	// }
 
 }

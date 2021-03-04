@@ -16,12 +16,6 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function delete($x)
-	{
-		$res = $this->_client->call('DELETE', sprintf('/batches/%s', $x));
-		return $res;
-	}
-
 	function update($x)
 	{
 		if ('plant' == $x['type']) {

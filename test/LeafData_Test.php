@@ -7,10 +7,20 @@ namespace Test;
 
 class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 {
+	protected $cre;
+
+	protected function setUp() : void
+	{
+		// Default is Connection to Grower License
+		$this->cre = $this->_api([
+			'license' => $_ENV['leafdata-g0-public'],
+			'license-secret' => $_ENV['leafdata-g0-secret'],
+		]);
+	}
 
 	function find_random_batch_of_type($t)
 	{
-		$res = $this->ghc->get('batches?f_type=' .$t);
+		$res = $this->cre->get('batches?f_type=' .$t);
 		$res = $this->assertValidResponse($res);
 		$this->assertIsArray($res['data']);
 		$this->assertGreaterThan(2, $res['data']);
@@ -37,7 +47,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 	function find_random_lot($f=null)
 	{
 		// @todo Handle Multiple Pages?
-		$res = $this->get('inventories');
+		$res = $this->cre->get('inventories');
 		$this->assertCount(9, $res);
 		$this->assertIsArray($res['data']);
 		https://pipe.openthc.com/stem/leafdata/wa/test
@@ -56,7 +66,8 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 
 	function find_random_plant($f=null)
 	{
-		$res = $this->get('plants?f_stage=growing');
+		$res = $this->cre->get('plants?f_stage=growing');
+		$this->assertNotEmpty($res);
 		$this->assertCount(9, $res);
 		$this->assertIsArray($res['data']);
 
@@ -79,7 +90,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 
 	function find_random_strain()
 	{
-		$res = $this->get('strains');
+		$res = $this->cre->get('strains');
 		$this->assertCount(9, $res);
 		$this->assertIsArray($res['data']);
 
@@ -96,34 +107,13 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 	}
 
 	/**
-		@param $b The Base URL
-	*/
-	protected function _api($opt=null)
+	 */
+	protected function _api()
 	{
-		// create our http client (Guzzle)
-		$cfg = array(
-			'debug' => $_ENV['debug-http'],
-			'base_uri' => $_ENV['leafdata-url'],
-			'allow_redirects' => false,
-			'cookies' => true,
-			'headers' => [
-				'x-mjf-mme-code' => null,
-				'x-mjf-key' => null,
-			],
-			'http_errors' => false,
-			'request.options' => array(
-				'exceptions' => false,
-			),
-		);
-
-		if (!empty($opt['license'])) {
-			$cfg['headers']['x-mjf-mme-code'] = $opt['license'];
-			$cfg['headers']['x-mjf-key'] = $opt['license-secret'];
-		}
-
-		$c = new \GuzzleHttp\Client($cfg);
-
-		return $c;
+		$cfg = \OpenTHC\CRE::getEngine('usa/wa/test');
+		$cfg['license'] = 'bunk-license';
+		$cfg['license-key'] = 'bunk-license-key';
+		return \OpenTHC\CRE::factory($cfg);
 	}
 
 }

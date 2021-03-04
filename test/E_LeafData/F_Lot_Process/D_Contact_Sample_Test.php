@@ -5,12 +5,12 @@
 
 namespace Test\LeafData\Lot_Process;
 
-class Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
+class D_Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 {
 	protected function setUp() : void
 	{
 		// Reset API Connection to Lab
-		$this->ghc = $this->_api([
+		$this->cre = $this->_api([
 			'license' => $_ENV['leafdata-g0-public'],
 			'license-secret' => $_ENV['leafdata-g0-secret'],
 		]);
@@ -18,7 +18,10 @@ class Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 
 	function test_adjust()
 	{
-		$res = $this->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
+		$res = $this->cre->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
+		var_dump($res);
+		$this->assertNotEmpty($res);
+
 		$this->assertCount(9, $res);
 		$this->assertArrayHasKey('data', $res);
 		$this->assertIsArray($res['data']);
@@ -41,7 +44,7 @@ class Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 			'memo' => 'TEST',
 		];
 		$arg = [ 'inventory_adjustment' => array($mod) ];
-		$res = $this->post('inventory_adjustments', $arg);
+		$res = $this->cre->post('inventory_adjustments', $arg);
 		$res = $this->assertValidResponse($res);
 		print_r($res);
 
@@ -49,7 +52,7 @@ class Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 		// Check QTY
 		$qty_omega = $qty_alpha - abs($qty_delta);
 
-		$res = $this->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
+		$res = $this->cre->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
 		$this->assertCount(9, $res);
 		$this->assertArrayHasKey('data', $res);
 		$this->assertIsArray($res['data']);
@@ -65,7 +68,8 @@ class Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 	function test_sublot_and_adjust()
 	{
 		// Find Inventory
-		$res = $this->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
+		$res = $this->cre->get('inventories?f_global_id=' . $_ENV['leafdata-53-source-lot']);
+		$this->assertNotEmpty($res);
 		$this->assertCount(9, $res);
 		$this->assertArrayHasKey('data', $res);
 		$this->assertIsArray($res['data']);

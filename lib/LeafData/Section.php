@@ -77,9 +77,10 @@ class Section extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
-	function delete($x)
+	function update($obj)
 	{
-		$res = $this->_client->call('DELETE', sprintf('/areas/%s', $x));
+		$arg = array('area' => $obj);
+		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $arg);
 		return $res;
 	}
 
