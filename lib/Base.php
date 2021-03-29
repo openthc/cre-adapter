@@ -10,10 +10,8 @@ class Base
 	protected $_api_base = '';
 	protected $_api_host = '';
 
-	protected $_c; // Guzzle Connection;
-
 	protected $_err;
-	protected $_inf; // @deprecated
+	protected $_inf;
 	protected $_raw;
 	protected $_req_head = [];
 	protected $_res;
@@ -32,32 +30,6 @@ class Base
 		if (empty($this->_api_host)) {
 			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
 		}
-
-		$jar = new \GuzzleHttp\Cookie\CookieJar();
-
-		if (!empty($cfg['cookie'])) {
-			$c = new \GuzzleHttp\Cookie\SetCookie(array(
-				'Domain' => $this->_api_host,
-				'Name' => $cfg['cookie']['name'],
-				'Value' => $cfg['cookie']['value'],
-				'Secure' => true,
-				'HttpOnly' => true,
-			));
-			$jar->setCookie($c);
-		}
-
-		$cfg = array(
-			'base_uri' => $this->_api_base,
-			'allow_redirects' => false,
-			'cookies' => $jar,
-			'headers' => array(
-				'user-agent' => 'OpenTHC/420.20.121',
-			),
-			'http_errors' => false,
-			'verify' => false,
-		);
-
-		$this->_c = new \GuzzleHttp\Client($cfg);
 
 	}
 
@@ -83,19 +55,19 @@ class Base
 				'guid' => $l,
 			];
 		} else {
-			throw new \Exception('Invalid Parameters [LRB#066]');
+			throw new \Exception('Invalid Parameters [CLB-058]');
 		}
 
 		if (empty($l['id'])) {
-			throw new \Exception('License Missing ID');
+			throw new \Exception('License Missing ID [CLB-062]');
 		}
 
 		if (empty($l['code'])) {
-			throw new \Exception('License Missing CODE');
+			throw new \Exception('License Missing CODE [CLB-066]');
 		}
 
 		if (empty($l['guid'])) {
-			throw new \Exception('License Missing GUID');
+			throw new \Exception('License Missing GUID [CLB-070]');
 		}
 
 		$this->_License = $l;
@@ -120,37 +92,95 @@ class Base
 		];
 	}
 
+	/**
+	 * GET Helper
+	 */
 	function get($url)
 	{
-		$req = new \GuzzleHttp\Psr7\Request('GET', $url);
-		// Add Headers?
-		foreach ($this->_req_head as $k => $v) {
-			$req = $req->withHeader($k, $v);
-		}
+		$req = $this->_curl_init($url);
 
-		$this->_res = $this->_c->send($req);
-		$this->_raw = $this->_res->getBody()->getContents();
+		// Add Headers?
+		$head = [];
+		foreach ($this->_req_head as $k => $v) {
+			$head[] = sprintf('%s: %s', $k, $v);
+		}
+		// if ('auto' != $type) {
+		// 	$head[] = sprintf('content-type: %s', $type);
+		// }
+		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
+
+		$this->_raw = curl_exec($req);
+		$this->_inf = curl_getinfo($req);
+		$this->_res = json_decode($this->_raw, true);
+		$this->_err = json_last_error();
+		$this->_err_msg = json_last_error_msg();
+
+		return $this->_res;
+	}
+
+	/**
+	 * POST Helper
+	 */
+	function post($url, $data, $type='auto')
+	{
+		$req = $this->_curl_init($url);
+
+		curl_setopt($req, CURLOPT_POST, true);
+		curl_setopt($req, CURLOPT_POSTFIELDS, $data);
+
+		// Add Headers?
+		$head = [];
+		foreach ($this->_req_head as $k => $v) {
+			$head[] = sprintf('%s: %s', $k, $v);
+		}
+		if ('auto' != $type) {
+			$head[] = sprintf('content-type: %s', $type);
+		}
+		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
+
+		$this->_raw = curl_exec($req);
 		$ret = json_decode($this->_raw, true);
 		$this->_err = json_last_error();
 		$this->_err_msg = json_last_error_msg();
+
 		return $ret;
 	}
 
-	function post($url, $data, $type='auto')
+	/**
+	 * Replicated from openthc/common
+	 */
+	function _curl_init($uri)
 	{
-		$req = new \GuzzleHttp\Psr7\Request('POST', $url, $data);
-		// Add Headers?
-		foreach ($this->_req_head as $k => $v) {
-			$req = $req->withHeader($k, $v);
-		}
+		$req = curl_init($uri);
 
-		$this->_res = $this->_c->send($req);
-		$this->_raw = $this->_res->getBody()->getContents();
-		$ret = json_decode($this->_raw, true);
-		$this->_err = json_last_error();
-		$this->_err_msg = json_last_error_msg();
+		curl_setopt($req, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
-		return $ret;
+		// Booleans
+		curl_setopt($req, CURLOPT_AUTOREFERER, true);
+		curl_setopt($req, CURLOPT_BINARYTRANSFER, true);
+		curl_setopt($req, CURLOPT_COOKIESESSION, false);
+		curl_setopt($req, CURLOPT_CRLF, false);
+		curl_setopt($req, CURLOPT_FAILONERROR, false);
+		curl_setopt($req, CURLOPT_FILETIME, true);
+		curl_setopt($req, CURLOPT_FOLLOWLOCATION, false);
+		curl_setopt($req, CURLOPT_FORBID_REUSE, false);
+		curl_setopt($req, CURLOPT_FRESH_CONNECT, false);
+		curl_setopt($req, CURLOPT_HEADER, false);
+		curl_setopt($req, CURLOPT_NETRC, false);
+		curl_setopt($req, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($req, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($req, CURLINFO_HEADER_OUT,true);
+
+		// curl_setopt($req, CURLOPT_BUFFERSIZE, 16384);
+		curl_setopt($req, CURLOPT_CONNECTTIMEOUT, 240);
+		curl_setopt($req, CURLOPT_MAXREDIRS, 0);
+		// curl_setopt($req, CURLOPT_SSL_VERIFYHOST, 0);
+		// curl_setopt($req, CURLOPT_SSLVERSION, 3); // 2, 3 or GnuTLS
+		curl_setopt($req, CURLOPT_TIMEOUT, 600);
+
+		curl_setopt($req, CURLOPT_USERAGENT, 'OpenTHC/420.21.060');
+
+		return $req;
 	}
 
 	/**
@@ -175,9 +205,12 @@ class Base
 
 	/*
 	 * Key-Sort Array, Recursively
+	 * replicated from openthc/common
 	 */
 	static function ksort_r($a)
 	{
+		static $depth = 0;
+
 		foreach ($a as $k => $v) {
 			if (is_array($v)) {
 				$a[$k] = self::ksort_r($v);
