@@ -32,7 +32,7 @@ class Variety extends \OpenTHC\CRE\Metrc\Base
 			$arg = 'active';
 		}
 
-		$url = sprintf('%s/%s', $this->_path, $q);
+		$url = sprintf('%s/%s', $this->_path, $arg);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
