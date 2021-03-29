@@ -29,11 +29,11 @@ class Metrc extends \OpenTHC\CRE\Base
 		'section' => 'Section',
 		'variety' => 'Variety',
 		'product' => 'Product',
-		'plantbatch' => 'Plant Batches',
-		'plant' => 'Plant',
+		'cropbatch' => 'Crop Batches',
+		'crop' => 'Crop',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
-		'lab-result' => 'Lab Result',
+		'lab_result' => 'Lab Result',
 		'b2c' => 'B2C/Retail',
 		'b2b' => 'B2B/Transfer',
 	);
@@ -273,14 +273,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Creates a Set of Plants? That you then Create Plants
-	*/
-	function plantbatchCreatePlantings($arg)
-	{
-		throw new Exception('@deprecated');
-	}
-
-	/**
 		Delete an Item (an SKU like thing)
 	*/
 	function itemDelete($id)
@@ -337,15 +329,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\B2B($this);
 	}
 
-	/**
-	 * @deprecated but loads of folks use this, so can't clean up just yet
-	 * Preferred to use b2b()
-	 */
-	function transfer()
-	{
-		return new Metrc\B2B($this);
-	}
-
 	function b2c()
 	{
 		return new Metrc\B2C($this);
@@ -359,6 +342,16 @@ class Metrc extends \OpenTHC\CRE\Base
 	function contact()
 	{
 		return new Metrc\Contact($this);
+	}
+
+	function crop()
+	{
+		return new Metrc\Crop($this);
+	}
+
+	function crop_collect()
+	{
+		return new Metrc\Crop_Collect($this);
 	}
 
 	function labresult()
@@ -376,16 +369,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\Lot($this);
 	}
 
-	function plant()
-	{
-		return new Metrc\Plant($this);
-	}
-
-	function plant_collect()
-	{
-		return new Metrc\Plant_Collect($this);
-	}
-
 	function product()
 	{
 		return new Metrc\Product($this);
@@ -397,17 +380,17 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Interface for Sections
-	*/
+	 * Interface for Sections
+	 * Metrc used to call these Rooms, now they are called Locations
+	 */
 	function section()
 	{
 		return new Metrc\Section($this);
 	}
 
-
 	/**
-
-	*/
+	 * Do the CURL thing
+	 */
 	function _curl_exec($ch, $arg=null)
 	{
 		$verb = 'GET';

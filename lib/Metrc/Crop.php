@@ -1,7 +1,7 @@
 <?php
 /**
- * Plant Interface
- * 	@note You get a 401 Error on Plants when not allowed
+ * Crop Interface
+ * @note You get a 401 Error on Plants when not allowed
  */
 
 namespace OpenTHC\CRE\Metrc;
@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\Metrc;
 class Crop extends \OpenTHC\CRE\Metrc\Base
 {
 	/**
-	 * Destroy a Plant
+	 * Destroy a Crop
 	 * @param [type] $p Plant ID
 	 * @param [type] $opt Array
 	 * @return [type] [description]
@@ -36,7 +36,7 @@ class Crop extends \OpenTHC\CRE\Metrc\Base
 	}
 
 	/**
-	 * @param $arg Array of Plant Descriptors
+	 * @param $arg Array of Crop Descriptors
 	 */
 	function move($arg)
 	{
@@ -48,7 +48,7 @@ class Crop extends \OpenTHC\CRE\Metrc\Base
 	}
 
 	/**
-	 * Search All Plants
+	 * Search All Crop
 	 * @param $stat {id} or {label} or 'vegetative'*, 'flowering', 'onhold', 'inactive'
 	 * @return [type] [description]
 	 */
@@ -67,4 +67,3 @@ class Crop extends \OpenTHC\CRE\Metrc\Base
 	}
 
 }
-
