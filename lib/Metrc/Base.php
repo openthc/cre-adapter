@@ -49,30 +49,12 @@ class Base extends \OpenTHC\CRE\Base
 	/**
 	 * @param $x The GUID to GET
 	 */
-	function single($x) {
-
-		$url = sprintf('%s/%s', $this->_path, $x);
-		$url = $this->_client->_make_url($url);
+	function single($x)
+	{
+		$url = $this->_client->_make_url(sprintf('%s/%s', $this->_path, $x));
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
-
-		// var_dump($url);
-		// var_dump($res);
-
-		//$url = sprintf('%s?%s', $this->_path, $arg);
-		if (200 == $res['code']) {
-			$res = $res['data'];
-			if (!empty($res['data'])) {
-				$res = $res['data'];
-				if (is_array($res)) {
-					if (1 == count($res)) {
-						return $res[0];
-					}
-				}
-			}
-		}
-
-		return null;
+		return $res;
 	}
 
 	/**

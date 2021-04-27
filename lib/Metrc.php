@@ -187,28 +187,6 @@ class Metrc extends \OpenTHC\CRE\Base
 		return $res;
 	}
 
-	/**
-	*/
-	function adjustList()
-	{
-		$url = $this->_make_url('/packages/v1/adjust/reasons');
-		$req = $this->_curl_init($url);
-		$res = $this->_curl_exec($req);
-		return $res;
-	}
-
-	/**
-		Adjust the Unit of Measure on one or more items
-		@see https://api-or.metrc.com/Documentation#Packages.post_packages_v1_adjust
-	*/
-	function packageAdjust($arg)
-	{
-		$url = $this->_make_url('/packages/v1/adjust');
-		$req = $this->_curl_init($url);
-		$res = $this->_curl_exec($req, $arg);
-		return $res;
-	}
-
 	function packageChangeItem($arg)
 	{
 		$url = $this->_make_url('/packages/v1/change/item');
@@ -228,25 +206,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	function packageCreateTesting($arg)
 	{
 		$url = $this->_make_url('/packages/v1/create/testing');
-		$x = $this->_curl_init($url);
-		$res = $this->_curl_exec($x, $arg);
-		return $res;
-	}
-
-	/**
-
-	*/
-	function packageFinish($arg)
-	{
-		$url = $this->_make_url('/packages/v1/finish');
-		$req = $this->_curl_init($url);
-		$res = $this->_curl_exec($req, $arg);
-		return $res;
-	}
-
-	function packageFinishUndo($arg)
-	{
-		$url = $this->_make_url('/packages/v1/unfinish');
 		$x = $this->_curl_init($url);
 		$res = $this->_curl_exec($x, $arg);
 		return $res;
