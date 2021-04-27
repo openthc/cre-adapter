@@ -7,7 +7,8 @@
 			"lib/CRE.php"
 		],
 		"psr-4": {
-			"OpenTHC\\CRE\\": "./lib"
+			"OpenTHC\\CRE\\": "./lib",
+			"Test": "./test"
 		}
 	},
 	"require": {
