@@ -9,7 +9,7 @@
  *
  */
 
-namespace Test\B_Auth;
+namespace Test\Metrc\B_Auth;
 
 class A_Alpha_Test extends \Test\Components\OpenTHC_Test_Case
 {

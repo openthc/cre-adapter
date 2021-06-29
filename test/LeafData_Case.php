@@ -5,7 +5,7 @@
 
 namespace Test;
 
-class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
+class LeafData_Case extends \Test\Base_Case
 {
 	protected $cre;
 
@@ -18,7 +18,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 		]);
 	}
 
-	function find_random_batch_of_type($t)
+	function find_random_batch_of_type($t) : array
 	{
 		$res = $this->cre->get('batches?f_type=' .$t);
 		$res = $this->assertValidResponse($res);
@@ -44,7 +44,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 	 * @param [type] $f [description]
 	 * @return [type] [description]
 	 */
-	function find_random_lot($f=null)
+	function find_random_lot($f=null) : array
 	{
 		// @todo Handle Multiple Pages?
 		$res = $this->cre->get('inventories');
@@ -64,7 +64,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 	}
 
 
-	function find_random_plant($f=null)
+	function find_random_plant($f=null) : array
 	{
 		$res = $this->cre->get('plants?f_stage=growing');
 		$this->assertNotEmpty($res);
@@ -88,7 +88,7 @@ class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
 
 	}
 
-	function find_random_strain()
+	function find_random_strain() : array
 	{
 		$res = $this->cre->get('strains');
 		$this->assertCount(9, $res);

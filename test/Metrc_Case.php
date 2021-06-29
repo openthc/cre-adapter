@@ -5,7 +5,7 @@
 
 namespace Test;
 
-class OpenTHC_LeafData_Test extends OpenTHC_Base_TestCase
+class Metrc_Case extends \Test\Base_Case
 {
 	/**
 	 * Intends to become an assert wrapper for a bunch of common response checks

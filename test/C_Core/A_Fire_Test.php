@@ -4,15 +4,15 @@
  * Remove this maybe
  */
 
-namespace Test\Core;
+namespace Test\C_Core;
 
-class Fire_Test extends \Test\OpenTHC_Base_TestCase
+class A_Fire_Test extends \Test\Base_Case
 {
 
 	function test_base_class()
 	{
 		$c = new \OpenTHC\CRE\Base([
-			'server' => 'https://bunk.openthc.org/',
+			'server' => 'https://bunk.openthc.dev/',
 		]);
 
 		$l0 = $c->setLicense('L1');
@@ -32,32 +32,35 @@ class Fire_Test extends \Test\OpenTHC_Base_TestCase
 		// var_dump($p1);
 
 		$c = new \OpenTHC\CRE\LeafData([
-			'server' => 'https://bunk.openthc.org/leafdata',
+			'server' => 'https://bunk.openthc.dev/leafdata',
 			'license' => 'L0',
 			'license-key' => 'L0-KEY',
 		]);
 		$l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
 		$p1 = $c->ping();
-		var_dump($p1);
+		$this->assertNotEmpty($p1);
+		// var_dump($p1);
 
 		$c = new \OpenTHC\CRE\Metrc([
-			'server' => 'https://bunk.openthc.org/metrc',
+			'server' => 'https://bunk.openthc.dev/metrc',
 			'service-key' => '-',
 			'license-key' => '-',
 		]);
 		// $l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
 		$p1 = $c->ping();
-		var_dump($p1);
+		$this->assertNotEmpty($p1);
+		// var_dump($p1);
 
 		$c = new \OpenTHC\CRE\OpenTHC([
-			'server' => 'https://bunk.openthc.org/openthc',
+			'server' => 'https://bunk.openthc.dev/openthc',
 		]);
 		$l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
 		$p1 = $c->ping();
-		var_dump($p1);
+		$this->assertNotEmpty($p1);
+		// var_dump($p1);
 
 	}
 

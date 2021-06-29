@@ -3,7 +3,7 @@
  * Testing the Lag on Transfer Data State
  */
 
-namespace Test\LeafData\Lot_Process;
+namespace Test\E_LeafData\F_Lot_Process;
 
 class D_Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
 {

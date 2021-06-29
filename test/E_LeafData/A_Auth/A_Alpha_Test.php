@@ -3,7 +3,7 @@
  * Test Authentication
  */
 
-namespace Test\E_LeafData\Auth;
+namespace Test\E_LeafData\A_Auth;
 
 class A_Alpha_Test extends \Test\OpenTHC_LeafData_Test
 {

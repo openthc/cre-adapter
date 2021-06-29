@@ -31,14 +31,14 @@ class A_Config_Test extends \Test\OpenTHC_Base_TestCase
 			$this->assertArrayHasKey('class', $cre, sprintf('%s missing class', $cre['name']));
 			$this->assertArrayHasKey('epoch', $cre, sprintf('%s missing epoch', $cre['name']));
 			$this->assertArrayHasKey('engine', $cre, sprintf('%s missing engine', $cre['name']));
-			$this->assertContains($cre['engine'], ['metrc', 'biotrack', 'leafdata']);		
+			$this->assertContains($cre['engine'], ['metrc', 'biotrack', 'leafdata']);
 			$this->assertArrayHasKey('server', $cre, sprintf('%s missing server', $cre['name']));
-			
-			if($cre['engine'] == 'metrc') {
+
+			if ($cre['engine'] == 'metrc') {
 				$this->assertArrayHasKey(
-					'service-key', 
-					$cre, 
-					sprintf('%s missing service-key', $cre['name'])	
+					'service-key',
+					$cre,
+					sprintf('%s missing service-key', $cre['name'])
 				);
 			}
 		}
