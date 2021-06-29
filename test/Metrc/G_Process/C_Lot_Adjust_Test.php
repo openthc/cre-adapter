@@ -5,7 +5,7 @@
 
 namespace Test\Metrc\G_Process;
 
-class C_Lot_Adjust_Test extends \Test\OpenTHC_Metrc_Test
+class C_Lot_Adjust_Test extends \Test\Metrc_Case
 {
 	protected function setUp() : void
 	{

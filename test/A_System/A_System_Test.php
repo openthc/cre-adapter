@@ -2,7 +2,9 @@
 /**
  */
 
-class A_System_Test extends \Test\OpenTHC_Base_TestCase
+namespace Test\A_System;
+
+class A_System_Test extends \Test\Base_Case
 {
 	function test_metrc_tag_list()
 	{

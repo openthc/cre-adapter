@@ -5,7 +5,7 @@
 
 namespace Test\Metrc\G_Process;
 
-class D_Lot_Transfer_Test extends \Test\OpenTHC_Metrc_Test
+class D_Lot_Transfer_Test extends \Test\Metrc_Case
 {
 	public function testTransferBasic()
 	{

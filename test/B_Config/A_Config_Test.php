@@ -3,7 +3,9 @@
  * Testing the config file and making sure all the spots are correctly filled
  */
 
-class A_Config_Test extends \Test\OpenTHC_Base_TestCase
+namespace Test\B_Config;
+
+class A_Config_Test extends \Test\Base_Case
 {
 
 	function test_config_lib()

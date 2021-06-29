@@ -11,7 +11,7 @@
 
 namespace Test\Metrc\B_Auth;
 
-class A_Alpha_Test extends \Test\Components\OpenTHC_Test_Case
+class A_Alpha_Test extends \Test\Metrc_Case
 {
 	public function test_auth()
 	{

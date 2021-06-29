@@ -5,7 +5,7 @@
 
 namespace Test\E_LeafData\F_Lot_Process;
 
-class D_Contact_Sample_Test extends \Test\OpenTHC_LeafData_Test
+class D_Contact_Sample_Test extends \Test\LeafData_Case
 {
 	protected function setUp() : void
 	{

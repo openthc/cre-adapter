@@ -5,7 +5,7 @@
 
 namespace Test\Metrc\C_Core;
 
-class A_Lot_Basic_Test extends \Test\OpenTHC_Metrc_Test
+class A_Lot_Basic_Test extends \Test\Metrc_Case
 {
 	public function testLotPackageCreate()
 	{

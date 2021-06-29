@@ -3,7 +3,9 @@
  * Test the Factory Returns the Right Things
  */
 
-class F_Factory_Test extends \Test\OpenTHC_Base_TestCase
+namespace Test\C_Core;
+
+class F_Factory_Test extends \Test\Base_Case
 {
 	function test_factory()
 	{
