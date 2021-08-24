@@ -13,6 +13,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public $_sid = null;
 
 	protected $_name = 'BioTrack';
+	protected $_api_base = 'https://<server>/serverjson.asp';
 
 	protected $_training = false;
 
@@ -51,7 +52,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public static $obj_list = array(
 		'vendor' => 'Vendor',
 		'qa_lab' => 'QA Lab',
-		'third_party_transporter' => 'Third Party Transporter',
+		// 'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
 		'employee' => 'Contacts',
 		'vehicle' => 'Vehicle',
 		'inventory_room' => 'Section/Inventory',
@@ -70,7 +71,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		// 'id_preassign' => 'IDs', // WA-UCS Only
 	);
 
-	// Deprecated
+	// @deprecated
 	private static $_inv_kind = array(
 		'5'  => 'Kief',
 		'6'  => 'Flower',
@@ -229,22 +230,31 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Constructor
-		@param $x Array of RBE Options
-	*/
+	 * Constructor
+	 * @param $x Array of CRE Options
+	 */
 	function __construct($x=null)
 	{
-		parent::__construct($x);
-
-		if (!empty($x)) {
-			if (is_array($x)) {
-				$this->_company = $x['company'];
-				$this->_username = $x['username'];
-				$this->_password = $x['password'];
-			} elseif (is_string($x)) {
-				$this->_sid = $x;
-			}
+		if (empty($x)) {
+			throw new \Exception('Invalid Parameters [LRB-239]');
 		}
+
+		if (!is_array($x)) {
+			throw new \Exception('Invalid Parameters [LRB-243]');
+		}
+
+		if (!empty($x['server'])) {
+			$this->_api_base = $x['server'];
+		}
+
+		$this->_company = $x['company'];
+		$this->_username = $x['username'];
+		$this->_password = $x['password'];
+
+		if (!empty($x['session'])) {
+			$this->_sid = $x['session'];
+		}
+
 	}
 
 	/**
@@ -290,9 +300,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		// unset($obj_list['id_preassign']); // -HI, -NM
 		// unset($obj_list['inventory_sample']); // -HI
 		// unset($obj_list['third_party_transporter']); // -HI, -NM
-
 		// return $obj_list;
-
 		return self::$obj_list;
 	}
 
@@ -338,14 +346,17 @@ class BioTrack extends \OpenTHC\CRE\Base
 			return [
 				'code' => 403,
 				'data' => null,
-				'meta' => [ 'detail' => 'No Session is Active [LRB-319]' ]
+				'meta' => [ 'detail' => 'No Session is Active [LRB-319]' ],
 			];
 		}
 
+		$pong = $rbe->sync_check();
+		// print_r($pong);
+
 		return [
 			'code' => 200,
-			'data' => null,
-			'meta' => [ 'detail' => 'Everything is Awesome' ]
+			'data' => $pong,
+			'meta' => [],
 		];
 
 	}
@@ -381,12 +392,12 @@ class BioTrack extends \OpenTHC\CRE\Base
 			'action' => 'employee_add',
 			'employee_id' => $id,
 			'employee_name' => trim($name),
-			'birth_year' => strftime('%Y', $dob),
-			'birth_month' => strftime('%m', $dob),
-			'birth_day' => strftime('%d', $dob),
-			'hire_year' => strftime('%Y', $doh),
-			'hire_month' => strftime('%m', $doh),
-			'hire_day' => strftime('%d', $doh),
+			'birth_year' => date('Y', $dob),
+			'birth_month' => date('m', $dob),
+			'birth_day' => date('d', $dob),
+			'hire_year' => date('Y', $doh),
+			'hire_month' => date('m', $doh),
+			'hire_day' => date('d', $doh),
 		);
 		$res = $this->_curl_exec($arg);
 		return $res;
@@ -407,12 +418,12 @@ class BioTrack extends \OpenTHC\CRE\Base
 			'action' => 'employee_modify',
 			'employee_id' => $id,
 			'employee_name' => trim($name),
-			'birth_year' => strftime('%Y', $dob),
-			'birth_month' => strftime('%m', $dob),
-			'birth_day' => strftime('%d', $dob),
-			'hire_year' => strftime('%Y', $doh),
-			'hire_month' => strftime('%m', $doh),
-			'hire_day' => strftime('%d', $doh),
+			'birth_year' => date('Y', $dob),
+			'birth_month' => date('m', $dob),
+			'birth_day' => date('d', $dob),
+			'hire_year' => date('Y', $doh),
+			'hire_month' => date('m', $doh),
+			'hire_day' => date('d', $doh),
 		));
 		return $res;
 	}
@@ -1989,16 +2000,14 @@ class BioTrack extends \OpenTHC\CRE\Base
 		Executes the Single or Multiple Requests
 		@return Curl Handle
 	*/
-	function _curl_init($uri)
+	protected function _curl_init($uri)
 	{
-		$req = parent::_curl_init($uri);
-
-		$h = parse_url($uri, PHP_URL_HOST);
-
+		$req = _curl_init($uri);
+		// $h = parse_url($uri, PHP_URL_HOST);
 		$head = array(
 			'content-type: text/JSON', // BT wants this (incorrect) value
-			sprintf('host: %s', $h),
-			sprintf('openthc-company: %s', $_SESSION['Company']['id']),
+			// sprintf('host: %s', $h),
+			// sprintf('openthc-company: %s', $_SESSION['Company']['id']),
 		);
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 
