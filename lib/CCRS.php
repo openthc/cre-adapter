@@ -1,6 +1,7 @@
 <?php
 /**
  * LCB CCRS Utility Class
+ * For https://lcb.wa.gov/ccrs
  *
  * SPDX-License-Identifier: MIT
  */
@@ -112,7 +113,7 @@ class CCRS extends \OpenTHC\CRE\Base
 
 		// it's unquoted and not
 		fwrite($output_csv, implode(',', $row));
-		fwrite($output_csv, "\n");
+		fwrite($output_csv, "\r\n"); // CRLF
 	}
 
 }
