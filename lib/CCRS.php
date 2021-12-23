@@ -121,6 +121,10 @@ class CCRS extends \OpenTHC\CRE\Base
 	 */
 	static function map_product_type0($x)
 	{
+		if (empty($x)) {
+			return null;
+		}
+
 		switch ($x) {
 			// case '018NY6XC00PR0DUCTTYPE00000':
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'EndProduct';
@@ -159,6 +163,10 @@ class CCRS extends \OpenTHC\CRE\Base
 
 	static function map_product_type1($x)
 	{
+		if (empty($x)) {
+			return null;
+		}
+
 		switch ($x) {
 			// case '018NY6XC00PR0DUCTTYPE00000':
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'Topical Ointment';
