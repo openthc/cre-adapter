@@ -126,7 +126,8 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		switch ($x) {
-			// case '018NY6XC00PR0DUCTTYPE00000':
+			// case '018NY6XC00PR0DUCTTYPE00000': // -system-
+			case '018NY6XC00PR0DUCTTYPE00001': return 'IntermediateProduct'; // -orphan-
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'EndProduct';
 			case '018NY6XC00PT25F95HPG583AJB': return 'EndProduct';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'PropagationMaterial';
@@ -169,6 +170,7 @@ class CCRS extends \OpenTHC\CRE\Base
 
 		switch ($x) {
 			// case '018NY6XC00PR0DUCTTYPE00000':
+			case '018NY6XC00PR0DUCTTYPE00001': return 'Flower Unlotted'; // -orphan-
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'Topical Ointment';
 			case '018NY6XC00PT25F95HPG583AJB': return 'Capsules';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'Plant';
