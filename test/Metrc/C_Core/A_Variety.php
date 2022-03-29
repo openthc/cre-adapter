@@ -53,4 +53,19 @@ class A_Variety extends OpenTHC_Metrc_Test
 		$this->assertIsArray($Variety);
 		$this->assertEquals($_ENV['variety-1-name'], $Variety['Name']);
 	}
+
+	public function testIndicaSativaNotEqual100() : void
+	{
+		$res = $this->cre->variety()->create(array(
+			'Name' => $_ENV['variety-1-name'],
+			'IndicaPercentage' => 25,
+			'SativaPercentage' => 25,
+			'CbdLevel' => 0,
+			'ThcLevel' => 0,
+		));
+		$this->assertValidResponse($res, 400);
+
+		$this->assertEquals(0, $res['data']['row']);
+		$this->assertEquals('Indica and Sativa Percentages combined must equal 100%.', $res['data']['message']);
+	}
 }
