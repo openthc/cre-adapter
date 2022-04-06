@@ -24,6 +24,9 @@ class WCIA extends \OpenTHC\CRE\Base
 		'018NY6XC00PT3EZZ4GN6105M64' => 'Bulk / Immature Plant | Clone',
 		'018NY6XC00PTRPPDT8NJY2MWQW' => 'Bulk / Mature Plant',
 		'018NY6XC00PTFY48D1136W0S0J' => 'Bulk / Plant Sample',
+		// '018NY6XC00PT2BKFPCEFB9G1Z2' => 'Plant Tissue',
+		// '018NY6XC00PT3EZZ4GN6105M64' => 'Clones',
+		// '018NY6XC00PTFY48D1136W0S0J' => 'Plant Sample/Non-Mandatory',
 	];
 
 	/**
@@ -33,7 +36,7 @@ class WCIA extends \OpenTHC\CRE\Base
 
 	/**
 	 * Remaps the WCIA Product Type
-	 * @return and OpenTHC Style Product Type ULID
+	 * @return ULID OpenTHC Style Product Type ULID
 	 */
 	static function product_type_map_id($t0, $t1)
 	{
