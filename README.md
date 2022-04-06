@@ -29,7 +29,7 @@ foreach ($res as $rec) {
 
 * BioTrack: Hawai'i, Illinois, New Mexico, Puerto Rico, Washington*
 * LeafData: Pennsylvania*, Utah* Washington
-* METRC: Alaska, California, Colorado, Maine, Massachusetts, Michigan, Montana, Nevada, Oregon
+* METRC: Alaska, California, Colorado, Maine, Massachusetts, Michigan, Montana, Nevada, Oklahoma, Oregon
 
 Other engines will be added, of course :)
 Some of the engine specific adapters are very thin layers, they really only exist for consistency.
