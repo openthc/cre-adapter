@@ -21,8 +21,8 @@ class QBench extends Base
 	 */
 	function __construct($x)
 	{
-		if (empty($x['server'])) {
-			throw new \Exception('Parameter "server" is required');
+		if (empty($x['server-url'])) {
+			throw new \Exception('Parameter "server-url" is required');
 		}
 
 		$this->_api_base = $x['server-url'];
