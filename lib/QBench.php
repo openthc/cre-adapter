@@ -25,7 +25,7 @@ class QBench extends Base
 			throw new \Exception('Parameter "server" is required');
 		}
 
-		$this->_api_base = $x['server'];
+		$this->_api_base = $x['server-url'];
 		$this->_pk = $x['public-key'];
 		$this->_sk = $x['secret-key'];
 
