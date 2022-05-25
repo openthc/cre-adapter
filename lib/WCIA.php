@@ -16,7 +16,7 @@ class WCIA extends \OpenTHC\CRE\Base
 	 * Could build a static map here?
 	 */
 	private static $product_type_map = [
-		'018NY6XC00PT25F95HPG583AJB' => 'EndProduct/Capsules',
+		'018NY6XC00PT25F95HPG583AJB' => 'EndProduct/Capsule',
 		'018NY6XC00PTBNDY5VJ8JQ6NKP' => 'EndProduct/Solid Edible',
 		'018NY6XC00PTAF3TFBB51C8HX6' => 'HarvestedMaterial/Flower Lot',
 		'018NY6XC00PTR9M5Z9S4T31C4R' => 'IntermediateProduct/CO2 Concentrate',
@@ -42,7 +42,8 @@ class WCIA extends \OpenTHC\CRE\Base
 	{
 		$pt = strtoupper(sprintf('%s/%s', $t0, $t1));
 		switch ($pt) {
-			case 'ENDPRODUCT/CAPSULES':                         return '018NY6XC00PT25F95HPG583AJB';
+			case 'ENDPRODUCT/CAPSULE':                          return '018NY6XC00PT25F95HPG583AJB';
+			case 'ENDPRODUCT/CAPSULES':                         return '018NY6XC00PT25F95HPG583AJB'; // Common Typo
 			case 'ENDPRODUCT/CONCENTRATE FOR INHALATION':       return '018NY6XC00PTSF5NTC899SR0JF'; // Doesn't Exist but I think it Should
 			case 'ENDPRODUCT/LIQUID EDIBLE':                    return '018NY6XC00PT7N83PFNCX8ZFEF';
 			case 'ENDPRODUCT/MARIJUANA MIX INFUSED':            return '018NY6XC00PTGRX4Q9SZBHDA5Z';
