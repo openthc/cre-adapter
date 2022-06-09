@@ -2010,7 +2010,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		Executes the Single or Multiple Requests
 		@return Curl Handle
 	*/
-	protected function _curl_init($uri)
+	public function _curl_init($uri)
 	{
 		$req = _curl_init($uri);
 		// $h = parse_url($uri, PHP_URL_HOST);
