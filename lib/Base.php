@@ -87,6 +87,7 @@ class Base
 	function ping()
 	{
 		return [
+			'code' => 501,
 			'data' => null,
 			'meta' => [ 'detail' => 'not implemented' ],
 		];

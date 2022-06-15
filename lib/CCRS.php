@@ -12,8 +12,6 @@ class CCRS extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
 
-	function __construct() { /* NO */ }
-
 	/**
 	 * Get Data Hash of a CSV File
 	 */
@@ -203,6 +201,15 @@ class CCRS extends \OpenTHC\CRE\Base
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-194]");
 		}
+	}
+
+	function ping()
+	{
+		return [
+			'code' => 501,
+			'data' => null,
+			'meta' => [ 'detail' => 'Not a pingable platform' ]
+		];
 	}
 
 }
