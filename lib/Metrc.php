@@ -120,8 +120,8 @@ class Metrc extends \OpenTHC\CRE\Base
 		} catch (Exception $e) {
 			return array(
 				'code' => 500,
-				'status' => 'failure',
-				'detail' => $e->getMessage(),
+				'data' => null,
+				'meta' => [ 'detail' => $e->getMessage() ],
 			);
 		}
 
@@ -130,15 +130,15 @@ class Metrc extends \OpenTHC\CRE\Base
 		} catch (Exception $e) {
 			return array(
 				'code' => 500,
-				'status' => 'failure',
-				'detail' => $e->getMessage(),
+				'data' => null,
+				'meta' => [ 'detail' => $e->getMessage() ],
 			);
 		}
 
 		return array(
 			'code' => 200,
-			'status' => 'success',
-			'detail' => 'Everything is Awesome!',
+			'data' => [],
+			'meta' => [ 'detail' => 'Everything is Awesome!' ],
 		);
 	}
 
