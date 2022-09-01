@@ -92,5 +92,29 @@ class QBench extends Base
 
 	}
 
-}
+	/**
+	 * HEAD Something
+	 */
+	function head($url)
+	{
+		$url = ltrim($url, '/');
+		$url = sprintf('%s/%s', $this->_api_base, $url);
 
+		$req = __curl_init($url);
+
+		$req_head = [];
+		$req_head[] = sprintf('authorization: Bearer %s', $this->_access_token);
+		curl_setopt($req, CURLOPT_HTTPHEADER, $req_head);
+
+		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'HEAD');
+		curl_setopt($req, CURLOPT_NOBODY, true);
+
+		$res = curl_exec($req);
+		$inf = curl_getinfo($req);
+		$res = json_decode($res, true);
+
+		return $res;
+
+	}
+
+}
