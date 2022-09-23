@@ -10,7 +10,7 @@ namespace OpenTHC\CRE;
 
 class WCIA extends \OpenTHC\CRE\Base
 {
-	const ENGINE = 'openthc';
+	const ENGINE = 'wcia';
 
 	/**
 	 * Could build a static map here?
@@ -32,7 +32,128 @@ class WCIA extends \OpenTHC\CRE\Base
 	/**
 	 *
 	 */
-	function __construct() { /* NO */ }
+	function __construct() { /* Not Yet */ }
+
+	/**
+	 *
+	 */
+	static function b2b_get($url)
+	{
+		$ret = [];
+		$res = self::url_get($url);
+		switch ($res['code']) {
+			case 200:
+				return [
+					'data' => json_decode($res['body'], true),
+					'meta' => [],
+				];
+				break;
+			default:
+		}
+
+		return $ret;
+
+	}
+
+
+	/**
+	 * Inflates the document, checks values
+	 * returns inflated
+	 */
+	static function b2b_to_openthc($doc) : array
+	{
+		$ret = [];
+		$ret['id'] = $doc['transfer_id'];
+		$ret['depart_at'] = $doc['est_departed_at'];
+		$ret['arrive_at'] = $doc['est_arrival_at'];
+		$ret['source'] = [
+			'id' => '',
+			'code' => $doc['from_license_number'],
+			'name' => $doc['from_license_name'],
+		];
+		$ret['target'] = [
+			'id' => '',
+			'code' => $doc['to_license_number'],
+			'name' => $doc['to_license_name'],
+		];
+		$ret['item_list'] = [];
+
+
+		foreach ($doc['inventory_transfer_items'] as $b2b_item0) {
+
+			$b2b_item1 = [];
+			$b2b_item1['id'] = _ulid();
+			$b2b_item1['product'] = [
+				'id' => $b2b_item0['product_sku'],
+				'name' => $b2b_item0['product_name'],
+				// 'unit' => '',
+				'unit_uom' => $b2b_item0['unit_weight_uom']
+			];
+			$b2b_item1['product_type'] = [
+				'id' => self::product_type_map_id($b2b_item0['inventory_category'], $b2b_item0['inventory_type'])
+			];
+			$b2b_item1['variety'] = [
+				'id' => '',
+				'name' => $b2b_item0['strain_name'],
+			];
+			$b2b_item1['lab_result'] = [
+				'id' => '',
+				'@source' => $b2b_item1[''],
+			];
+			$b2b_item1['inventory'] = [];
+			$b2b_item1['qty'] = $b2b_item0['qty'];
+			$b2b_item1['uom'] = $b2b_item0['uom'];
+
+			// Decipher Lab Result Bullshit
+			$lab_link0 = $b2b_item0['lab_result_link']; // JSON or PDF
+			$lab_link1 = $b2b_item0['lab_result_data']['lab_result_detail']; // JSON
+			$lab_link2 = $b2b_item0['lab_result_data']['coa']; // PDF
+			if ( ! empty($b2b_item1['lab_result_link'])) {
+				// Try to Detect if JSON or PDF
+			}
+			if ( ! empty($b2b_item1['lab_result_data']['lab_result_list'])) {
+				foreach ($b2b_item1['lab_result_data']['lab_result_list'] as $lr1) {
+					// $lr1['coa']; // PDF
+					// $lr1['lab_result_link']; // JSON
+				}
+			}
+
+			$ret['item_list'][] = $b2b_item1;
+
+		}
+
+		return $ret;
+
+	}
+
+	/**
+	 * Get the Lab Data
+	 */
+	static function lab_get($url)
+	{
+		$ret = [];
+		$res = self::url_get($url);
+		switch ($res['code']) {
+			case 200:
+				return [
+					'data' => json_decode($res['body'], true),
+					'meta' => [],
+				];
+				break;
+			default:
+		}
+
+		return $ret;
+
+	}
+
+	/**
+	 * Convert the WCIA Data Model to OpenTHC Model
+	 */
+	static function lab_to_openthc($doc) : array
+	{
+
+	}
 
 	/**
 	 * Remaps the WCIA Product Type
@@ -91,6 +212,51 @@ class WCIA extends \OpenTHC\CRE\Base
 	static function product_type_map_name($id)
 	{
 		return self::$product_type_map[ $id ];
+	}
+
+	/**
+	 * GET the URL and Give Back Meaningful Data
+	 */
+	static function url_get($url) : array
+	{
+		$ret = [
+			'body' => '',
+			'code' => 0,
+			'head' => [],
+			'meta' => [],
+			'name' => ''
+		];
+
+		$req = __curl_init($url);
+		// $req = _curl_init($url);
+
+		// Naive Header Function
+		$res_head = [];
+		curl_setopt($req, CURLOPT_HEADERFUNCTION, function($req0, $head_line) use (&$res_head) {
+				$key = trim(strtolower(strtok($head_line, ':')));
+				$val = trim(strtok(''));
+				$res_head[$key] = $val;
+				return strlen($head_line);
+		});
+		$res = curl_exec($req);
+		$inf = curl_getinfo($req);
+
+		if ( ! empty($res_head['content-disposition'])) {
+			if (preg_match('/filename=(.+);?/', $res_head['content-disposition'], $m)) {
+				$n = trim($m[1]);
+				$n = trim($n, "'");
+				$n = trim($n, '"');
+				$f['name'] = $n;
+			}
+		}
+
+		return [
+			'body' => $res,
+			'code' => $inf['http_code'],
+			'head' => $res_head,
+			'meta' => $inf,
+		];
+
 	}
 
 }
