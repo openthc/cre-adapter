@@ -1,6 +1,8 @@
 <?php
 /**
- * Interface to the OpenTHC CRE
+ * Interface to the OpenTHC (or OpenTHC Like) CRE
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE;
@@ -8,6 +10,60 @@ namespace OpenTHC\CRE;
 class OpenTHC extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
+
+	private $_c; // Client Connection
+
+	protected $_api_base = 'https://cre.openthc.com';
+	protected $_api_host = 'cre.openthc.com';
+
+	private $sid;
+
+	/**
+	 * Array of Arguments
+	 */
+	function __construct($sid=null)
+	{
+		$this->sid = $sid;
+		$this->_init_api();
+	}
+
+	function _init_api()
+	{
+		// @todo Make this Session Persistent?
+		$jar = new \GuzzleHttp\Cookie\CookieJar();
+		if (!empty($sid)) {
+			$c = new \GuzzleHttp\Cookie\SetCookie(array(
+				'Domain' => $this->_api_host,
+				'Name' => 'openthc',
+				'Value' => $this->sid,
+				'Secure' => true,
+				'HttpOnly' => true,
+			));
+			$jar->setCookie($c);
+		}
+
+		$cfg = array(
+			'base_uri' => $this->_api_base,
+			'allow_redirects' => false,
+			'cookies' => $jar,
+			'headers' => array(
+				'user-agent' => sprintf('OpenTHC/%s', APP_BUILD),
+			),
+			'http_errors' => false,
+			'verify' => false,
+		);
+
+		// Override Host Header Here
+		// @see https://github.com/guzzle/guzzle/issues/1678#issuecomment-281921604
+		// $host = $this->_api_host;
+		// $ghhs = \GuzzleHttp\HandlerStack::create();
+		// $ghhs->push(\GuzzleHttp\Middleware::mapRequest(function (\Psr\Http\Message\RequestInterface $R) use ($host) {
+		// 	return $R->withHeader('host', $host);
+		// }));
+		// $cfg['handler'] = $ghhs;
+
+		$this->_c = new \GuzzleHttp\Client($cfg);
+	}
 
 	/**
 	 * Format Error
@@ -36,11 +92,11 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'variety' => 'Variety',
 			'crop' => 'Crop',
 			'lot' => 'Lot',
-			'lab_result' => 'Lab Result',
-			'b2b' => 'B2B Sale',
-			'b2c' => 'B2C Sale',
+			'b2b' => 'B2B Sales',
+			'b2c' => 'B2C Sales'
 		);
 	}
+
 
 	/**
 	 * HTTP GET Utility
@@ -62,7 +118,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			// _exit_text($res->getStatusCode() . ': ' . $res->getBody());
-			throw new Exception('Invalid Response from OpenTHC [LRO#080]');
+			throw new \Exception('Invalid Response from OpenTHC [LRO#080]');
 		}
 
 		return $ret;
@@ -103,7 +159,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			echo '<div>';
 			echo $buf;
 			echo '</div>';
-			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
 		}
 
 		return $ret;
@@ -131,7 +187,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			echo '<div>';
 			echo $buf;
 			echo '</div>';
-			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
 		}
 
 		return $ret;
@@ -163,7 +219,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			// _exit_text([ 'fail' => 'Invalid Response from OpenTHC [LRO#176]', 'code' => $hsc, 'body' => $res->getBody() ]);
-			throw new Exception('Invalid Response from OpenTHC [LRO#176]');
+			throw new \Exception('Invalid Response from OpenTHC [LRO-176]');
 		}
 
 		return $ret;

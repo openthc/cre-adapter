@@ -98,7 +98,14 @@ class QBench extends Base
 	function head($url)
 	{
 		$url = ltrim($url, '/');
-		$url = sprintf('%s/%s', $this->_api_base, $url);
+		switch (substr($url, 0, 7)) {
+		case 'http://':
+		case 'https:/':
+			// It's a full URL
+			break;
+		default:
+			$url = sprintf('%s/%s', $this->_api_base, $url);
+		}
 
 		$req = __curl_init($url);
 
