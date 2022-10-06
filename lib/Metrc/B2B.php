@@ -79,6 +79,19 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 		return $res;
 	}
 
+
+	/**
+		Find the Transfer Types
+	*/
+	function types()
+	{
+		$url = '/transfers/v1/types';
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
+
 	/**
 	 * Deliveries for a Specific Transfer
 	 * @param $guid The Transfer ID
