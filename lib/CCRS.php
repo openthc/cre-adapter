@@ -203,13 +203,22 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 	}
 
+	/**
+	 * Ping to BONG for License Status
+	 */
 	function ping()
 	{
-		return [
-			'code' => 501,
-			'data' => null,
-			'meta' => [ 'detail' => 'Not a pingable platform' ]
+		$url = sprintf('%s/ping', $this->_api_base);
+		$this->_req_head = [
+			'authorization' => sprintf('Bearer %s', $this->_api_token)
 		];
+		$res = $this->get($url);
+		return $res;
+		// return [
+		// 	'code' => 501,
+		// 	'data' => null,
+		// 	'meta' => [ 'detail' => 'Not a pingable platform' ]
+		// ];
 	}
 
 }

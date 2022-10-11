@@ -1,12 +1,17 @@
 <?php
 /**
+ * A Compliance Reporting Engine Interface
  *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC;
 
 class CRE
 {
+	/**
+	 * Factory
+	 */
 	static function factory($cfg)
 	{
 		$cre_info = self::getEngine($cfg['code']);

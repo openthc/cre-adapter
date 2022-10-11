@@ -1,6 +1,8 @@
 <?php
 /**
  * A Base Class for an RBE
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE;
@@ -25,7 +27,7 @@ class Base
 	 */
 	function __construct($cfg)
 	{
-		$this->_api_base = $cfg['server'];
+		$this->_api_base = rtrim($cfg['server'], '/');
 
 		if (empty($this->_api_host)) {
 			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
@@ -33,6 +35,9 @@ class Base
 
 	}
 
+	/**
+	 *
+	 */
 	function getLicense()
 	{
 		return $this->_License;
