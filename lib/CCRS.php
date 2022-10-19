@@ -102,10 +102,13 @@ class CCRS extends \OpenTHC\CRE\Base
 	{
 		// HURR-DURR
 		// Can't use fputcsv because the LCB system is confused by quoted fields on this file
+		// So we replace those with HEX notation.
+		// And their exports are in TSV, so we make sure we don't send those either.
 		array_walk($row, function(&$val, $key) {
 			// surly this won't be a problem ;p /djb 2021-12-02
-			$val = str_replace('"', '0x22', $val);
-			$val = str_replace(',', '0x2c', $val);
+			$val = str_replace('"', '0x22', $val); // Double Quote
+			$val = str_replace(',', '0x2c', $val); // Single Quote
+			$val = str_replace("\t", '0x09', $val); // TAB
 			$val = trim($val);
 		});
 
