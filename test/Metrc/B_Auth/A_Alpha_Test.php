@@ -1,5 +1,9 @@
 <?php
 /**
+ * Test Auth Stuff
+ *
+ * SPDX-License-Identifier: MIT
+ *
  * Notes about the Auth module
  * The "service-key" cooresponds to a code that is a company object identifier
  * The "license-key" cooresponds to a code that is a license object identifier
@@ -9,9 +13,9 @@
  *
  */
 
-namespace Test\Metrc\B_Auth;
+namespace OpenTHC\CRE\Test\Metrc\B_Auth;
 
-class A_Alpha_Test extends \Test\Metrc_Case
+class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	public function test_auth()
 	{

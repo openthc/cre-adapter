@@ -1,10 +1,12 @@
 <?php
 /**
  * Create and Search for Products
+ *
+ * SPDX-License-Identifier: MIT
  */
-namespace Test\Metrc\G_Process;
+namespace OpenTHC\CRE\Test\Metrc\G_Process;
 
-class A_Lot extends OpenTHC_Metrc_Test
+class A_Lot extends \OpenTHC\CRE\Test\Base
 {
 	protected function setUp() : void
 	{
@@ -23,7 +25,7 @@ class A_Lot extends OpenTHC_Metrc_Test
 	/**
 	 * Convert harvest flower into lotted material
 	 */
-	public function testConvert() : void 
+	public function testConvert() : void
 	{
 		$obj = [
 			'Tag' => $_ENV['lot-convert-0-output-tag'],

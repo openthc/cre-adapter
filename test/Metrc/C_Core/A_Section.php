@@ -1,10 +1,13 @@
 <?php
 /**
  * Create and Search for Sections
+ *
+ * SPDX-License-Identifier: MIT
  */
-namespace Test\Metrc\C_Core;
 
-class A_Section extends OpenTHC_Metrc_Test
+namespace OpenTHC\CRE\Test\Metrc\C_Core;
+
+class A_Section extends \OpenTHC\CRE\Test\OpenTHC_Metrc_Test
 {
 
 	protected function setUp() : void
@@ -27,7 +30,7 @@ class A_Section extends OpenTHC_Metrc_Test
 				$Section = $s;
 			}
 		}
-		
+
 		$this->assertIsArray($Section);
 		$this->assertEquals($_ENV['section-0-name'], $Section['Name']);
 		$this->assertEquals($_ENV['section-0-guid'], $Section['Id']);

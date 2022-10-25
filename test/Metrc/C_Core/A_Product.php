@@ -1,10 +1,13 @@
 <?php
 /**
  * Create and Search for Products
+ *
+ * SPDX-License-Identifier: MIT
  */
-namespace Test\Metrc\C_Core;
 
-class A_Product extends OpenTHC_Metrc_Test
+namespace OpenTHC\CRE\Test\Metrc\C_Core;
+
+class A_Product extends \OpenTHC\CRE\Test\OpenTHC_Metrc_Test
 {
 	protected function setUp() : void
 	{

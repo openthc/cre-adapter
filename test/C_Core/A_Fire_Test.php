@@ -1,12 +1,15 @@
 <?php
 /**
  * Test Class Loading
+ *
+ * SPDX-License-Identifier: MIT
+ *
  * Remove this maybe
  */
 
-namespace Test\C_Core;
+namespace OpenTHC\CRE\Test\C_Core;
 
-class A_Fire_Test extends \Test\Base_Case
+class A_Fire_Test extends \OpenTHC\CRE\Test\Base_Case
 {
 
 	function test_base_class()

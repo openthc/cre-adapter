@@ -11,7 +11,7 @@
 		],
 		"psr-4": {
 			"OpenTHC\\CRE\\": "./lib",
-			"Test\\": "./test"
+			"OpenTHC\\CRE\\Test\\": "./test"
 		}
 	},
 	"require": {

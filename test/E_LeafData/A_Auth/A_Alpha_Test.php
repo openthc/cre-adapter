@@ -1,11 +1,13 @@
 <?php
 /**
  * Test Authentication
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\E_LeafData\A_Auth;
+namespace OpenTHC\CRE\Test\E_LeafData\A_Auth;
 
-class A_Alpha_Test extends \Test\LeafData_Case
+class A_Alpha_Test extends \OpenTHC\CRE\Test\LeafData_Case
 {
 	public function test_auth()
 	{

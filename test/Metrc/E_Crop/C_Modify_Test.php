@@ -1,11 +1,13 @@
 <?php
 /**
  * Plant Modify
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\Metrc\E_Crop;
+namespace OpenTHC\CRE\Test\Metrc\E_Crop;
 
-class C_Modify_Test extends \Test\Metrc_Case
+class C_Modify_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	/**
 	 * Get a random Plant by the GUID suffix only

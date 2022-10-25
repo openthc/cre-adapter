@@ -1,11 +1,13 @@
 <?php
 /**
  * Test the Factory Returns the Right Things
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\C_Core;
+namespace OpenTHC\CRE\Test\C_Core;
 
-class F_Factory_Test extends \Test\Base_Case
+class F_Factory_Test extends \OpenTHC\CRE\Test\Base_Case
 {
 	function test_factory()
 	{

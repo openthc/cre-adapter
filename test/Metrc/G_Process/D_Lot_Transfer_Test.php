@@ -1,11 +1,13 @@
 <?php
 /**
  * Test Lot Transfer
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\Metrc\G_Process;
+namespace OpenTHC\CRE\Test\Metrc\G_Process;
 
-class D_Lot_Transfer_Test extends \Test\Metrc_Case
+class D_Lot_Transfer_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	public function testTransferBasic()
 	{

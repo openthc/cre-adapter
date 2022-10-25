@@ -1,11 +1,13 @@
 <?php
 /**
- * Test Helper for LeafData
+ * Test Helper for Metrc
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test;
+namespace OpenTHC\CRE\Test;
 
-class Metrc_Case extends \Test\Base_Case
+class Metrc_Case extends \OpenTHC\CRE\Test\Base_Case
 {
 	/**
 	 *

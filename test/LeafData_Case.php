@@ -1,11 +1,13 @@
 <?php
 /**
  * Test Helper for LeafData
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test;
+namespace OpenTHC\CRE\Test;
 
-class LeafData_Case extends \Test\Base_Case
+class LeafData_Case extends \OpenTHC\CRE\Test\Base_Case
 {
 	protected $cre;
 

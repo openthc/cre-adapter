@@ -1,11 +1,13 @@
 <?php
 /**
  * Test Lot Adjust
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\Metrc\G_Process;
+namespace OpenTHC\CRE\Test\Metrc\G_Process;
 
-class C_Lot_Adjust_Test extends \Test\Metrc_Case
+class C_Lot_Adjust_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	protected function setUp() : void
 	{

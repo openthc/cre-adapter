@@ -1,11 +1,13 @@
 <?php
 /**
  * Test Lot
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\Metrc\C_Core;
+namespace OpenTHC\CRE\Test\Metrc\C_Core;
 
-class A_Lot_Basic_Test extends \Test\Metrc_Case
+class A_Lot_Basic_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	public function testLotPackageCreate()
 	{

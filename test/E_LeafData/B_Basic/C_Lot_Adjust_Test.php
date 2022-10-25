@@ -1,11 +1,13 @@
 <?php
 /**
  * Test that Lot Adjust Still Errors with Wacky Date
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\E_LeafData\B_Basic;
+namespace OpenTHC\CRE\Test\E_LeafData\B_Basic;
 
-class C_Lot_Adjust_Test extends \Test\LeafData_Case
+class C_Lot_Adjust_Test extends \OpenTHC\CRE\Test\LeafData_Case
 {
 	protected function setUp() : void
 	{

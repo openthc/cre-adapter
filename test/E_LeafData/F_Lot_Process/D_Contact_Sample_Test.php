@@ -1,11 +1,13 @@
 <?php
 /**
  * Testing the Lag on Transfer Data State
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-namespace Test\E_LeafData\F_Lot_Process;
+namespace OpenTHC\CRE\Test\E_LeafData\F_Lot_Process;
 
-class D_Contact_Sample_Test extends \Test\LeafData_Case
+class D_Contact_Sample_Test extends \OpenTHC\CRE\Test\LeafData_Case
 {
 	protected function setUp() : void
 	{
