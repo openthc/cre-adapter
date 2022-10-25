@@ -12,31 +12,47 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	const ENGINE = 'openthc';
 
 	private $_c; // Client Connection
-
-	protected $_api_base = 'https://cre.openthc.com';
-	protected $_api_host = 'cre.openthc.com';
+	private $_cfg; // Configuration Array
 
 	private $sid;
+
+	protected $_api_base;
+	protected $_api_host;
+
+	public $_api_version;
 
 	/**
 	 * Array of Arguments
 	 */
-	function __construct($sid=null)
+	function __construct($cfg)
 	{
-		$this->sid = $sid;
+		$this->_cfg = $cfg;
+
+		$this->_api_base = $cfg['server'];
+		$this->_api_host = parse_url($cfg['server'], PHP_URL_HOST);
+		$this->_api_version = $cfg['epoch'];
+		$this->sid = $cfg['sid'];
 		$this->_init_api();
 	}
 
-	function _init_api()
+	/**
+	 *
+	 */
+	protected function _init_api()
 	{
+		$jar_secure = true;
+		if ('http' == parse_url($this->_api_base, PHP_URL_SCHEME)) {
+			$jar_secure = false;
+		}
+
 		// @todo Make this Session Persistent?
 		$jar = new \GuzzleHttp\Cookie\CookieJar();
-		if (!empty($sid)) {
+		if (!empty($this->sid)) {
 			$c = new \GuzzleHttp\Cookie\SetCookie(array(
 				'Domain' => $this->_api_host,
 				'Name' => 'openthc',
 				'Value' => $this->sid,
-				'Secure' => true,
+				'Secure' => $jar_secure,
 				'HttpOnly' => true,
 			));
 			$jar->setCookie($c);
@@ -47,7 +63,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'allow_redirects' => false,
 			'cookies' => $jar,
 			'headers' => array(
-				'user-agent' => sprintf('OpenTHC/%s', APP_BUILD),
+				'user-agent' => 'OpenTHC/CRE/Adapter v420.22.297',
 			),
 			'http_errors' => false,
 			'verify' => false,
@@ -63,6 +79,25 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		// $cfg['handler'] = $ghhs;
 
 		$this->_c = new \GuzzleHttp\Client($cfg);
+	}
+
+	function setLicense($x)
+	{
+		$l0 = $this->_License;
+		parent::setLicense($x);
+		$l1 = $this->_License;
+
+		if ($l0['id'] != $l1['id']) {
+			$this->auth([
+				'cre' => $this->_cfg['code'],
+				'program' => $this->_cfg['service-key'],
+				'service' => $this->_cfg['service-key'],
+				'company' => $this->_cfg['company'],
+				'license' => $this->_License['id'],
+				// 'license-key' =>
+			]);
+		}
+
 	}
 
 	/**
@@ -103,7 +138,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function get($url)
 	{
-		$res = $this->_c->get($url);
+		$res = $this->request('GET', $url);
 
 		$ret = null;
 		switch ($res->getStatusCode()) {
@@ -118,59 +153,62 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			// _exit_text($res->getStatusCode() . ': ' . $res->getBody());
-			throw new \Exception('Invalid Response from OpenTHC [LRO#080]');
+			throw new \Exception('Invalid Response from OpenTHC [LRO-152]');
 		}
 
 		return $ret;
 	}
 
 	/**
-	 * HTTP GET Utility
+	 * HTTP HEAD Utility
 	 */
 	function head($url)
 	{
-		$res = $this->_c->head($url);
+		$res = $this->request('HEAD', $url);
 		return $res;
 	}
 
 	/**
 	 * HTTP POST Utility
+	 *
+	 * @param string $type is un-used
 	 */
-	function post($url, $arg)
+	function post($url, $arg, $type='multipart/form-data')
 	{
-		$res = $this->_c->post($url, [ 'form_params' => $arg ]);
+		$opt = [
+			'form_params' => $arg,
+		];
+
+		$res = $this->request('POST', $url, $opt);
 
 		$hsc = $res->getStatusCode();
+		$raw = $res->getBody()->getContents();
 
 		$ret = null;
 		switch ($hsc) {
 		case 200:
 		case 201:
 		case 202:
+		case 403:
 		case 404:
 		case 409:
 		case 410:
-			$ret = json_decode($res->getBody(), true);
+			$ret = json_decode($raw, true);
 			$ret['code'] = $hsc;
 			break;
 		default:
-			$buf = $res->getBody()->getContents();
-			var_dump($buf);
-			echo '<div>';
-			echo $buf;
-			echo '</div>';
-			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-193]', $hsc));
 		}
 
 		return $ret;
 	}
 
 	/**
-	 * HTTP Patch utility
+	 * HTTP PATCH utility
 	 */
 	function patch($url, $arg)
 	{
-		$res = $this->_c->patch($url, [ 'json' => $arg ]);
+		$res = $this->request('PATCH', $url, [ 'json' => $arg ]);
 
 		// Copied from $this->post() /mbw
 		$hsc = $res->getStatusCode();
@@ -184,10 +222,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		default:
 			$buf = $res->getBody()->getContents();
 			var_dump($buf);
-			echo '<div>';
-			echo $buf;
-			echo '</div>';
-			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO#103]', $hsc));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-218]', $hsc));
 		}
 
 		return $ret;
@@ -198,156 +233,169 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function delete($url, $arg=null)
 	{
-		if (!empty($arg)) {
-			$arg = array('form_params' => $arg);
-		}
+		$opt = [
+			// 'form_params' => $arg,
+		];
+		$opt = array_merge($opt, $arg ?? []);
 
-		$res = $this->_c->delete($url, $arg);
+		$res = $this->request('DELETE', $url, $opt);
 
 		$hsc = $res->getStatusCode();
+		$raw = $res->getBody()->getContents();
 
 		$ret = null;
 		switch ($hsc) {
 		case 200:
 		case 202:
 		case 204:
+		case 403:
 		case 404:
 		case 410:
 		case 423:
-			$ret = json_decode($res->getBody(), true);
+			$ret = json_decode($raw, true);
 			$ret['code'] = $hsc;
 			break;
 		default:
-			// _exit_text([ 'fail' => 'Invalid Response from OpenTHC [LRO#176]', 'code' => $hsc, 'body' => $res->getBody() ]);
-			throw new \Exception('Invalid Response from OpenTHC [LRO-176]');
+			throw new \Exception(sprintf(_('Invalid Response Code "%03d" from OpenTHC [LRO-250]'), $hsc));
 		}
 
 		return $ret;
 	}
 
 	/**
-		Authnentication Interfaces
-	*/
+	 * Common Request Handler
+	 */
+	function request($v, $u, $o=[])
+	{
+		$o = array_merge($o, [
+			'headers' => [
+				'openthc-service' => $this->_cfg['service-key'], // v1
+				'openthc-company' => $this->_cfg['company'],
+				'openthc-license' => $this->_License['id'],
+			]
+		]);
+
+		return $this->_c->request($v, $u, $o);
+
+	}
+
+
+	/**
+	 * Authentication Interfaces
+	 */
 	function auth($p)
 	{
 		$r = $this->post('/auth/open', $p);
 		return $r;
 	}
 
+	/**
+	 * Ping the Conenction
+	 */
 	function ping()
 	{
 		$r = $this->get('/auth/ping');
 		return $r;
 	}
 
+
 	/**
-		Get the Company interface
-	*/
+	 * Get the Company interface
+	 */
 	function company()
 	{
 		// return new RBE_OpenTHC_Company($this->_c);
 		//$r = $this->_c->get('/config/company');
 		//echo $r->getBody()->__toString();
 		//return json_decode($r->getBody(), true);
-		return new RBE_OpenTHC_Company($this);
+		return new \OpenTHC\CRE\OpenTHC\Company($this);
 	}
 
 	/**
-		Get the Contact interface
-	*/
+	 * Get the Contact interface
+	 */
 	function contact()
 	{
 		//$r = $this->_c->get('/config/contact');
 		//echo $r->getBody()->__toString();
 		//return json_decode($r->getBody(), true);
-		return new RBE_OpenTHC_Contact($this);
+		return new \OpenTHC\CRE\OpenTHC\Contact($this);
 	}
 
 	/**
-		Get the License interface
-	*/
+	 * Get the License interface
+	 */
 	function license()
 	{
 		//$r = $this->_c->get('/config/license');
 		//echo $r->getBody()->__toString();
 		//return json_decode($r->getBody(), true);
-		return new RBE_OpenTHC_License($this);
+		return new \OpenTHC\CRE\OpenTHC\License($this);
+	}
+
+
+	/**
+	 * Get the B2B interface
+	 */
+	function b2b()
+	{
+		return new \OpenTHC\CRE\OpenTHC\B2B($this);
 	}
 
 	/**
-		Get the Batch interface
-	*/
+	 * Retail
+	 */
+	function b2c()
+	{
+		return new \OpenTHC\CRE\OpenTHC\B2C($this);
+	}
+
+	/**
+	 * Get the Batch interface
+	 */
 	// function batch()
 	// {
-	// 	return new RBE_OpenTHC_Batch($this);
+	// 	return new \OpenTHC\CRE\OpenTHC\Batch($this);
 	// }
 
 	/**
-		Get the Lot interface
-	*/
-	function lot()
+	 * Get the Plant interface
+	 */
+	function crop()
 	{
-		return new RBE_OpenTHC_Lot($this);
-	}
-	function inventory() // Legacy Alias
-	{
-		return new RBE_OpenTHC_Lot($this);
+		return new \OpenTHC\CRE\OpenTHC\Crop($this);
 	}
 
 	/**
-		Get the Plant interface
-	*/
-	function plant()
+	 * Get the Inventory interface
+	 */
+	function inventory()
 	{
-		return new RBE_OpenTHC_Plant($this);
+		return new \OpenTHC\CRE\OpenTHC\Inventory($this);
 	}
 
 	/**
-		Get the Product interface
-	*/
+	 * Get the Product interface
+	 */
 	function product()
 	{
-		return new RBE_OpenTHC_Product($this);
+		return new \OpenTHC\CRE\OpenTHC\Product($this);
 	}
 
 	/**
-		Wholesale & Retail
-	*/
-	function b2c()
-	{
-		return new RBE_OpenTHC_Sales($this);
-	}
-	function sales()
-	{
-		return new RBE_OpenTHC_Sales($this);
-	}
-
-	/**
-		Get the Strain interface
-	*/
-	function strain()
-	{
-		return new RBE_OpenTHC_Strain($this);
-	}
-
-	/**
-		Get the B2B interface
-	*/
-	function b2b()
-	{
-		return new RBE_OpenTHC_Transfer($this);
-	}
-	function transfer() // Legacy Name
-	{
-		return new RBE_OpenTHC_Transfer($this);
-	}
-
-	/**
-		Get the Section interface
-	*/
+	 * Get the Section interface
+	 */
 	function section()
 	{
-		return new RBE_OpenTHC_Section($this);
+		return new \OpenTHC\CRE\OpenTHC\Section($this);
+	}
+
+	/**
+	 * Get the Variety interface
+	 */
+	function variety()
+	{
+		return new \OpenTHC\CRE\OpenTHC\Variety($this);
 	}
 
 }
