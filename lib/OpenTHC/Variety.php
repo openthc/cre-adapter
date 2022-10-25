@@ -11,26 +11,6 @@ class Variety extends Base
 {
 	protected $_path = '/variety';
 
-	function single($oid)
-	{
-		$url = sprintf('/variety/%s', rawurlencode($oid));
-		$res = $this->_cre->get($url);
-		return $res;
-	}
-
-	/**
-	 * Delete the Variety
-	 * @param [type] $oid [description]
-	 * @param [type] $arg [description]
-	 * @return [type] [description]
-	 */
-	function delete($oid, $arg=null)
-	{
-		$url = sprintf('/variety/%s', $oid);
-		$ret = $this->_cre->delete($url);
-		return $ret;
-	}
-
 	function sync($oid, $msg)
 	{
 		$res = $this->single($oid);
