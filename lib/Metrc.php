@@ -117,7 +117,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	{
 		try {
 			$res = $this->uomList();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
 				'data' => null,
@@ -127,7 +127,7 @@ class Metrc extends \OpenTHC\CRE\Base
 
 		try {
 			$res = $this->packageTypeList();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
 				'data' => null,

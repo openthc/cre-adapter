@@ -184,7 +184,7 @@ class Base
 		// curl_setopt($req, CURLOPT_SSLVERSION, 3); // 2, 3 or GnuTLS
 		curl_setopt($req, CURLOPT_TIMEOUT, 600);
 
-		curl_setopt($req, CURLOPT_USERAGENT, 'OpenTHC/420.21.060');
+		curl_setopt($req, CURLOPT_USERAGENT, 'OpenTHC/v420.22.297');
 
 		return $req;
 	}

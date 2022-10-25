@@ -34,7 +34,7 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 		$x = $this->deliveries($id);
 		$ret['deliveries'] = $x['data'];
 		if (count($ret['deliveries']) > 1) {
-			throw new Exception('Cannot Handle METRC Multistop [RMT#021]');
+			throw new \Exception('Cannot Handle METRC Multistop [RMT#021]');
 		}
 		foreach ($ret['deliveries'] as $d) {
 			$x = $this->packages($d['Id']);
