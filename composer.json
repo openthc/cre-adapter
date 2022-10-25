@@ -3,6 +3,9 @@
 	"description": "OpenTHC Cannabis Reporting Engine API Adapters",
 	"license": "MIT",
 	"autoload": {
+		"exclude-from-classmap": [
+			"vendor/erusev/parsedown-extra/test"
+		],
 		"files": [
 			"lib/CRE.php"
 		],
@@ -19,6 +22,7 @@
 		"ext-sockets": "*"
 	},
 	"require-dev": {
+		"openthc/common": "dev-master",
 		"phpstan/phpstan": "1.7.8",
 		"phpunit/phpunit": "9.5.20"
 	}
