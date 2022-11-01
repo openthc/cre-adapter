@@ -15,15 +15,12 @@
 		}
 	},
 	"require": {
-		"php": ">=7.3.0",
-		"ext-curl": "*",
-		"ext-date": "*",
-		"ext-json": "*",
-		"ext-sockets": "*"
+		"chrome-php/chrome": "1.6.1",
+		"openthc/common": "dev-master"
 	},
 	"require-dev": {
-		"openthc/common": "dev-master",
 		"phpstan/phpstan": "1.7.8",
-		"phpunit/phpunit": "9.5.20"
+		"phpunit/phpunit": "9.5.20",
+		"sebastian/phpcpd": "6.0.3"
 	}
 }
