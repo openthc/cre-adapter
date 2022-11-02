@@ -15,7 +15,7 @@
 		}
 	},
 	"require": {
-		"chrome-php/chrome": "1.6.1",
+		"chrome-php/chrome": "1.7.1",
 		"openthc/common": "dev-master"
 	},
 	"require-dev": {
