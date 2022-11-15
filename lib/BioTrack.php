@@ -255,6 +255,10 @@ class BioTrack extends \OpenTHC\CRE\Base
 			$this->_sid = $x['session'];
 		}
 
+		if ( ! empty($x['training'])) {
+			$this->setTestMode();
+		}
+
 	}
 
 	/**
