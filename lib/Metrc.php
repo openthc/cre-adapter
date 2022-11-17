@@ -328,6 +328,12 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\Lot($this);
 	}
 
+	function patient()
+	{
+		return new Metrc\Patient($this);
+	}
+
+	
 	function product()
 	{
 		return new Metrc\Product($this);
