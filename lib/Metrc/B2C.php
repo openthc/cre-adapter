@@ -60,4 +60,21 @@ class B2C extends \OpenTHC\CRE\Metrc\Base
 		return $res;
 	}
 
+	function customers($arg=null)
+	{
+		$url = '/sales/v1/customertypes';
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
+
+	function patientRegistrationLocations($arg=null)
+	{
+		$url = '/sales/v1/patientregistration/locations';
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
 }
