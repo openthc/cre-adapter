@@ -178,16 +178,16 @@ class WCIA extends \OpenTHC\CRE\Base
 			case 'ENDPRODUCT/USABLE MARIJUANA':                 return '018NY6XC00PTGMB39NHCZ8EDEZ';
 			case 'ENDPRODUCT/WASTE':                            return '018NY6XC00PT8AXVZGNZN3A0QT';
 			case 'HARVESTEDMATERIAL/FLOWER LOT':                return '018NY6XC00PTAF3TFBB51C8HX6'; // Grade A Bulk/Lot
-			case 'HARVEST_MATERIALS/FLOWER_LOTS':               return '018NY6XC00PTAF3TFBB51C8HX6'; // Grade A Bulk/Lot
+			case 'HARVEST_MATERIALS/FLOWER_LOTS':               return '018NY6XC00PTAF3TFBB51C8HX6'; // Grade A Bulk/Lot - Cultivera Typo
 			case 'HARVESTEDMATERIAL/FLOWER UNLOTTED':           return '018NY6XC00PTZZWCH7XVREHK6T'; // Grade A Bulk/Net
 			case 'HARVESTEDMATERIAL/MARIJUANA MIX':             return '018NY6XC00PT63ECNBAZH32YC3'; // Grade C Bulk
 			case 'HARVESTEDMATERIAL/OTHER MATERIAL LOT':        return '018NY6XC00PT8ZPGMPR8H2TAXH'; // Grade B Bulk/Lot
-			case 'HARVEST_MATERIALS/OTHER_MATERIAL_LOTS':       return '018NY6XC00PT8ZPGMPR8H2TAXH'; // Grade B Bulk/Lot
+			case 'HARVEST_MATERIALS/OTHER_MATERIAL_LOTS':       return '018NY6XC00PT8ZPGMPR8H2TAXH'; // Grade B Bulk/Lot - Cultivera Typo
 			case 'HARVESTEDMATERIAL/OTHER MATERIAL UNLOTTED':   return '018NY6XC00PTGBW49J6YD3WM84'; // Grade B Bulk/Net
 			case 'HARVESTEDMATERIAL/WASTE':                     return '018NY6XC00PT8AXVZGNZN3A0QT';
 			case 'HARVESTEDMATERIAL/WET FLOWER':                return '018NY6XC00PTZZWCH7XVREHK6T'; // Grade A Bulk/Lot
 			case 'HARVESTEDMATERIAL/WET OTHER MATERIAL':        return '018NY6XC00PTGBW49J6YD3WM84'; // Grade B Bulk/Net
-			case 'INTERMEDIATEPRODUCT/CBD':	                    return '';
+			case 'INTERMEDIATEPRODUCT/CBD':                     return '';
 			case 'INTERMEDIATEPRODUCT/CO2 CONCENTRATE':         return '018NY6XC00PTR9M5Z9S4T31C4R';
 			case 'INTERMEDIATEPRODUCT/CONCENTRATE FOR INHALATION': return '018NY6XC00PTNPA4TPCYSKD5XN';
 			case 'INTERMEDIATEPRODUCT/ETHANOL CONCENTRATE':     return '018NY6XC00PT684JJSXN8RAWBM';
@@ -258,6 +258,100 @@ class WCIA extends \OpenTHC\CRE\Base
 			'head' => $res_head,
 			'meta' => $inf,
 		];
+
+	}
+
+	/**
+	 * B2B Data GET Helper
+	 */
+	function url_get_b2b($source_url)
+	{
+		$ret = [
+			'@context' => [],
+			'@origin' => '',
+			'@source' => [],
+			'@status' => [],
+		];
+
+		$ret['@origin'] = trim($source_url);
+
+	}
+
+	/**
+	 * Lab Data GET Helper
+	 */
+	function url_get_lab($source_url) : array
+	{
+		$ret = [
+			'@context' => [],
+			'@origin' => '',
+			'@source' => [],
+			'@status' => [],
+		];
+
+		$ret['@origin'] = trim($source_url);
+
+		if ( ! preg_match('/^https?:\/\//', $ret['@origin'])) {
+			return [ '@status' => [
+				'fail' => _('Invalid Link for Laboratory Data Transfer [CLW-296]')
+			]];
+		}
+
+		$req = _curl_init($ret['@origin']);
+		$res = curl_exec($req);
+		$inf = curl_getinfo($req);
+		curl_close($req);
+
+		$mime_type = strtolower($inf['content_type']);
+		if (preg_match('/json.+charset/', $mime_type)) {
+			$ret['@status'] = [
+				'warn' => _('The provided data-link is not compliant with well defined internet standards (RFC4627, RFC7159) [CLW-309]')
+			];
+		}
+
+		$mime_type = strtok($mime_type, ';');
+		// $mime_type = strtok($mime_type, ',');
+		// $mime_type = strtok($mime_type, '+');
+		switch ($mime_type) {
+			case 'application/json';
+				// OK
+				break;
+			default:
+				$ret['@status'] = [
+					'fail' => sprintf(_('Invalid Link for Lab Data Transfer; Unhandled Content Type <em>"%s"</em> [CLW-322]'), __h($inf['content_type']))
+				];
+				return $ret;
+		}
+
+		$doc = json_decode($res, true);
+		// $doc['@origin'] = $source_url;
+
+		if ( 'WCIA Lab Result Schema' != $doc['document_name']) {
+			$ret['@status']['fail'] = _('Invalid Content; Not a valid WCIA document [CLW-331]');
+			return $ret;
+		}
+
+		// Nobody fucking cares about this version, just ignore it and evaluate the data-model
+		switch ($doc['document_schema_version']) {
+			case '1.0.0.0':
+			case '1.1.0.0':
+			case '1.2.0.0':
+			case '1.2.0':
+			case '1.3.0':
+				$ret['@status']['warn'] = _('Sender should update their document schema version [CLW-342]');
+				break;
+			case '2.0.0': // 2022-04-31?
+			case '2.1.0': // 2022-10-01
+				break;
+			default:
+				$ret['@status']['warn'] = _('Sender has a crazy document schema version [CLW-348]');
+				break;
+		}
+
+		$ret['@context'] = 'https://cannabisintegratorsalliance.com/v2022.021/lab/metric';
+		$ret['@source'] = $doc;
+
+		return $ret;
 
 	}
 
