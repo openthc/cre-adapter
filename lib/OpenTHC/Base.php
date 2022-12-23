@@ -43,7 +43,7 @@ class Base
 	 * @param null $arg [description]
 	 * @return array OpenTHC Response
 	 */
-	function delete($oid, $arg=null)
+	function delete(string $oid, $arg=null)
 	{
 		if (empty($this->_path)) {
 			throw new \Exception('Invalid State [COB-049]');
@@ -55,6 +55,9 @@ class Base
 		return $ret;
 
 	}
+
+	// @deprecated function from ages ago
+	// function all($filter=null) { return $this->search($filter); }
 
 	/**
 	 * Search for Things
@@ -78,7 +81,7 @@ class Base
 	/**
 	 * Get One Thing
 	 */
-	function single($oid)
+	function single(string $oid)
 	{
 		if (empty($this->_path)) {
 			throw new \Exception('Invalid State [COB-084]');
@@ -97,10 +100,14 @@ class Base
 	 * @param array Thing ID
 	 * @param array of Thing data
 	 */
-	function update($oid, $obj)
+	function update(string $oid, $obj)
 	{
 		if (empty($this->_path)) {
 			throw new \Exception('Invalid State [COB-103]');
+		}
+
+		if (empty($oid)) {
+			throw new \Exception('Invalid Object ID [COB-110]');
 		}
 
 		$url = sprintf('%s/%s', $this->_path, rawurlencode($oid));
