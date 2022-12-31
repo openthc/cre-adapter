@@ -139,9 +139,11 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Maps OpenTHC Product ID to WCIA Category & Type
 	 *
+	 * @return Array
 	 */
-	static function map_product_type_to_names(string $x)
+	static function map_product_type_id2ct(string $x)
 	{
 		if (empty($x)) {
 			return null;
@@ -185,10 +187,9 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 * Remaps the WCIA Product Type
-	 * @return ULID OpenTHC Style Product Type ULID
+	 * Maps WCIA Product Type and Category to OpenTHC ULID
 	 */
-	static function product_type_map_id($t0, $t1)
+	static function map_product_type_ct2id($t0, $t1)
 	{
 		$pt = strtoupper(sprintf('%s/%s', $t0, $t1));
 		switch ($pt) {
@@ -234,7 +235,14 @@ class WCIA extends \OpenTHC\CRE\Base
 		}
 
 		return '018NY6XC00PR0DUCTTYPE00001'; // -orphan-
+	}
 
+	/**
+	 * Legacy Alias
+	 */
+	static function product_type_map_id($t0, $t1)
+	{
+		return self::map_product_type_ct2id($t0, $t1);
 	}
 
 	/**
