@@ -13,23 +13,6 @@ class WCIA extends \OpenTHC\CRE\Base
 	const ENGINE = 'wcia';
 
 	/**
-	 * Could build a static map here?
-	 */
-	private static $product_type_map = [
-		'018NY6XC00PT25F95HPG583AJB' => 'EndProduct/Capsule',
-		'018NY6XC00PTBNDY5VJ8JQ6NKP' => 'EndProduct/Solid Edible',
-		'018NY6XC00PTAF3TFBB51C8HX6' => 'HarvestedMaterial/Flower Lot',
-		'018NY6XC00PTR9M5Z9S4T31C4R' => 'IntermediateProduct/CO2 Concentrate',
-		'018NY6XC00PT2BKFPCEFB9G1Z2' => 'Bulk / Plant Tissue',
-		'018NY6XC00PT3EZZ4GN6105M64' => 'Bulk / Immature Plant | Clone',
-		'018NY6XC00PTRPPDT8NJY2MWQW' => 'Bulk / Mature Plant',
-		'018NY6XC00PTFY48D1136W0S0J' => 'Bulk / Plant Sample',
-		// '018NY6XC00PT2BKFPCEFB9G1Z2' => 'Plant Tissue',
-		// '018NY6XC00PT3EZZ4GN6105M64' => 'Clones',
-		// '018NY6XC00PTFY48D1136W0S0J' => 'Plant Sample/Non-Mandatory',
-	];
-
-	/**
 	 *
 	 */
 	function __construct() { /* Not Yet */ }
@@ -156,6 +139,52 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 *
+	 */
+	static function map_product_type_to_names(string $x)
+	{
+		if (empty($x)) {
+			return null;
+		}
+
+		switch ($x) {
+			// case '018NY6XC00PR0DUCTTYPE00000': // -system-
+			// case '018NY6XC00PR0DUCTTYPE00001': return 'HarvestedMaterial'; // -orphan-
+			case '018NY6XC00PT0WQP2XV5KNP395': return [ 'EndProduct', 'Topical Ointment' ];
+			case '018NY6XC00PT25F95HPG583AJB': return [ 'EndProduct', 'Capsule' ];
+			case '018NY6XC00PT2BKFPCEFB9G1Z2': return [ 'PropagationMaterial', 'Plant' ];
+			case '018NY6XC00PT3EZZ4GN6105M64': return [ 'PropagationMaterial', 'Plant' ];
+			case '018NY6XC00PT63ECNBAZH32YC3': return [ 'IntermediateProduct', 'Marijuana Mix' ];
+			case '018NY6XC00PT684JJSXN8RAWBM': return [ 'IntermediateProduct', 'Ethanol Concentrate' ];
+			case '018NY6XC00PT7N83PFNCX8ZFEF': return [ 'EndProduct', 'Liquid Edible' ];
+			case '018NY6XC00PT8ZPGMPR8H2TAXH': return [ 'HarvestedMaterial', 'Other Material Lot' ];
+			case '018NY6XC00PTAF3TFBB51C8HX6': return [ 'HarvestedMaterial', 'Flower Lot' ];
+			case '018NY6XC00PTBJ3G5FDAJN60EX': return [ 'EndProduct', 'Suppository' ];
+			case '018NY6XC00PTBNDY5VJ8JQ6NKP': return [ 'EndProduct', 'Solid Edible' ];
+			case '018NY6XC00PTCS5AZV189X1YRK': return [ 'IntermediateProduct', 'Hydrocarbon Concentrate' ];
+			case '018NY6XC00PTD9Q4QPFBH0G9H2': return [ 'EndProduct', 'Tincture' ];
+			case '018NY6XC00PTFY48D1136W0S0J': return [ 'PropagationMaterial', 'Plant' ];
+			case '018NY6XC00PTGBW49J6YD3WM84': return [ 'HarvestedMaterial', 'Other Material Unlotted' ];
+			case '018NY6XC00PTGMB39NHCZ8EDEZ': return [ 'EndProduct', 'Usable Marijuana' ];
+			case '018NY6XC00PTGRX4Q9SZBHDA5Z': return [ 'EndProduct', 'Marijuana Mix Infused' ];
+			case '018NY6XC00PTHE7GWB4QTG4JKZ': return [ 'EndProduct', 'Sample Jar' ];
+			case '018NY6XC00PTHP9NMJ1RE6TA62': return [ 'IntermediateProduct', 'Food Grade Solvent Concentrate' ];
+			case '018NY6XC00PTHPB8YG56S0MCAC': return [ 'EndProduct', 'Transdermal' ];
+			case '018NY6XC00PTKYYGMRSKV4XNH7': return [ 'EndProduct', 'Marijuana Mix Packaged' ];
+			case '018NY6XC00PTNPA4TPCYSKD5XN': return [ 'IntermediateProduct', 'Non-Solvent Based Concentrate' ];
+			case '018NY6XC00PTR9M5Z9S4T31C4R': return [ 'IntermediateProduct', 'CO2 Concentrate' ];
+			case '018NY6XC00PTRPPDT8NJY2MWQW': return [ 'PropagationMaterial', 'Plant' ];
+			case '018NY6XC00PTSF5NTC899SR0JF': return [ 'EndProduct', 'Marijuana Mix Infused' ]; // Concentrate For Inhalation
+			case '018NY6XC00PTY5XPA4KJT6W3K4': return [ 'IntermediateProduct', 'Infused Cooking Medium' ];
+			case '018NY6XC00PTY9THKSEQ8NFS1J': return [ 'PropagationMaterial', 'Seed' ];
+			case '018NY6XC00PTZZWCH7XVREHK6T': return [ 'HarvestedMaterial', 'Flower Unlotted' ];
+			// case '018NY6XC00PT8AXVZGNZN3A0QT': return 'Waste';
+			default:
+				throw new \Exception("Type '$x' Not Handled [CLC-194]");
+		}
+	}
+
+	/**
 	 * Remaps the WCIA Product Type
 	 * @return ULID OpenTHC Style Product Type ULID
 	 */
@@ -206,14 +235,6 @@ class WCIA extends \OpenTHC\CRE\Base
 
 		return '018NY6XC00PR0DUCTTYPE00001'; // -orphan-
 
-	}
-
-	/**
-	 *
-	 */
-	static function product_type_map_name($id)
-	{
-		return self::$product_type_map[ $id ];
 	}
 
 	/**
