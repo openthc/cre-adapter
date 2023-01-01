@@ -73,7 +73,7 @@ class WCIA extends \OpenTHC\CRE\Base
 				'unit_uom' => $b2b_item0['unit_weight_uom']
 			];
 			$b2b_item1['product_type'] = [
-				'id' => self::product_type_map_id($b2b_item0['inventory_category'], $b2b_item0['inventory_type'])
+				'id' => self::map_product_type_ct2id($b2b_item0['inventory_category'], $b2b_item0['inventory_type'])
 			];
 			$b2b_item1['variety'] = [
 				'id' => '',
@@ -235,14 +235,6 @@ class WCIA extends \OpenTHC\CRE\Base
 		}
 
 		return '018NY6XC00PR0DUCTTYPE00001'; // -orphan-
-	}
-
-	/**
-	 * Legacy Alias
-	 */
-	static function product_type_map_id($t0, $t1)
-	{
-		return self::map_product_type_ct2id($t0, $t1);
 	}
 
 	/**
