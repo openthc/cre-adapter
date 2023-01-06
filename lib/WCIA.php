@@ -230,8 +230,8 @@ class WCIA extends \OpenTHC\CRE\Base
 			case 'PROPAGATIONMATERIAL/PLANT':                   return '018NY6XC00PTRPPDT8NJY2MWQW';
 			case 'PROPAGATIONMATERIAL/SEED':                    return '018NY6XC00PTY9THKSEQ8NFS1J';
 			default:
-				var_dump($x);
-				throw new \Exception(_(sprintf('Unexpected Product Type "%s"', $pt)));
+				//var_dump($x);
+				throw new \Exception(_(sprintf('Product Type "%s" Invalid in WCIA Specification [CLW-234]', $pt)));
 		}
 
 		return '018NY6XC00PR0DUCTTYPE00001'; // -orphan-
