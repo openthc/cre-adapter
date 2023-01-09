@@ -1,12 +1,10 @@
 <?php
 /**
- * A Contact
- * What they call a User, we call a Contact
- */
+	A Contact
+	What they call a User, we call a Contact
+*/
 
-namespace OpenTHC\CRE\LeafData;
-
-class Contact extends \OpenTHC\CRE\LeafData\Base
+class RBE_LeafData_Contact extends RBE_LeafData_Base
 {
 	protected $_path = '/users';
 
@@ -14,14 +12,19 @@ class Contact extends \OpenTHC\CRE\LeafData\Base
 	{
 		$arg = array('user' => array());
 		$arg['user'][] = $x;
-		$res = $this->_client->call('POST', $this->_path, $arg);
+		$res = $this->_client->call('POST', '/users', $arg);
 		return $res;
 	}
 
-	function update($obj)
+	function delete($x)
 	{
-		$arg = [ 'users' => [ $obj ] ];
-		$res = $this->_client->call('POST', sprintf('%s/update', $this->_path), $arg);
+		$res = $this->_client->call('DELETE', sprintf('/users/%s', $x));
+		return $res;
+	}
+
+	function update($x)
+	{
+		$res = $this->_client->call('POST', '/users/update', $x);
 		return $res;
 	}
 

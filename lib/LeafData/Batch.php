@@ -3,9 +3,7 @@
  * Handle Batch Types
  */
 
-namespace OpenTHC\CRE\LeafData;
-
-class Batch extends \OpenTHC\CRE\LeafData\Base
+class RBE_LeafData_Batch extends RBE_LeafData_Base
 {
 	protected $_path = '/batches';
 
@@ -16,15 +14,21 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 		return $res;
 	}
 
+	function delete($x)
+	{
+		$res = $this->_client->call('DELETE', sprintf('/batches/%s', $x));
+		return $res;
+	}
+
 	function update($x)
 	{
 		if ('plant' == $x['type']) {
 			if (empty($x['origin'])) {
 				$x['origin'] = 'plant';
-			// 	throw new \Exception('Missing "origin" [RLB#027]');
+			// 	throw new Exception('Missing "origin" [RLB#027]');
 			}
 			if (!isset($x['num_plants'])) {
-				throw new \Exception('Missing "num_plants" [RLB#030]');
+				throw new Exception('Missing "num_plants" [RLB#030]');
 			}
 		}
 
@@ -76,6 +80,18 @@ class Batch extends \OpenTHC\CRE\LeafData\Base
 
 		return null;
 
+	}
+
+	/**
+		Sync this Object
+	*/
+	function sync($x, $m)
+	{
+		$rls = new RBE_LeafData_Sync($this->_client);
+		$rlsx = new RBE_LeafData_Sync_Batch($rls, $this->_client);
+		$o = $this->single($x);
+		$r = $rlsx->single($o, $m);
+		return $r;
 	}
 
 }

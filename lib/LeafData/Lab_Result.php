@@ -3,9 +3,7 @@
  * LeafData Lab Result Interface
  */
 
-namespace OpenTHC\CRE\LeafData;
-
-class Lab_Result extends \OpenTHC\CRE\LeafData\Base
+class RBE_LeafData_Lab_Result extends RBE_LeafData_Base
 {
 	protected $_path = '/lab_results';
 
@@ -48,6 +46,18 @@ class Lab_Result extends \OpenTHC\CRE\LeafData\Base
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Sync this Object
+	 */
+	function sync($x, $m)
+	{
+		$o = $this->single($x);
+		$rls = new RBE_LeafData_Sync($this->_client);
+		$rlsx = new RBE_LeafData_Sync_Lab_Result($rls, $this->_client);
+		$r = $rlsx->single($o, $m);
+		return $r;
 	}
 
 }

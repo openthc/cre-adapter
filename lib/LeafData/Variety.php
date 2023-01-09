@@ -1,17 +1,16 @@
 <?php
 /**
- * LeafData Strain API Interface
+ * LeafData Variety API Interface
  */
 
-namespace OpenTHC\CRE\LeafData;
-
-class Variety extends \OpenTHC\CRE\LeafData\Base
+class RBE_LeafData_Variety extends RBE_LeafData_Base
 {
 	protected $_path = '/strains';
 
+
 	/**
 		@override
-		Had to Over-Ride this cause Strain doesn't filter in LeafData
+		Had to Over-Ride this cause Variety doesn't filter in LeafData
 	*/
 	function single($x)
 	{
@@ -55,6 +54,18 @@ class Variety extends \OpenTHC\CRE\LeafData\Base
 		$arg = array('strain' => $x);
 		$res = $this->_client->call('POST', '/strains/update', $arg);
 		return $res;
+	}
+
+	/**
+		Sync this Object
+	*/
+	function sync($x, $m)
+	{
+		$rls = new RBE_LeafData_Sync($this->_client);
+		$rlsx = new RBE_LeafData_Sync_Variety($rls, $this->_client);
+		$x = $this->single($x);
+		$r = $rlsx->single($x, $m);
+		return $r;
 	}
 
 }

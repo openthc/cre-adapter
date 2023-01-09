@@ -1,11 +1,9 @@
 <?php
 /**
- * Base Class for LeafData Objects
- */
 
-namespace OpenTHC\CRE\LeafData;
+*/
 
-class Base
+class RBE_LeafData_Base
 {
 	protected $_client;
 	protected $_path = '';
@@ -13,12 +11,6 @@ class Base
 	function __construct($c)
 	{
 		$this->_client = $c;
-	}
-
-	function delete($oid)
-	{
-		$res = $this->_client->call('DELETE', sprintf('%s/%s', $this->_path, $oid));
-		return $res;
 	}
 
 	/**
@@ -39,8 +31,8 @@ class Base
 
 
 	/**
-	 * @param $x The GUID to GET
-	 */
+		@param $x The GUID to GET
+	*/
 	function single($x)
 	{
 		$arg = http_build_query(array(
