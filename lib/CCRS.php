@@ -15,7 +15,18 @@ class CCRS extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'ccrs';
 
+	const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36';
+
 	protected $cookie_list = [];
+
+	protected $_service_key;
+
+	function __construct($cfg)
+	{
+		parent::__construct($cfg);
+		$this->cookie_list = $cfg['cookie-list'];
+		$this->_service_key = $cfg['service-key'];
+	}
 
 	/**
 	 *
@@ -33,15 +44,15 @@ class CCRS extends \OpenTHC\CRE\Base
 		]);
 
 		$page = $b->createPage();
-		$page->setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36');
+		$page->setUserAgent(self::USER_AGENT);
 
 		// Main Page
-		$page->navigate('https://cannabisreporting.lcb.wa.gov/')->waitForNavigation();
+		$page->navigate($this->_api_base)->waitForNavigation();
 		$url0 = $page->getCurrentUrl();
 		echo "url0:{$url0}\n";
 
 		// Needs Authentication?
-		if (preg_match('/^https:\/\/secureaccess\.wa\.gov\/FIM2\/sps\/auth/', $url0)) {
+		if (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/auth/', $url0)) {
 
 			// POST the Form?
 			$code = sprintf('document.querySelector("#username").value = "%s";', $username);
@@ -60,9 +71,9 @@ class CCRS extends \OpenTHC\CRE\Base
 			$url1 = $page->getCurrentUrl();
 			echo "url1:{$url1}\n";
 			// $page->screenshot()->saveToFile('ccrs1.png');
-		} elseif (preg_match('/https:\/\/secureaccess\.wa\.gov\/FIM2\/sps\/sawidp\/saml20\/login/', $url0)) {
+		} elseif (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/sawidp\/saml20\/login/', $url0)) {
 			// OK ? Only see this one intermittently
-		} elseif (preg_match('/^https:\/\/cannabisreporting\.lcb\.wa\.gov\//', $url0)) {
+		} elseif (preg_match(sprintf('/%s/', preg_quote($this->_api_base)), $url0)) {
 			// Authenticated
 		} else {
 			echo "No Match: $url0\n";
@@ -72,14 +83,66 @@ class CCRS extends \OpenTHC\CRE\Base
 		$cookie_out = [];
 		$cookie_jar = $page->getAllCookies();
 		foreach ($cookie_jar as $c) {
-			$a = (array)$c;
-			$a = array_shift($a);
-			$cookie_out[] = $a;
+			$c = (array)$c;
+			$c = array_shift($c);
+			if (preg_match('/lcb\.wa\.gov/', $c['domain'])) {
+				$cookie_out[] = $c;
+			}
 		}
 
 		$this->cookie_list = $cookie_out;
 
 		return $cookie_out;
+
+	}
+
+	/**
+	 *
+	 */
+	function ping()
+	{
+
+		// $cookie_file = sprintf('%s/var/ccrs-cookies.json', APP_ROOT);
+		// if ( ! is_file($cookie_file)) {
+		// 	echo "Cannot find Cookie File\n";
+		// 	exit(1);
+		// }
+		// $cookie_list0 = json_decode(file_get_contents($cookie_file), true);
+
+		// Build CURL cookies from configured cookies
+		$cookie_list = [];
+		foreach ($this->cookie_list as $c) {
+			$cookie_list[] = sprintf('%s=%s', $c['name'], $c['value']);
+		}
+		sort($cookie_list);
+
+		// Get to Verify Access and get RVT
+		$req = __curl_init($this->_api_base);
+		// curl_setopt($req, CURLOPT_VERBOSE, true);
+		curl_setopt($req, CURLOPT_USERAGENT, self::USER_AGENT);
+		curl_setopt($req, CURLOPT_HTTPHEADER, [
+			'accept: text/html',
+			sprintf('authority: %s', parse_url($this->_api_base, PHP_URL_HOST)),
+			sprintf('cookie: %s', implode('; ', $cookie_list)),
+			sprintf('origin: %s', $this->_api_base),
+			sprintf('referer: %s', $this->_api_base),
+		]);
+		$res = curl_exec($req);
+		$inf = curl_getinfo($req);
+
+		switch ($inf['http_code']) {
+			case '200':
+				// Hate "parsing" with regex
+				$csrf = preg_match('/<input name="__RequestVerificationToken" type="hidden" value="([^"]+)" \/>/', $res, $m) ? $m[1] : null;
+				return [
+					'code' => 200,
+					'csrf' => $csrf,
+				];
+			default:
+				return [
+					'code' => $inf['http_code'],
+				];
+		}
 
 	}
 
@@ -173,17 +236,13 @@ class CCRS extends \OpenTHC\CRE\Base
 	{
 		// HURR-DURR
 		// Can't use fputcsv because the LCB system is confused by quoted fields on this file
-		// So we replace those with HEX notation.
+		// So we replace those with SPACE notation.
 		// And their exports are in TSV, so we make sure we don't send those either.
 		array_walk($row, function(&$val, $key) {
-			// surly this won't be a problem ;p /djb 2021-12-02
-			$len = strlen($val);
-			$val = str_replace("\t", '%09', $val); // TAB
-			$val = str_replace('"', '%22', $val); // Double Quote
-			$val = str_replace(',', '%2C', $val); // Comma
+			$val = str_replace("\t", ' ', $val); // TAB
+			$val = str_replace('"', ' ', $val); // Double Quote
+			$val = str_replace(',', ' ', $val); // Comma
 			$val = trim($val);
-			// Fix length now that we've scrambled it
-			$val = substr($val, 0, $len);
 		});
 
 		// it's unquoted and not
@@ -208,14 +267,14 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'PropagationMaterial';
 			case '018NY6XC00PT3EZZ4GN6105M64': return 'PropagationMaterial';
 			case '018NY6XC00PT63ECNBAZH32YC3': return 'IntermediateProduct';
-			case '018NY6XC00PT684JJSXN8RAWBM': return 'IntermediateProduct';
+			case '018NY6XC00PT684JJSXN8RAWBM': return 'EndProduct';
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'EndProduct';
 			// case '': return null; // Waste
 			case '018NY6XC00PT8ZPGMPR8H2TAXH': return 'HarvestedMaterial';
 			case '018NY6XC00PTAF3TFBB51C8HX6': return 'HarvestedMaterial';
 			case '018NY6XC00PTBJ3G5FDAJN60EX': return 'EndProduct';
 			case '018NY6XC00PTBNDY5VJ8JQ6NKP': return 'EndProduct';
-			case '018NY6XC00PTCS5AZV189X1YRK': return 'IntermediateProduct';
+			case '018NY6XC00PTCS5AZV189X1YRK': return 'EndProduct';
 			case '018NY6XC00PTD9Q4QPFBH0G9H2': return 'EndProduct';
 			case '018NY6XC00PTFY48D1136W0S0J': return 'PropagationMaterial';
 			case '018NY6XC00PTGBW49J6YD3WM84': return 'HarvestedMaterial';
@@ -225,8 +284,8 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTHP9NMJ1RE6TA62': return 'IntermediateProduct';
 			case '018NY6XC00PTHPB8YG56S0MCAC': return 'EndProduct';
 			case '018NY6XC00PTKYYGMRSKV4XNH7': return 'EndProduct';
-			case '018NY6XC00PTNPA4TPCYSKD5XN': return 'IntermediateProduct';
-			case '018NY6XC00PTR9M5Z9S4T31C4R': return 'IntermediateProduct';
+			case '018NY6XC00PTNPA4TPCYSKD5XN': return 'EndProduct';
+			case '018NY6XC00PTR9M5Z9S4T31C4R': return 'EndProduct';
 			case '018NY6XC00PTRPPDT8NJY2MWQW': return 'PropagationMaterial';
 			case '018NY6XC00PTSF5NTC899SR0JF': return 'EndProduct';
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'IntermediateProduct';
@@ -250,7 +309,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT25F95HPG583AJB': return 'Capsule';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'Plant';
 			case '018NY6XC00PT3EZZ4GN6105M64': return 'Plant';
-			case '018NY6XC00PT63ECNBAZH32YC3': return 'Marijuana Mix';
+			case '018NY6XC00PT63ECNBAZH32YC3': return 'Cannabis Mix';
 			case '018NY6XC00PT684JJSXN8RAWBM': return 'Ethanol Concentrate';
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'Liquid Edible';
 			// case '018NY6XC00PT8AXVZGNZN3A0QT': return 'Waste';
@@ -262,40 +321,22 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTD9Q4QPFBH0G9H2': return 'Tincture';
 			case '018NY6XC00PTFY48D1136W0S0J': return 'Plant';
 			case '018NY6XC00PTGBW49J6YD3WM84': return 'Other Material Unlotted';
-			case '018NY6XC00PTGMB39NHCZ8EDEZ': return 'Usable Marijuana';
-			case '018NY6XC00PTGRX4Q9SZBHDA5Z': return 'Marijuana Mix Infused';
+			case '018NY6XC00PTGMB39NHCZ8EDEZ': return 'Usable Cannabis';
+			case '018NY6XC00PTGRX4Q9SZBHDA5Z': return 'Cannabis Mix Infused';
 			case '018NY6XC00PTHE7GWB4QTG4JKZ': return 'Sample Jar';
 			case '018NY6XC00PTHP9NMJ1RE6TA62': return 'Food Grade Solvent Concentrate';
 			case '018NY6XC00PTHPB8YG56S0MCAC': return 'Transdermal';
-			case '018NY6XC00PTKYYGMRSKV4XNH7': return 'Marijuana Mix Packaged';
+			case '018NY6XC00PTKYYGMRSKV4XNH7': return 'Cannabis Mix Packaged';
 			case '018NY6XC00PTNPA4TPCYSKD5XN': return 'Non-Solvent Based Concentrate';
 			case '018NY6XC00PTR9M5Z9S4T31C4R': return 'CO2 Concentrate';
 			case '018NY6XC00PTRPPDT8NJY2MWQW': return 'Plant';
-			case '018NY6XC00PTSF5NTC899SR0JF': return 'Marijuana Mix Infused'; // Concentrate For Inhalation
+			case '018NY6XC00PTSF5NTC899SR0JF': return 'Cannabis Mix Infused'; // Concentrate For Inhalation
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'Infused Cooking Medium';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'Seed';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'Flower Unlotted';
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-194]");
 		}
-	}
-
-	/**
-	 * Ping to BONG for License Status
-	 */
-	function ping()
-	{
-		$url = sprintf('%s/ping', $this->_api_base);
-		$this->_req_head = [
-			'authorization' => sprintf('Bearer %s', $this->_api_token)
-		];
-		$res = $this->get($url);
-		return $res;
-		// return [
-		// 	'code' => 501,
-		// 	'data' => null,
-		// 	'meta' => [ 'detail' => 'Not a pingable platform' ]
-		// ];
 	}
 
 }
