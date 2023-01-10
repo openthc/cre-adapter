@@ -17,10 +17,13 @@ class B2B
 	 *
 	 * @return resource handle to the Stream
 	 */
-	function create_outgoing_csv(array $b2b)
+	function create_outgoing_csv(array $b2b, $req_ulid)
 	{
-		$req_ulid = _ulid();
+		if (empty($req_ulid)) {
+			$req_ulid = _ulid();
+		}
 
+		// Should be passed in or available from the CRE?
 		$tz0 = new DateTimezone(\OpenTHC\Config::get('cre/usa/wa/ccrs/tz'));
 		$dt0 = new DateTime();
 		$dt0->setTimezone($tz0);
@@ -64,7 +67,7 @@ class B2B
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehicleMake', $v['make'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehicleColor', $v['color'] ]));
 
-		$tl = $b2b['license'];
+		$tl = $b2b['target'];
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseNumber', $tl['code'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseePhone', $tl['phone'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseeEmailAddress', $tl['email'] ]));
