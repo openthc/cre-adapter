@@ -24,6 +24,7 @@ class CCRS extends \OpenTHC\CRE\Base
 	function __construct($cfg)
 	{
 		parent::__construct($cfg);
+		$this->_cfg = $cfg;
 		$this->cookie_list = $cfg['cookie-list'];
 		$this->_service_key = $cfg['service-key'];
 	}
@@ -148,6 +149,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		switch ($res0['code']) {
 			case 200:
 				// OK
+				break;
 			default:
 				throw new \Exception('Cannot Access CCRS Main Page [CLC-152]');
 		}
@@ -170,14 +172,14 @@ class CCRS extends \OpenTHC\CRE\Base
 		curl_setopt($req, CURLOPT_STDERR, fopen('php://stderr', 'a'));
 		curl_setopt($req, CURLOPT_USERAGENT, self::USER_AGENT);
 		curl_setopt($req, CURLOPT_POST, true);
-		curl_setopt($req, CURLOPT_POSTFIELDS, $post);
+		curl_setopt($req, CURLOPT_POSTFIELDS, $post['body']);
 		curl_setopt($req, CURLOPT_HTTPHEADER, [
 			'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
 			'accept-language: en-US,en;q=0.9',
 			sprintf('authority: %s', parse_url($base_url, PHP_URL_HOST)),
 			'cache-control: max-age=0',
-			sprintf('content-length: %d', strlen($post)),
-			sprintf('content-type: multipart/form-data; boundary=%s', $mark),
+			sprintf('content-length: %d', strlen($post['body'])),
+			sprintf('content-type: multipart/form-data; boundary=%s', $post['mark']),
 			sprintf('cookie: %s', implode('; ', $cookie_list)),
 			sprintf('origin: %s', $base_url),
 			sprintf('referer: %s', $base_url),
@@ -186,37 +188,34 @@ class CCRS extends \OpenTHC\CRE\Base
 		$res_body = curl_exec($req);
 		$res_info = curl_getinfo($req);
 
-		// if (200 != $inf['http_code']) {
-		// 	echo "FAILED TO UPLOAD\n";
-		// 	exit(1);
-		// }
-
-		$dt0 = new \DateTime();
-		$dt0->setTimezone(new \DateTimezone('America/Los_Angeles'));
-
 		$ret = [
 			'code' => $res_info['http_code'],
 			'data' => $res_body,
 			'meta' => [
-				'created_at' => $dt0->format(\DateTime::RFC3339),
+				'created_at' => '',
 				'created_at_cre' => '',
 			]
 		];
 
-		// echo "Response Length: ";
-		// echo strlen($res);
-		// echo "\n";
-		// echo "$res";
-		if (preg_match('/(Your submission was received at .+ Pacific Time)/', $res_body, $m)) {
-			$dt1 = new \DateTime($m[1]);
-			$dt1->setTimezone(new \DateTimezone('America/Los_Angeles'));
-			$ret['meta']['created_at_cre'] = $dt1->format(\DateTime::RFC3339);
+		if (preg_match('/Your Files Could Not Be Uploaded/', $res_body)) {
+			$ret['code'] = 400;
 		}
 
-		// return $res;
+		if (preg_match('/(Your submission was received at (.+) Pacific Time)/', $res_body, $m)) {
+
+			$dt0 = new \DateTime();
+			$dt0->setTimezone(new \DateTimezone('America/Los_Angeles'));
+			$ret['meta']['created_at'] = $dt0->format(\DateTime::RFC3339);
+
+			$dt1 = new \DateTime($m[2]);
+			$dt1->setTimezone(new \DateTimezone('America/Los_Angeles'));
+			$ret['meta']['created_at_cre'] = $dt1->format(\DateTime::RFC3339);
+
+		}
 
 		// Return Result
 		return $ret;
+
 	}
 
 	/**
@@ -227,14 +226,8 @@ class CCRS extends \OpenTHC\CRE\Base
 		$mark = '----WebKitFormBoundaryAAAA8cKhBUv35ObB';
 		$post = [];
 
-		// $src_data = file_get_contents($src_file);
-
 		// Fix Name on Upload
 		$src_name = basename($src_name);
-		// if (preg_match('/(\w+_\w+)_01\w{24}/', $src_name, $m)) {
-		// 	$dt0 = new \DateTime('now', $dtz);
-		// 	$src_name = sprintf('%s_%s.csv', $m[1], $dt0->format('Ymd\TGisv'));
-		// }
 
 		$post[] = sprintf('--%s', $mark);
 		$post[] = sprintf('content-disposition: form-data; name="files"; filename="%s"', $src_name);
@@ -259,7 +252,10 @@ class CCRS extends \OpenTHC\CRE\Base
 		$post[] = sprintf('--%s--', $mark);
 		$post = implode("\r\n", $post);
 
-		return $post;
+		return [
+			'body' => $post,
+			'mark' => $mark,
+		];
 	}
 
 
