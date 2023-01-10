@@ -101,14 +101,6 @@ class CCRS extends \OpenTHC\CRE\Base
 	 */
 	function ping()
 	{
-
-		// $cookie_file = sprintf('%s/var/ccrs-cookies.json', APP_ROOT);
-		// if ( ! is_file($cookie_file)) {
-		// 	echo "Cannot find Cookie File\n";
-		// 	exit(1);
-		// }
-		// $cookie_list0 = json_decode(file_get_contents($cookie_file), true);
-
 		// Build CURL cookies from configured cookies
 		$cookie_list = [];
 		foreach ($this->cookie_list as $c) {
@@ -145,6 +137,131 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 	}
+
+	/**
+	 *
+	 */
+	function upload($file_info)
+	{
+		// Get Main Page (with Auth?)
+		$res0 = $this->ping();
+		switch ($res0['code']) {
+			case 200:
+				// OK
+			default:
+				throw new \Exception('Cannot Access CCRS Main Page [CLC-152]');
+		}
+
+		// Make POST
+		$post = $this->_upload_make_post($res0['csrf'], $file_info['name'], $file_info['data']);
+
+		// Send POST
+		// $upload_html = _post_home_upload($cookie_list1, $mark, $post);
+
+		$cookie_list = [];
+		foreach ($this->cookie_list as $c) {
+			$cookie_list[] = sprintf('%s=%s', $c['name'], $c['value']);
+		}
+		sort($cookie_list);
+
+		$base_url = rtrim($this->_api_base, '/');
+		$req = __curl_init(sprintf('%s/Home/Upload', $base_url));
+		// curl_setopt($req, CURLOPT_VERBOSE, true);
+		curl_setopt($req, CURLOPT_STDERR, fopen('php://stderr', 'a'));
+		curl_setopt($req, CURLOPT_USERAGENT, self::USER_AGENT);
+		curl_setopt($req, CURLOPT_POST, true);
+		curl_setopt($req, CURLOPT_POSTFIELDS, $post);
+		curl_setopt($req, CURLOPT_HTTPHEADER, [
+			'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+			'accept-language: en-US,en;q=0.9',
+			sprintf('authority: %s', parse_url($base_url, PHP_URL_HOST)),
+			'cache-control: max-age=0',
+			sprintf('content-length: %d', strlen($post)),
+			sprintf('content-type: multipart/form-data; boundary=%s', $mark),
+			sprintf('cookie: %s', implode('; ', $cookie_list)),
+			sprintf('origin: %s', $base_url),
+			sprintf('referer: %s', $base_url),
+		]);
+
+		$res_body = curl_exec($req);
+		$res_info = curl_getinfo($req);
+
+		// if (200 != $inf['http_code']) {
+		// 	echo "FAILED TO UPLOAD\n";
+		// 	exit(1);
+		// }
+
+		$dt0 = new \DateTime();
+		$dt0->setTimezone(new \DateTimezone('America/Los_Angeles'));
+
+		$ret = [
+			'code' => $res_info['http_code'],
+			'data' => $res_body,
+			'meta' => [
+				'created_at' => $dt0->format(\DateTime::RFC3339),
+				'created_at_cre' => '',
+			]
+		];
+
+		// echo "Response Length: ";
+		// echo strlen($res);
+		// echo "\n";
+		// echo "$res";
+		if (preg_match('/(Your submission was received at .+ Pacific Time)/', $res_body, $m)) {
+			$dt1 = new \DateTime($m[1]);
+			$dt1->setTimezone(new \DateTimezone('America/Los_Angeles'));
+			$ret['meta']['created_at_cre'] = $dt1->format(\DateTime::RFC3339);
+		}
+
+		// return $res;
+
+		// Return Result
+		return $ret;
+	}
+
+	/**
+	 *
+	 */
+	private function _upload_make_post($csrf, $src_name, $src_data)
+	{
+		$mark = '----WebKitFormBoundaryAAAA8cKhBUv35ObB';
+		$post = [];
+
+		// $src_data = file_get_contents($src_file);
+
+		// Fix Name on Upload
+		$src_name = basename($src_name);
+		// if (preg_match('/(\w+_\w+)_01\w{24}/', $src_name, $m)) {
+		// 	$dt0 = new \DateTime('now', $dtz);
+		// 	$src_name = sprintf('%s_%s.csv', $m[1], $dt0->format('Ymd\TGisv'));
+		// }
+
+		$post[] = sprintf('--%s', $mark);
+		$post[] = sprintf('content-disposition: form-data; name="files"; filename="%s"', $src_name);
+		// $post[] = 'content-transfer-encoding: binary';
+		$post[] = 'content-type: text/csv';
+		$post[] = '';
+		$post[] = $src_data;
+
+		// Username
+		$post[] = sprintf('--%s', $mark);
+		$post[] = 'content-disposition: form-data; name="username"';
+		$post[] = '';
+		$post[] = $this->_cfg['username'];
+
+		// RVT
+		$post[] = sprintf('--%s', $mark);
+		$post[] = 'content-disposition: form-data; name="__RequestVerificationToken"';
+		$post[] = '';
+		$post[] = $csrf; // Where to get this text?
+
+		// Closer and Combine
+		$post[] = sprintf('--%s--', $mark);
+		$post = implode("\r\n", $post);
+
+		return $post;
+	}
+
 
 	/**
 	 * Get Data Hash of a CSV File
