@@ -191,8 +191,8 @@ class Base
 
 	/**
 	 * Normalize record data array and return a hash
-	 * @param [type] $a [description]
-	 * @return [type] [description]
+	 * @param array $a Data Object to create hash from
+	 * @return string sha256 hash
 	 */
 	static function recHash($a)
 	{

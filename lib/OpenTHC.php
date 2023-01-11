@@ -19,7 +19,9 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	protected $_api_base;
 	protected $_api_host;
 
-	public $_api_version;
+	protected $_res_body;
+	protected $_res_code;
+
 
 	/**
 	 * Array of Arguments
@@ -30,7 +32,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 		$this->_api_base = $cfg['server'];
 		$this->_api_host = parse_url($cfg['server'], PHP_URL_HOST);
-		$this->_api_version = $cfg['epoch'];
 		$this->sid = $cfg['sid'];
 		$this->_init_api();
 	}
@@ -63,6 +64,9 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'allow_redirects' => false,
 			'cookies' => $jar,
 			'headers' => array(
+				'accept' => 'application/json',
+				'openthc-service' => $this->_cfg['service-key'],
+				'openthc-company' => $this->_cfg['company'],
 				'user-agent' => 'OpenTHC/CRE/Adapter v420.22.297',
 			),
 			'http_errors' => false,
@@ -90,9 +94,9 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		if ($l0['id'] != $l1['id']) {
 			$this->auth([
 				'cre' => $this->_cfg['code'],
-				'program' => $this->_cfg['service-key'],
 				'service' => $this->_cfg['service-key'],
 				'company' => $this->_cfg['company'],
+				'contact' => $this->_cfg['contact'],
 				'license' => $this->_License['id'],
 				// 'license-key' =>
 			]);
@@ -269,8 +273,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	{
 		$o = array_merge($o, [
 			'headers' => [
-				'openthc-service' => $this->_cfg['service-key'], // v1
-				'openthc-company' => $this->_cfg['company'],
 				'openthc-license' => $this->_License['id'],
 			]
 		]);

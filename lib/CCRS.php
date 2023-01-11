@@ -140,7 +140,7 @@ class CCRS extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 *
+	 * Upload into the CCRS Platform
 	 */
 	function upload($file_info)
 	{
@@ -207,8 +207,9 @@ class CCRS extends \OpenTHC\CRE\Base
 			$dt0->setTimezone(new \DateTimezone('America/Los_Angeles'));
 			$ret['meta']['created_at'] = $dt0->format(\DateTime::RFC3339);
 
-			$dt1 = new \DateTime($m[2]);
-			$dt1->setTimezone(new \DateTimezone('America/Los_Angeles'));
+			$dt1 = new \DateTime($m[2], new \DateTimezone('America/Los_Angeles'));
+			// $dt1->setTimezone(new \DateTimezone('America/Los_Angeles'));
+
 			$ret['meta']['created_at_cre'] = $dt1->format(\DateTime::RFC3339);
 
 		}
