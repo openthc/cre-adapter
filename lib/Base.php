@@ -12,6 +12,7 @@ class Base
 	protected $_api_base = '';
 	protected $_api_host = '';
 
+	protected $_cfg;
 	protected $_err;
 	protected $_inf;
 	protected $_raw;
@@ -27,6 +28,8 @@ class Base
 	 */
 	function __construct($cfg)
 	{
+		$this->_cfg = $cfg;
+
 		$this->_api_base = rtrim($cfg['server'], '/');
 
 		if (empty($this->_api_host)) {
