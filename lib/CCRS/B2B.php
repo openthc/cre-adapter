@@ -53,7 +53,7 @@ class B2B
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'Header Operation','INSERT' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'TransportationType', 'REGULAR' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseNumber', $b2b['source']['code'] ]));
-		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseePhone', $b2b['source']['phone'] ]));
+		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseePhone', substr($b2b['source']['phone'], 0, 14) ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseeEmailAddress', sprintf('code+%s@openthc.com', $req_ulid) ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'TransportationLicenseNumber', '' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DriverName', $b2b['shipping']['contact']['name'] ]));
@@ -69,7 +69,7 @@ class B2B
 
 		$tl = $b2b['target'];
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseNumber', $tl['code'] ]));
-		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseePhone', $tl['phone'] ]));
+		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseePhone', substr($tl['phone'], 0, 14) ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DestinationLicenseeEmailAddress', $tl['email'] ]));
 
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, array_values($csv_head));

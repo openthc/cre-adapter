@@ -24,7 +24,6 @@ class CCRS extends \OpenTHC\CRE\Base
 	function __construct($cfg)
 	{
 		parent::__construct($cfg);
-		$this->_cfg = $cfg;
 		$this->cookie_list = $cfg['cookie-list'];
 		$this->_service_key = $cfg['service-key'];
 	}
