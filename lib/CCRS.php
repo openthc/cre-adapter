@@ -452,4 +452,36 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 	}
 
+	static function map_product_type_ct2id($t0)
+	{
+		switch ($t0) {
+			case 'Topical Ointment': 				return '018NY6XC00PT0WQP2XV5KNP395';
+			case 'Capsule': 						return '018NY6XC00PT25F95HPG583AJB';
+			case 'Plant': 							return '018NY6XC00PT2BKFPCEFB9G1Z2';
+			case 'Cannabis Mix': 					return '018NY6XC00PT63ECNBAZH32YC3';
+			case 'Ethanol Concentrate': 			return '018NY6XC00PT684JJSXN8RAWBM';
+			case 'Liquid Edible': 					return '018NY6XC00PT7N83PFNCX8ZFEF';
+			case 'Other Material Lot': 				return '018NY6XC00PT8ZPGMPR8H2TAXH';
+			case 'Flower Lot': 						return '018NY6XC00PTAF3TFBB51C8HX6';
+			case 'Suppository': 					return '018NY6XC00PTBJ3G5FDAJN60EX';
+			case 'Solid Edible': 					return '018NY6XC00PTBNDY5VJ8JQ6NKP';
+			case 'Hydrocarbon Concentrate': 		return '018NY6XC00PTCS5AZV189X1YRK';
+			case 'Tincture': 						return '018NY6XC00PTD9Q4QPFBH0G9H2';
+			case 'Other Material Unlotted': 		return '018NY6XC00PTGBW49J6YD3WM84';
+			case 'Usable Cannabis': 				return '018NY6XC00PTGMB39NHCZ8EDEZ';
+			case 'Cannabis Mix Infused': 			return '018NY6XC00PTGRX4Q9SZBHDA5Z';
+			case 'Sample Jar': 						return '018NY6XC00PTHE7GWB4QTG4JKZ';
+			case 'Food Grade Solvent Concentrate': 	return '018NY6XC00PTHP9NMJ1RE6TA62';
+			case 'Transdermal': 					return '018NY6XC00PTHPB8YG56S0MCAC';
+			case 'Cannabis Mix Packaged': 			return '018NY6XC00PTKYYGMRSKV4XNH7';
+			case 'Non-Solvent Based Concentrate': 	return '018NY6XC00PTNPA4TPCYSKD5XN';
+			case 'CO2 Concentrate': 				return '018NY6XC00PTR9M5Z9S4T31C4R';
+			case 'Infused Cooking Medium': 			return '018NY6XC00PTY5XPA4KJT6W3K4';
+			case 'Seed': 							return '018NY6XC00PTY9THKSEQ8NFS1J';
+			case 'Flower Unlotted': 				return '018NY6XC00PTZZWCH7XVREHK6T';
+			default:
+				throw new \Exception("Type '$t0' Not Handled [CLC-194]");
+		}
+	}
+
 }
