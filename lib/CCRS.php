@@ -26,6 +26,14 @@ class CCRS extends \OpenTHC\CRE\Base
 		parent::__construct($cfg);
 		$this->cookie_list = $cfg['cookie-list'];
 		$this->_service_key = $cfg['service-key'];
+
+		if ( ! empty($this->_cfg['cookie-file'])) {
+			// Try to Read them
+			// if (is_file($cookie_file)) {
+			// 	$this->cookie_list = json_decode(file_get_contents($cookie_file), true);
+			// 	$cfg['cookie-list'] = $cookie_list;
+			// }
+		}
 	}
 
 	/**
@@ -33,7 +41,6 @@ class CCRS extends \OpenTHC\CRE\Base
 	 */
 	function auth($username, $password)
 	{
-		// Save the cookies in bong.sqlite
 		// $bf = new BrowserFactory();
 		$bf = new BrowserFactory('/usr/bin/chromium');
 		// $bf = new BrowserFactory('node_modules/puppeteer/.local-chromium/linux-686378/chrome-linux/chrome');
@@ -49,7 +56,6 @@ class CCRS extends \OpenTHC\CRE\Base
 		// Main Page
 		$page->navigate($this->_api_base)->waitForNavigation();
 		$url0 = $page->getCurrentUrl();
-		echo "url0:{$url0}\n";
 
 		// Needs Authentication?
 		if (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/auth/', $url0)) {
@@ -69,14 +75,14 @@ class CCRS extends \OpenTHC\CRE\Base
 			$page->waitForReload();
 
 			$url1 = $page->getCurrentUrl();
-			echo "url1:{$url1}\n";
+			// echo "url1:{$url1}\n";
 			// $page->screenshot()->saveToFile('ccrs1.png');
 		} elseif (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/sawidp\/saml20\/login/', $url0)) {
 			// OK ? Only see this one intermittently
 		} elseif (preg_match(sprintf('/%s/', preg_quote($this->_api_base)), $url0)) {
 			// Authenticated
 		} else {
-			echo "No Match: $url0\n";
+			throw new \Exception("Unexpected URL: $url0");
 		}
 
 		// Save Cookies
@@ -91,6 +97,13 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		$this->cookie_list = $cookie_out;
+
+		// Write and hope for the best?
+		if ( ! empty($this->_cfg['cookie-file'])) {
+			$d = json_encode($cookie_out, JSON_PRETTY_PRINT);
+			$f = $this->_cfg['cookie-file'];
+			$x = file_put_contents($f, $d);
+		}
 
 		return $cookie_out;
 
@@ -123,7 +136,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		$inf = curl_getinfo($req);
 
 		switch ($inf['http_code']) {
-			case '200':
+			case 200:
 				// Hate "parsing" with regex
 				$csrf = preg_match('/<input name="__RequestVerificationToken" type="hidden" value="([^"]+)" \/>/', $res, $m) ? $m[1] : null;
 				return [
@@ -173,7 +186,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		curl_setopt($req, CURLOPT_POST, true);
 		curl_setopt($req, CURLOPT_POSTFIELDS, $post['body']);
 		curl_setopt($req, CURLOPT_HTTPHEADER, [
-			'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+			'accept: text/html',
 			'accept-language: en-US,en;q=0.9',
 			sprintf('authority: %s', parse_url($base_url, PHP_URL_HOST)),
 			'cache-control: max-age=0',
