@@ -156,6 +156,13 @@ class CCRS extends \OpenTHC\CRE\Base
 	 */
 	function upload($file_info)
 	{
+		if (empty($file_info['name'])) {
+			throw new \Exception('Invalid file-name for upload [CLC-160]');
+		}
+		if (empty($file_info['data'])) {
+			throw new \Exception('Invalid file-data for upload [CLC-163]');
+		}
+
 		// Get Main Page (with Auth?)
 		$res0 = $this->ping();
 		switch ($res0['code']) {
