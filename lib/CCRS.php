@@ -393,8 +393,6 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		switch ($x) {
-			// case '018NY6XC00PR0DUCTTYPE00000': // -system-
-			// case '018NY6XC00PR0DUCTTYPE00001': return 'HarvestedMaterial'; // -orphan-
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'EndProduct';
 			case '018NY6XC00PT25F95HPG583AJB': return 'EndProduct';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'PropagationMaterial';
@@ -402,7 +400,6 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT63ECNBAZH32YC3': return 'IntermediateProduct';
 			case '018NY6XC00PT684JJSXN8RAWBM': return 'EndProduct';
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'EndProduct';
-			// case '': return null; // Waste
 			case '018NY6XC00PT8ZPGMPR8H2TAXH': return 'HarvestedMaterial';
 			case '018NY6XC00PTAF3TFBB51C8HX6': return 'HarvestedMaterial';
 			case '018NY6XC00PTBJ3G5FDAJN60EX': return 'EndProduct';
@@ -421,6 +418,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTR9M5Z9S4T31C4R': return 'EndProduct';
 			case '018NY6XC00PTRPPDT8NJY2MWQW': return 'PropagationMaterial';
 			case '018NY6XC00PTSF5NTC899SR0JF': return 'EndProduct';
+			case '018NY6XC00PTXB19AQ8N8RW33A': return 'IntermediateProduct';
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'IntermediateProduct';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'PropagationMaterial';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'HarvestedMaterial';
@@ -436,8 +434,6 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		switch ($x) {
-			// case '018NY6XC00PR0DUCTTYPE00000':
-			// case '018NY6XC00PR0DUCTTYPE00001': return 'Flower Unlotted'; // -orphan-
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'Topical Ointment';
 			case '018NY6XC00PT25F95HPG583AJB': return 'Capsule';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'Plant';
@@ -445,7 +441,6 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT63ECNBAZH32YC3': return 'Cannabis Mix';
 			case '018NY6XC00PT684JJSXN8RAWBM': return 'Ethanol Concentrate';
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'Liquid Edible';
-			// case '018NY6XC00PT8AXVZGNZN3A0QT': return 'Waste';
 			case '018NY6XC00PT8ZPGMPR8H2TAXH': return 'Other Material Lot';
 			case '018NY6XC00PTAF3TFBB51C8HX6': return 'Flower Lot';
 			case '018NY6XC00PTBJ3G5FDAJN60EX': return 'Suppository';
@@ -464,6 +459,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTR9M5Z9S4T31C4R': return 'CO2 Concentrate';
 			case '018NY6XC00PTRPPDT8NJY2MWQW': return 'Plant';
 			case '018NY6XC00PTSF5NTC899SR0JF': return 'Cannabis Mix Infused'; // Concentrate For Inhalation
+			case '018NY6XC00PTXB19AQ8N8RW33A': return 'CBD';
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'Infused Cooking Medium';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'Seed';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'Flower Unlotted';
