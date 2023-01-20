@@ -372,10 +372,11 @@ class CCRS extends \OpenTHC\CRE\Base
 		// So we replace those with SPACE notation.
 		// And their exports are in TSV, so we make sure we don't send those either.
 		array_walk($row, function(&$val, $key) {
-			$val = str_replace("\t", ' ', $val); // TAB
-			$val = str_replace('"', ' ', $val); // Double Quote
-			$val = str_replace(',', ' ', $val); // Comma
-			$val = trim($val);
+			$val = self::sanatize($val);
+			// $val = str_replace("\t", ' ', $val); // TAB
+			// $val = str_replace('"', ' ', $val); // Double Quote
+			// $val = str_replace(',', ' ', $val); // Comma
+			// $val = trim($val);
 		});
 
 		// it's unquoted and not
@@ -393,6 +394,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		switch ($x) {
+			case '018NY6XC00PR0DUCTTYPEWBZT7': return 'EndProduct';
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'EndProduct';
 			case '018NY6XC00PT25F95HPG583AJB': return 'EndProduct';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'PropagationMaterial';
@@ -422,6 +424,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'IntermediateProduct';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'PropagationMaterial';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'HarvestedMaterial';
+			// case '018NY6XC00PT8AXVZGNZN3A0QT':
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-156]");
 		}
@@ -434,6 +437,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		}
 
 		switch ($x) {
+			case '018NY6XC00PR0DUCTTYPEWBZT7': return 'Solid Edible';
 			case '018NY6XC00PT0WQP2XV5KNP395': return 'Topical Ointment';
 			case '018NY6XC00PT25F95HPG583AJB': return 'Capsule';
 			case '018NY6XC00PT2BKFPCEFB9G1Z2': return 'Plant';
@@ -466,6 +470,24 @@ class CCRS extends \OpenTHC\CRE\Base
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-194]");
 		}
+	}
+
+	/**
+	 * Sanatize a value for save usage in CCRS
+	 */
+	static function sanatize(string $t, $l=-1)
+	{
+		// Character Cleanup
+		$t = str_replace([ "\t" ], ' ', $t);
+		$t = str_replace([ '"', ',', ], '', $t);
+		$t = trim($t);
+
+		// Length Trim
+		if ($l > 0) {
+			$t = substr($t, 0, $l);
+		}
+
+		return $t;
 	}
 
 }
