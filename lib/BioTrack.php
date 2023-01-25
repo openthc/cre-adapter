@@ -1920,11 +1920,11 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 * Interface for Strains
+	 * Interface for Variety
 	 */
-	function strain()
+	function variety()
 	{
-		$r = new RBE_BioTrack_Strain($this);
+		$r = new \OpenTHC\CRE\BioTrack\Variety($this);
 		return $r;
 	}
 
@@ -1933,7 +1933,16 @@ class BioTrack extends \OpenTHC\CRE\Base
 	 */
 	function section()
 	{
-		$r = new RBE_BioTrack_Section($this);
+		$r = new \OpenTHC\CRE\BioTrack\Section($this);
+		return $r;
+	}
+
+	/**
+	 * Interface for Product
+	 */
+	function product()
+	{
+		$r = new \OpenTHC\CRE\BioTrack\Product($this);
 		return $r;
 	}
 

@@ -1,6 +1,8 @@
 <?php
 /**
  * BioTrack Base Class
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\BioTrack;
