@@ -313,7 +313,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		@param $username un
 		@param $password pw
 	*/
-	function login($company=null, $username=null, $password=null)
+	function auth($company=null, $username=null, $password=null)
 	{
 		if (empty($company)) {
 			$company = $this->_company;
