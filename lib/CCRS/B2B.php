@@ -61,8 +61,10 @@ class B2B
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'ArrivalDateTime', $dtA->format('m/d/Y h:i:s A') ]));
 
 		$v = $b2b['shipping']['vehicle'];
+		$v['tag'] = $v['tag'] ?: $v['plate'];
+		$v['tag'] = str_replace(' ', '', $v['tag']);
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VIN #', $v['vin'] ]));
-		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehiclePlateNumber', $v['plate'] ?: $v['tag'] ]));
+		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehiclePlateNumber', $v['tag'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehicleModel', $v['model'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehicleMake', $v['make'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'VehicleColor', $v['color'] ]));
