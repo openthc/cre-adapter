@@ -38,7 +38,14 @@ class Base
 			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
 		}
 
-		if ( ! empty($cfg['tz'])) {
+		// Timezone
+		if (empty($cfg['tz'])) {
+			$cfg['tz'] = date_default_timezone_get();
+		}
+
+		if (is_object($cfg['tz'])) {
+			$this->_tz = $cfg['tz'];
+		} elseif (is_string($cfg['tz'])) {
 			$this->_tz = new \DateTimezone($cfg['tz']);
 		}
 
@@ -203,19 +210,37 @@ class Base
 	 * @param array $a Data Object to create hash from
 	 * @return string sha256 hash
 	 */
-	static function recHash($a)
+	static function objHash($obj, $key_list=[])
 	{
-		if (!is_array($a)) {
-			if (is_object($a)) {
-				if (method_exists($a, 'toArray')) {
-					$a = $a->toArray();
+		if ( ! is_array($obj)) {
+			if (is_object($obj)) {
+				if (method_exists($obj, 'toArray')) {
+					$obj = $obj->toArray();
 				} else {
-					$a = json_decode(json_encode($a), true);
+					$obj = json_decode(json_encode($obj), true);
 				}
 			}
 		}
-		$a = self::ksort_r($a);
-		return hash('sha256', json_encode($a));
+
+		$rec = [];
+
+		if ( ! empty($key_list)) {
+
+			foreach ($key_list as $k) {
+				$rec[$k] = $obj[$k];
+			}
+		}
+
+		$rec = self::ksort_r($rec);
+
+		return hash('sha256', json_encode($rec));
+
+	}
+
+	// Legacy Name
+	static function recHash($obj, $key_list=[])
+	{
+		return self::objHash($obj, $key_list);
 	}
 
 	/*

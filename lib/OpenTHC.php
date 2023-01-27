@@ -12,27 +12,21 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	const ENGINE = 'openthc';
 
 	private $_c; // Client Connection
-	private $_cfg; // Configuration Array
 
 	private $sid;
 
-	protected $_api_base;
-	protected $_api_host;
-
 	protected $_res_body;
 	protected $_res_code;
-
 
 	/**
 	 * Array of Arguments
 	 */
 	function __construct($cfg)
 	{
-		$this->_cfg = $cfg;
+		parent::__construct($cfg);
 
-		$this->_api_base = $cfg['server'];
-		$this->_api_host = parse_url($cfg['server'], PHP_URL_HOST);
 		$this->sid = $cfg['sid'];
+
 		$this->_init_api();
 	}
 
