@@ -24,6 +24,7 @@ class CCRS extends \OpenTHC\CRE\Base
 	function __construct($cfg)
 	{
 		parent::__construct($cfg);
+
 		$this->cookie_list = $cfg['cookie-list'];
 		$this->_service_key = $cfg['service-key'];
 
@@ -146,6 +147,8 @@ class CCRS extends \OpenTHC\CRE\Base
 			default:
 				return [
 					'code' => $inf['http_code'],
+					'data' => $res,
+					'meta' => $inf,
 				];
 		}
 
@@ -278,6 +281,28 @@ class CCRS extends \OpenTHC\CRE\Base
 		];
 	}
 
+	/**
+	 * Get time From the CSV Filename
+	 *
+	 * @return DateTime
+	 */
+	function csv_file_date(string $csv_file)
+	{
+		/*
+		 * error-response-file from the LCB sometimes are missing the
+		 * milliseconds portion of the time in the file name
+		 * So we have to patch it so it parses the same as their "normal"
+		 */
+		$csv_time = preg_match('/(\w+_)?\w+_(\d+T\d+)\.csv/i', $csv_file, $m) ? $m[2] : null;
+		if (strlen($csv_time) == 15) {
+			$csv_time = $csv_time . '000';
+		}
+
+		$csv_time = DateTime::createFromFormat('Ymd\TGisv', $csv_time, $this->_tz);
+
+		return $csv_time;
+
+	}
 
 	/**
 	 * Get Data Hash of a CSV File
@@ -475,8 +500,9 @@ class CCRS extends \OpenTHC\CRE\Base
 	/**
 	 * Sanatize a value for save usage in CCRS
 	 */
-	static function sanatize(string $t, $l=-1)
+	static function sanatize(?string $t, $l=-1)
 	{
+
 		// Character Cleanup
 		$t = str_replace([ "\t" ], ' ', $t);
 		$t = str_replace([ '"', ',', ], '', $t);
@@ -487,7 +513,10 @@ class CCRS extends \OpenTHC\CRE\Base
 			$t = substr($t, 0, $l);
 		}
 
+		$t = trim($t);
+
 		return $t;
+
 	}
 
 }
