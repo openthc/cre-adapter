@@ -19,6 +19,8 @@ class Base
 	protected $_req_head = [];
 	protected $_res;
 
+	protected $_tz;  // Timezone
+
 	protected $_License;
 
 	const ENGINE = null;
@@ -34,6 +36,10 @@ class Base
 
 		if (empty($this->_api_host)) {
 			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
+		}
+
+		if ( ! empty($cfg['tz'])) {
+			$this->_tz = new \DateTimezone($cfg['tz']);
 		}
 
 	}
