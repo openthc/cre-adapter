@@ -224,11 +224,12 @@ class Base
 
 		$rec = [];
 
-		if ( ! empty($key_list)) {
+		if (empty($key_list)) {
+			$key_list = array_keys($obj);
+		}
 
-			foreach ($key_list as $k) {
-				$rec[$k] = $obj[$k];
-			}
+		foreach ($key_list as $k) {
+			$rec[$k] = $obj[$k];
 		}
 
 		$rec = self::ksort_r($rec);
