@@ -11,6 +11,25 @@ namespace OpenTHC\CRE\Metrc;
 
 class Crop extends \OpenTHC\CRE\Metrc\Base
 {
+	protected $_path = '/plants/v1';
+
+	function change($obj)
+	{
+		$url = $this->_client->_make_url('/plants/v1/changegrowthphases');
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req, [ $obj ]);
+		return $res;
+	}
+
+	function create($obj)
+	{
+		$url = sprintf('%s/create/plantings', $this->_path);
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req, [ $obj ]);
+		return $res;
+	}
+
 	/**
 	 * Destroy a Crop
 	 * @param [type] $p Plant ID

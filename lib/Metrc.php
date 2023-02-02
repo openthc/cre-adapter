@@ -427,6 +427,11 @@ class Metrc extends \OpenTHC\CRE\Base
 			// throw new \Exception($this->formatError($this->_res));
 			// break;
 		case 401:
+			return [
+				'code' => $code,
+				'data' => $this->_raw,
+				'meta' => [ 'note' => 'Not Authorized' ]
+			];
 		case 405:
 			return [
 				'code' => $code,
