@@ -49,7 +49,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	// Listed in order the Sync should run
 	// @todo Should be Private
-	public static $obj_list = array(
+	protected $obj_list = array(
 		'vendor' => 'Vendor',
 		'qa_lab' => 'QA Lab',
 		// 'third_party_transporter' => 'Third Party Transporter', // WA-UCS Only
@@ -299,13 +299,18 @@ class BioTrack extends \OpenTHC\CRE\Base
 	*/
 	function getObjectList()
 	{
-		// $obj_list = parent::getObjectList();
-		// Some Implementations Don't Have These
-		// unset($obj_list['id_preassign']); // -HI, -NM
-		// unset($obj_list['inventory_sample']); // -HI
-		// unset($obj_list['third_party_transporter']); // -HI, -NM
-		// return $obj_list;
-		return self::$obj_list;
+		$ret_list = $this->$obj_list;
+
+		switch ($this->_cfg['id']) {
+			case 'usa/hi':
+			case 'usa/nm':
+				unset($ret_list['id_preassign']);
+				unset($ret_list['inventory_sample']);
+				unset($ret_list['third_party_transporter']);
+				break;
+		}
+
+		return $ret_list;
 	}
 
 	/**

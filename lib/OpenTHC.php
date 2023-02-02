@@ -18,6 +18,17 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	protected $_res_body;
 	protected $_res_code;
 
+	protected $obj_list = [
+		'license' => 'License',
+		'section' => 'Section',
+		'product' => 'Product',
+		'variety' => 'Variety',
+		'crop' => 'Crop',
+		'lot' => 'Lot',
+		'b2b' => 'B2B Sales',
+		'b2c' => 'B2C Sales'
+	];
+
 	/**
 	 * Array of Arguments
 	 */
@@ -112,24 +123,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		return json_encode($e, JSON_PRETTY_PRINT);
 
 	}
-
-	/**
-	 *
-	 */
-	function listSyncObjects()
-	{
-		return array(
-			'license' => 'License',
-			'section' => 'Section',
-			'product' => 'Product',
-			'variety' => 'Variety',
-			'crop' => 'Crop',
-			'lot' => 'Lot',
-			'b2b' => 'B2B Sales',
-			'b2c' => 'B2C Sales'
-		);
-	}
-
 
 	/**
 	 * HTTP GET Utility
@@ -265,7 +258,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function request($v, $u, $o=[])
 	{
-		$o = array_merge($o, [
+		$o = array_merge_recursive($o, [
 			'headers' => [
 				'openthc-license' => $this->_License['id'],
 			]

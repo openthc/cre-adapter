@@ -23,7 +23,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		'RC' => 'Research',
 	);
 
-	protected static $obj_list = array(
+	protected $obj_list = array(
 		'uom' => 'Units of Measure',
 		'license' => 'License',
 		'contact' => 'Contact / Patient',
@@ -113,11 +113,6 @@ class Metrc extends \OpenTHC\CRE\Base
 	function setTimeOmega($x)
 	{
 		$this->_time_omega = $x;
-	}
-
-	public static function listSyncObjects()
-	{
-		return self::$obj_list;
 	}
 
 	function ping()
