@@ -1,7 +1,22 @@
 <?php
 /**
- * LeafData (aka: MJ Freeway, aka: MJ Platform)
+ * LeafData (aka MJ Freeway)
+ *
+ * SPDX-License-Identifier: MIT
+ *
  * @see https://watest.leafdatazone.com/api_docs/test
+ *
+ * - Company - They Don't Have This
+ * - License - It's called MME, we can search/select them, write is allowed but we don't do it
+ * - Contact - Users
+ *
+ * - Plants
+ * - Plants/Collect-Wet
+ * - Plants/Collect-Dry
+ *
+ * - Inventory/Create Batch
+ * - Inventory/Convert Batch
+ * - Inventory/Combine Batch
  */
 
 namespace OpenTHC\CRE;
@@ -14,6 +29,9 @@ class LeafData extends \OpenTHC\CRE\Base
 
 	private $_arg;
 
+	// protected $_api_base = 'https://traceability.lcb.wa.gov/api/v1';
+	protected $_api_base = 'https://pipe.openthc.com/leafdata/wa';
+
 	protected $_lic_type = array(
 		'cultivator' => '(G) Producers',
 		'dispensary' => '(R) Retailers',
@@ -22,10 +40,29 @@ class LeafData extends \OpenTHC\CRE\Base
 		'cultivator_production' => '(J) Producer/Processor',
 		'tribe' => '(T) Tribe',
 		'co-op' => '(E) Co-op',
-		// They have it spelled incorrectly in the UI, some legacy records
-		// Remove after 2021-07-01 /djb
-		//'transpoter' => '(Z) Transporter',
 		'transporter' => '(Z) Transporter',
+	);
+
+	protected $obj_list = array(
+		'license' => 'License',
+		'contact' => 'Contact',
+
+		'section' => 'Section',
+		'product' => 'Product',
+		'variety' => 'Variety',
+		'batch' => 'Batch',
+
+		'plant' => 'Plant',
+
+		'inventory' => 'Inventory',
+		'inventory-adjustment' => 'InventoryAdjustment',
+
+		'lab-result' => 'LabResult',
+
+		'disposal' => 'Disposal',
+
+		'transfer' => 'Transfer',
+		'sale' => 'Sale',
 	);
 
 	public static function de_fuck($obj)
@@ -84,6 +121,8 @@ class LeafData extends \OpenTHC\CRE\Base
 
 			$d = strtotime($d);
 			if ($d > 0) {
+				// $d = sprintf("@%s", $d);
+				// $rec[$f] = self::fix_date_to_utc($d);
 				$rec[$f] = date('Y-m-d H:i:s', $d);
 			} else {
 				// Handle Stupid Shit
@@ -100,6 +139,8 @@ class LeafData extends \OpenTHC\CRE\Base
 					}
 					$d = strtotime($d);
 					if ($d > 0) {
+						// $d = sprintf("@%s", $d);
+						// $rec[$f] = self::fix_date_to_utc($d);
 						$rec[$f] = date('Y-m-d H:i:s', $d);
 					} else {
 						throw new \Exception('Really Bad Date');
@@ -150,6 +191,22 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Fix date object to a timezoned format, assuming the date is in Pacific time.
+	 * @param mixed $d date/time string
+	 * @param string $f optional Date time format
+	 */
+	public static function fix_date_to_utc($d, $f = null)
+	{
+		//if (empty($f)) $f = self::FORMAT_DATE_TIME;
+		//$f = \DateTime::RFC3339;
+		$f = 'Y-m-d H:i:s';
+		$tz = new \DateTimeZone('America/Los_Angeles');
+		$dt = new \DateTime($d, $tz);
+		// $dt->setTimezone(new \DateTimeZone('UTC'));
+		return $dt->format($f);
+	}
+
+	/**
 	 * For all the Date/Time Fields -- RE-FUCK the format to the LeafData shit
 	 * @param data-array $obj data object to fuck up
 	 * @return data-array $obj, but "fixed"
@@ -195,9 +252,9 @@ class LeafData extends \OpenTHC\CRE\Base
 	*/
 	public function call($verb, $path, $post=null)
 	{
-		$path = trim($path, '/.');
-		$url  = sprintf('%s/%s', trim($this->_api_base, '/'), $path);
-
+		$path = trim($path, '/');
+		$url  = sprintf('%s/%s', $this->_api_base, $path);
+		$urla = parse_url($url);
 		$req = $this->_curl_init($url);
 
 		switch ($verb) {
@@ -238,12 +295,15 @@ class LeafData extends \OpenTHC\CRE\Base
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
 
+		_stat_count(sprintf('rbe.leafdata.code.%s.%03d', $verb, $this->_inf['http_code']), 1);
+		_stat_timer(sprintf('rbe.leafdata.time.%s.%03d', $verb, $this->_inf['http_code']), $tx);
+
 		// This means a FATAL curl ERROR
 		if ($err) {
 			return array(
 				'code' => 500,
 				'data' => $this->_raw,
-				'meta' => [ 'detail' => sprintf('LeafData Server Error #%d [CLD-245]', curl_error($req)) ]
+				'meta' => [ 'note' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)) ],
 			);
 		}
 
@@ -284,9 +344,9 @@ class LeafData extends \OpenTHC\CRE\Base
 				'code' => $this->_inf['http_code'],
 				'data' => null,
 				'meta' => [
-					'detail' => sprintf('LeafData Error: %03d:%s [LLD-339]]', $this->_inf['http_code'], $this->formatError($this->_res)),
-					'source' => $this->_raw,
-				]
+					'note' => sprintf('LRL#%03d: %s', $this->_inf['http_code'], $this->formatError($this->_res)),
+					'source' => $this->_res,
+				],
 			);
 
 			break;
@@ -299,7 +359,7 @@ class LeafData extends \OpenTHC\CRE\Base
 				'code' => $this->_inf['http_code'],
 				'data' => null,
 				'meta' => [
-					'detail' => sprintf('LRL#422: %s', $this->formatError($this->_res)),
+					'note' => sprintf('LRL#422: %s', $this->formatError($this->_res)),
 					'source' => $this->_raw,
 				],
 			);
@@ -311,7 +371,7 @@ class LeafData extends \OpenTHC\CRE\Base
 			$ret = [
 				'code' => $this->_inf['http_code'],
 				'data' => $this->_raw,
-				'meta' => [ 'detail' => 'LeafData Server Error [CLD-315]' ],
+				'meta' => [ 'note' => 'LeafData Server Error [CLD-315]' ],
 			];
 
 			if (preg_match('/SQLSTATE/', $this->_raw)) {
@@ -325,7 +385,7 @@ class LeafData extends \OpenTHC\CRE\Base
 			return array(
 				'code' => $this->_inf['http_code'],
 				'data' => null,
-				'meta' => [ 'detail' => 'LeafData Server Error 502: Bad Gateway [LRL#502]' ]
+				'meta' => [ 'note' => 'LeafData Server Error 502: Bad Gateway [LRL-502]' ],
 			);
 
 		case 504:
@@ -333,7 +393,7 @@ class LeafData extends \OpenTHC\CRE\Base
 			return array(
 				'code' => $this->_inf['http_code'],
 				'data' => null,
-				'meta' => [ 'detail' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]' ]
+				'meta' => [ 'note' => 'LeafData Server Error 504: Gateway Timeout [LRL#504]' ],
 			);
 
 		//default:
@@ -454,35 +514,6 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	*/
-	function listSyncObjects()
-	{
-		return array(
-			'license' => 'License',
-			'contact' => 'Contact',
-
-			'section' => 'Section',
-			'product' => 'Product',
-			'variety' => 'Variety',
-
-			'batch' => 'Batch',
-
-			'crop' => 'Crop',
-
-			'lot' => 'Lot',
-			'lot_delta' => 'Lot Delta',
-
-			'lab_result' => 'Lab Result',
-
-			'disposal' => 'Disposal',
-
-			'b2b' => 'B2B Sale',
-			'b2c' => 'B2C Sale',
-		);
-
-	}
-
-	/**
 	 * Ping this connection and return an informational object
 	 * @return array('status' => '', 'detail' => '');
 	 */
@@ -557,6 +588,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	function contact()
 	{
 		return new LeafData\Contact($this);
+		//throw new Exception('Not Used in Washington');
 	}
 
 	function customer()
@@ -605,6 +637,9 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Lab_Result($this);
 	}
 
+	/**
+		What I want it to Be on the Common Interface
+	*/
 	function license()
 	{
 		return new LeafData\License($this);
@@ -618,6 +653,11 @@ class LeafData extends \OpenTHC\CRE\Base
 	function variety()
 	{
 		return new LeafData\Variety($this);
+	}
+
+	function tax()
+	{
+		return new RBE_LeafData_Taxes($this);
 	}
 
 }
