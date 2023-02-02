@@ -30,13 +30,16 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 
 	}
 
-	function single($id)
+	/**
+	 *
+	 */
+	function single($oid)
 	{
 		$ret = array();
-		$x = $this->deliveries($id);
+		$x = $this->deliveries($oid);
 		$ret['deliveries'] = $x['data'];
 		if (count($ret['deliveries']) > 1) {
-			throw new \Exception('Cannot Handle METRC Multistop [RMT#021]');
+			throw new \Exception('Cannot Handle METRC Multistop [RMT-021]');
 		}
 		foreach ($ret['deliveries'] as $d) {
 			$x = $this->packages($d['Id']);
@@ -46,8 +49,8 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 	}
 
 	/**
-		Find the Outgoing Transfers
-	*/
+	 * Find the Outgoing Transfers
+	 */
 	function outgoing()
 	{
 		$url = '/transfers/v1/outgoing';
@@ -58,8 +61,8 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 	}
 
 	/**
-		Find the Incoming Transfers
-	*/
+	 * Find the Incoming Transfers
+	 */
 	function incoming()
 	{
 		$url = '/transfers/v1/incoming';
@@ -70,8 +73,8 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 	}
 
 	/**
-		Find the Incoming Transfers
-	*/
+	 * Find the Incoming Transfers
+	 */
 	function rejected()
 	{
 		$url = '/transfers/v1/rejected';
@@ -81,11 +84,22 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 		return $res;
 	}
 
+	/**
+	 * Find the Transfer Templates
+	 */
+	function templates()
+	{
+		$url = '/transfers/v1/templates';
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
 
 	/**
 		Find the Transfer Types
 	*/
-	function types()
+	function getTypeList()
 	{
 		$url = '/transfers/v1/types';
 		$url = $this->_client->_make_url($url);
@@ -96,12 +110,12 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 
 	/**
 	 * Deliveries for a Specific Transfer
-	 * @param $guid The Transfer ID
+	 * @param $oid The Transfer ID
 	*/
-	function deliveries($guid)
+	function deliveries($oid)
 	{
 		$url = '/transfers/v1/%s/deliveries';
-		$url = sprintf($url, $guid);
+		$url = sprintf($url, $oid);
 
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -112,10 +126,10 @@ class B2B extends \OpenTHC\CRE\Metrc\Base
 		Find the Incoming Transfers
 		@param $oid Delivery Identifier
 	*/
-	function packages($guid)
+	function packages($oid)
 	{
 		$url = '/transfers/v1/delivery/%s/packages';
-		$url = sprintf($url, $guid);
+		$url = sprintf($url, $oid);
 
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
