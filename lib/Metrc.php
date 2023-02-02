@@ -37,7 +37,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		'crop' => 'Crop',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
-		'lab_result' => 'Lab Result',
+		'lab-result' => 'Lab Result',
 		'b2b' => 'B2B / Wholesale',
 		'b2c' => 'B2C / Retail',
 	);
