@@ -1,6 +1,8 @@
 <?php
 /**
  * METRC Lab Result
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

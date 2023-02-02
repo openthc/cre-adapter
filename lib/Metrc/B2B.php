@@ -1,6 +1,8 @@
 <?php
 /**
  * B2B Transactions Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

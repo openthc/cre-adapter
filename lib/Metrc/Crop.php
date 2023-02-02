@@ -1,6 +1,9 @@
 <?php
 /**
  * Crop Interface
+ *
+ * SPDX-License-Identifier: MIT
+ *
  * @note You get a 401 Error on Plants when not allowed
  */
 

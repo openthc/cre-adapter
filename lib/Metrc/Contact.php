@@ -1,6 +1,8 @@
 <?php
 /**
  * Contact/Patient Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;
@@ -11,7 +13,7 @@ class Contact extends \OpenTHC\CRE\Metrc\Base
 
 	function create($obj)
 	{
-		$url = $this->_client->_make_url('/patients/v1/add');
+		$url = $this->_client->_make_url(sprintf('%s/add', $this->_path));
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
 		return $res;
@@ -35,6 +37,10 @@ class Contact extends \OpenTHC\CRE\Metrc\Base
 
 	function search($arg=null)
 	{
+		if (empty($arg)) {
+			$arg = 'active';
+		}
+
 		$url = $this->_client->_make_url('/patients/v1/active');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);

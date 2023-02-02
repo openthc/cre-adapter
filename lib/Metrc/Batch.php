@@ -1,6 +1,8 @@
 <?php
 /**
  * Crop Batch
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

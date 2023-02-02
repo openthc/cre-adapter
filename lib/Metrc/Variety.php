@@ -1,6 +1,8 @@
 <?php
 /**
  * Variety Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

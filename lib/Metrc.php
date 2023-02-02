@@ -91,6 +91,9 @@ class Metrc extends \OpenTHC\CRE\Base
 
 	}
 
+	/**
+	 *
+	 */
 	function getClientKey()
 	{
 		return $this->_api_key_client;

@@ -1,6 +1,8 @@
 <?php
 /**
  * License Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

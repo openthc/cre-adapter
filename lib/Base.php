@@ -12,6 +12,8 @@ class Base
 	protected $_api_base = '';
 	protected $_api_host = '';
 
+	protected $obj_list;
+
 	protected $_cfg;
 	protected $_err;
 	protected $_inf;
@@ -97,8 +99,15 @@ class Base
 
 	}
 
+	/**
+	 *
+	 */
 	function getObjectList()
 	{
+		if ( ! empty($this->obj_list)) {
+			return $this->obj_list;
+		}
+
 		throw new \Exception('Not Implemented');
 	}
 

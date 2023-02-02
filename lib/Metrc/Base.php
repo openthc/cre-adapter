@@ -1,6 +1,8 @@
 <?php
 /**
  * Base Class for METRC objects
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

@@ -1,6 +1,8 @@
 <?php
 /**
  * Crop Collect Interface - Harvest and Cure
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\Metrc;

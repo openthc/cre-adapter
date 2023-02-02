@@ -1,6 +1,9 @@
 <?php
 /**
  * Section Interface
+ *
+ * SPDX-License-Identifier: MIT
+ *
  * @todo Reset Sections cause Metrc doesn't provide information about which sections are real?
  * @note you GEt a 403 Error on Sections when query as a Processor
  * @note METRC only has 'Plant' type sections
