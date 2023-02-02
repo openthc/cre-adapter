@@ -27,15 +27,14 @@ class Metrc extends \OpenTHC\CRE\Base
 		'uom' => 'Units of Measure',
 		'license' => 'License',
 		'contact' => 'Contact / Patient',
-		//'product_type' => 'Item Categories/Product Types', // Manual Sync
 		'section-type' => 'Section Type',
 		'section' => 'Section',
 		'variety' => 'Variety',
-		'product-type' => 'Product Type',
+		'product-type' => 'Product Type / Item Categories',
 		'product' => 'Product',
 		'cropbatch' => 'Crop Batches',
 		'crop' => 'Crop',
-		'harvest' => 'Harvest',
+		'harvest' => 'Harvest', // crop collect
 		'lot' => 'Lot',
 		'lab-result' => 'Lab Result',
 		'b2b' => 'B2B / Wholesale',

@@ -12,9 +12,9 @@ class Lot extends \OpenTHC\CRE\Metrc\Base
 	protected $_path = '/packages/v1';
 
 	/**
-	 *
+	 * Should this be on a Lot_Delta object?
 	 */
-	function adjust_reason_list()
+	function getAdjustReasonList()
 	{
 		$url = $this->_client->_make_url('/packages/v1/adjust/reasons');
 		$req = $this->_client->_curl_init($url);
@@ -54,6 +54,30 @@ class Lot extends \OpenTHC\CRE\Metrc\Base
 		$url = $this->_client->_make_url('/packages/v1/unfinish');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
+		return $res;
+	}
+
+	/**
+	 * Convert Lot to Plant
+	 */
+	function plant($arg)
+	{
+		$url = $this->_client->_make_url('/packages/v1/create/plantings');
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req, $arg);
+		return $res;
+	}
+
+	/**
+	 * [search description]
+	 * @return [type] [description]
+	 */
+	function search($arg=null)
+	{
+		$url = sprintf('%s/active', $this->_path);
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
 		return $res;
 	}
 
