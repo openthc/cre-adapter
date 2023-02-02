@@ -1,6 +1,8 @@
 <?php
 /**
  * Franwell / METRC Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE;
@@ -24,18 +26,20 @@ class Metrc extends \OpenTHC\CRE\Base
 	protected static $obj_list = array(
 		'uom' => 'Units of Measure',
 		'license' => 'License',
-		'contact' => 'Contact/Patient',
+		'contact' => 'Contact / Patient',
 		//'product_type' => 'Item Categories/Product Types', // Manual Sync
+		'section-type' => 'Section Type',
 		'section' => 'Section',
 		'variety' => 'Variety',
+		'product-type' => 'Product Type',
 		'product' => 'Product',
 		'cropbatch' => 'Crop Batches',
 		'crop' => 'Crop',
 		'harvest' => 'Harvest',
 		'lot' => 'Lot',
 		'lab_result' => 'Lab Result',
-		'b2c' => 'B2C/Retail',
-		'b2b' => 'B2B/Transfer',
+		'b2b' => 'B2B / Wholesale',
+		'b2c' => 'B2C / Retail',
 	);
 
 	/**
@@ -162,9 +166,13 @@ class Metrc extends \OpenTHC\CRE\Base
 			}
 		}
 
+		if ( ! empty($res[0]['message'])) {
+			return $res[0]['message'];
+		}
+
 		var_dump($res);
 		// var_dump(debug_print_backtrace());
-		throw new \Exception('METRC Really Broken [LRM#159]');
+		throw new \Exception('METRC Really Broken [LRM-159]');
 		exit(0);
 	}
 
@@ -183,6 +191,16 @@ class Metrc extends \OpenTHC\CRE\Base
 	function uomList()
 	{
 		$req = $this->_curl_init('/unitsofmeasure/v1/active');
+		$res = $this->_curl_exec($req);
+		return $res;
+	}
+
+	/**
+	*/
+	function locationsTypesList()
+	{
+		$url = $this->_make_url('/locations/v1/types');
+		$req = $this->_curl_init($url);
 		$res = $this->_curl_exec($req);
 		return $res;
 	}
@@ -333,7 +351,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\Patient($this);
 	}
 
-	
+
 	function product()
 	{
 		return new Metrc\Product($this);
@@ -389,6 +407,9 @@ class Metrc extends \OpenTHC\CRE\Base
 
 		$t1 = microtime(true);
 		$tx = $t1 - $t0;
+
+		// _stat_count(sprintf('rbe.metrc.code.%s.%03d', $verb, $code), 1);
+		// _stat_timer(sprintf('rbe.metrc.time.%s.%03d', $verb, $code), $tx);
 
 		$result = array();
 
