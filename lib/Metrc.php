@@ -144,13 +144,11 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		Error Handler
-	*/
+	 * Error Formatter
+	 */
 	function formatError($res)
 	{
-		//var_dump($res);
-
-		if (!is_array($res)) {
+		if ( ! is_array($res)) {
 			$chk = json_decode($res, true);
 			if (is_array($chk)) {
 				$res = $chk;
@@ -158,6 +156,9 @@ class Metrc extends \OpenTHC\CRE\Base
 		}
 
 		if (is_array($res)) {
+			if (( ! empty($res['code'])) && ( ! empty($res['meta']['note']))) {
+				return $res['meta']['note'];
+			}
 			if (!empty($res['Message'])) {
 				return $res['Message'];
 			}
