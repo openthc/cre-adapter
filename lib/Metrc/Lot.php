@@ -30,7 +30,7 @@ class Lot extends \OpenTHC\CRE\Metrc\Base
 	{
 		$url = $this->_client->_make_url('/packages/v1/adjust');
 		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->curl_exec($req, $arg);
+		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
 	}
 
