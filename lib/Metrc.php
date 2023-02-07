@@ -430,13 +430,19 @@ class Metrc extends \OpenTHC\CRE\Base
 			return [
 				'code' => $code,
 				'data' => $this->_raw,
-				'meta' => [ 'note' => 'Not Authorized' ]
+				'meta' => [ 'note' => 'Not Authorized [CLM-433]' ]
+			];
+		case 404:
+			return [
+				'code' => $code,
+				'data' => $this->_raw,
+				'meta' => [ 'note' => 'Not Found [CLM-439]' ]
 			];
 		case 405:
 			return [
 				'code' => $code,
 				'data' => null,
-				'meta' => [ 'detail' => $this->formatError($this->_res) ]
+				'meta' => [ 'note' => $this->formatError($this->_res) ]
 			];
 			break;
 		default:

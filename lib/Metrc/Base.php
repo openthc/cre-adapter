@@ -49,11 +49,11 @@ class Base extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 * @param $x The GUID to GET
+	 * @param $oid The GUID to GET
 	 */
-	function single($x)
+	function single($oid)
 	{
-		$url = $this->_client->_make_url(sprintf('%s/%s', $this->_path, $x));
+		$url = $this->_client->_make_url(sprintf('%s/%s', $this->_path, $oid));
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
