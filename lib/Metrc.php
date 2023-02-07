@@ -123,6 +123,7 @@ class Metrc extends \OpenTHC\CRE\Base
 			switch ($res['code']) {
 				case 200:
 					// OK
+					break;
 				default:
 					return $res;
 			}
@@ -142,6 +143,7 @@ class Metrc extends \OpenTHC\CRE\Base
 			switch ($res['code']) {
 				case 200:
 					// OK
+					break;
 				default:
 					return $res;
 			}
