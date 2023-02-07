@@ -117,7 +117,16 @@ class Metrc extends \OpenTHC\CRE\Base
 	function ping()
 	{
 		try {
+
 			$res = $this->uomList();
+
+			switch ($res['code']) {
+				case 200:
+					// OK
+				default:
+					return $res;
+			}
+
 		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
@@ -127,7 +136,16 @@ class Metrc extends \OpenTHC\CRE\Base
 		}
 
 		try {
+
 			$res = $this->packageTypeList();
+
+			switch ($res['code']) {
+				case 200:
+					// OK
+				default:
+					return $res;
+			}
+
 		} catch (\Exception $e) {
 			return array(
 				'code' => 500,
