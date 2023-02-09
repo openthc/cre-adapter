@@ -1,7 +1,6 @@
 <?php
 /**
- * LCB CCRS Utility Class
- * For https://lcb.wa.gov/ccrs
+ * LCB CCRS Utility Class - https://lcb.wa.gov/ccrs
  *
  * SPDX-License-Identifier: MIT
  */
@@ -173,7 +172,7 @@ class CCRS extends \OpenTHC\CRE\Base
 				// OK
 				break;
 			default:
-				throw new \Exception('Cannot Access CCRS Main Page [CLC-152]');
+				return $res0;
 		}
 
 		// Make POST
