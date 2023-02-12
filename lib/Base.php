@@ -1,6 +1,6 @@
 <?php
 /**
- * A Base Class for an RBE
+ * A Base Class for an Compliance Reporting Engine ("CRE")
  *
  * SPDX-License-Identifier: MIT
  */
@@ -16,6 +16,7 @@ class Base
 
 	protected $_cfg;
 	protected $_err;
+	protected $_err_text;
 	protected $_inf;
 	protected $_raw;
 	protected $_req_head = [];
@@ -30,8 +31,16 @@ class Base
 	/**
 	 * Array of Arguments
 	 */
-	function __construct($cfg)
+	function __construct(array $cfg)
 	{
+		if (empty($cfg)) {
+			throw new \Exception('Invalid Parameters [LRB-037]');
+		}
+
+		if ( ! is_array($cfg)) {
+			throw new \Exception('Invalid Parameters [LRB-041]');
+		}
+
 		$this->_cfg = $cfg;
 
 		$this->_api_base = rtrim($cfg['server'], '/');
@@ -144,7 +153,7 @@ class Base
 		$this->_inf = curl_getinfo($req);
 		$this->_res = json_decode($this->_raw, true);
 		$this->_err = json_last_error();
-		$this->_err_msg = json_last_error_msg();
+		$this->_err_text = json_last_error_msg();
 
 		return $this->_res;
 	}
@@ -172,7 +181,7 @@ class Base
 		$this->_raw = curl_exec($req);
 		$ret = json_decode($this->_raw, true);
 		$this->_err = json_last_error();
-		$this->_err_msg = json_last_error_msg();
+		$this->_err_text = json_last_error_msg();
 
 		return $ret;
 	}

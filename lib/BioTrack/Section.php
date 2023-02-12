@@ -137,7 +137,7 @@ class Section extends \OpenTHC\CRE\BioTrack\Base
 		case 'Inventory':
 
 			$res = $this->_client->inventory_room_modify(
-				$id,
+				$oid,
 				$arg['name'],
 				$L['guid'],
 				$arg['quarantine']
@@ -163,138 +163,6 @@ class Section extends \OpenTHC\CRE\BioTrack\Base
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * Sync this Object
-	 */
-	function sync()
-	{
-		$ret = 0;
-		$txn = $this->sync_inventory_room();
-		$ret = max($ret, $txn);
-		$txn = $this->sync_plant_room();
-		$ret = max($ret, $txn);
-		// Upate something?
-		return $ret;
-	}
-
-	protected function sync_inventory_room()
-	{
-		$arg = $this->_client->_sync_object('sync_inventory_room');
-		$res = $this->_client->_curl_exec($arg);
-		$res = $res['inventory_room'];
-		if (empty($res)) {
-			return(0);
-		}
-
-		foreach ($res as $x) {
-
-			// API Docs Say this will exist; sometimes it's empty /djb 20170707
-			if (empty($x['roomid'])) {
-				continue;
-			}
-
-			$max = max($max, $x['transactionid']);
-
-			// if (empty($x['location'])) {
-			// 	continue;
-			// 	//print_r($x);
-			// 	//throw new \Exception("Inventory Section is Missing Location {$x['roomid']}, assuming default");
-			// 	//syslog(LOG_ERR, "Inventory Section is Missing Location {$x['roomid']}, assuming default");
-			// 	//$x['location'] = $l['code'];
-			// }
-
-			$this->import($x, 'Inventory');
-		}
-
-	}
-
-	protected function sync_plant_room()
-	{
-		$arg = $this->_client->_sync_object('sync_plant_room');
-		$res = $this->_client->_curl_exec($arg);
-		$res = $res['plant_room'];
-		if (empty($res)) {
-			return(0);
-		}
-
-		foreach ($res as $x) {
-
-			// API Docs Say this will exist; sometimes it's empty /djb 20170707
-			if (empty($x['roomid'])) {
-				continue;
-			}
-
-			$max = max($max, $x['transactionid']);
-
-			// Skip Shitty data from BioTrack
-			// if (empty($x['location'])) {
-			// 	continue;
-			// 	throw new \Exception("Plant Section is Missing Location {$x['roomid']}, assuming default");
-			// 	syslog(LOG_ERR, "Plant Section is Missing Location {$x['roomid']}, assuming default");
-			// }
-
-			$this->import($x, 'Plant');
-
-		}
-
-	}
-
-	protected function import($x, $type_r)
-	{
-		$rid = sprintf('%s%08x', substr($type_r, 0, 1), $x['roomid']);
-		$sql = 'SELECT * FROM room WHERE type = ? AND guid = ?';
-		$arg = array($type_r, $rid);
-		$chk = SQL::fetch_row($sql, $arg);
-
-		$R = null;
-
-		if (empty($chk)) {
-
-			$L = License::findByGUID($x['location']);
-			if (empty($L['id'])) {
-				$L = new License();
-				$L['code'] = $x['location'];
-				$L['guid'] = $x['location'];
-				$L['name'] = '-unknown-section-';
-				$L['type'] = 'Unknown Section';
-				$L['hash'] = '-';
-				$L->setFlag(License::FLAG_MINE);
-				$L->save();
-			}
-
-			$R = new Room();
-			$R['guid'] = $rid;
-			$R['license_id'] = $L['id'];
-			$R['type'] = $type_r;
-
-		} else {
-			$R = new Room($chk);
-		}
-
-		$R['name'] = $x['name'];
-
-		if (!empty($x['deleted'])) {
-			$R->setFlag(Room::FLAG_DELETED);
-		} else {
-			$R->delFlag(Room::FLAG_DELETED);
-		}
-
-		if (!empty($x['quarantine'])) {
-			$R->setFlag(Room::FLAG_QUARANTINE);
-		} else {
-			$R->delFlag(Room::FLAG_QUARANTINE);
-		}
-
-		if (empty($R['id'])) {
-			$R->setMeta($x, 'Section/Created via Sync');
-		} else {
-			$R->setMeta($x, 'Section/Updated via Sync');
-		}
-
-		$R->save();
-
 	}
 
 }

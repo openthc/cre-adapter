@@ -1,8 +1,11 @@
 <?php
 /**
-	@see http://www.biotrackthc.com/api/json
-	@see http://www.biotrackthc.com/api/xml
-*/
+ * Interface for BioTrack
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * @see https://biotrack.com/
+ */
 
 namespace OpenTHC\CRE;
 
@@ -10,15 +13,10 @@ class BioTrack extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'biotrack';
 
-	public $_sid = null;
-
 	protected $_name = 'BioTrack';
-	protected $_api_base = 'https://<server>/serverjson.asp';
 
 	protected $_training = false;
 
-	protected $_inf;
-	protected $_raw;
 	protected $_ret;
 
 	// Inventory Adjustment Reasons
@@ -123,7 +121,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	{
 		$k = intval($k);
 		$r = self::$_inv_kind[ $k ];
-		return ( $trim ? preg_replace('/^[\(\)\d ]+/', null, $r) : $r);
+		return ( $trim ? preg_replace('/^[\(\)\d ]+/', '', $r) : $r);
 	}
 
 	/**
@@ -180,9 +178,9 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 	 * Normalize an Address from the BioTrackTHC System
-	 * @return normalized address, as string
+	 * @return string normalised address
 	 */
-	static function fixAddress($rec)
+	static function fixAddress($rec) : string
 	{
 		$key_list = array_keys($rec);
 		foreach ($key_list as $k) {
@@ -194,9 +192,9 @@ class BioTrack extends \OpenTHC\CRE\Base
 		$a[] = $rec['address1'];
 
 		// Cleanup Address2 Field
-		if (!empty($src['address2'])) {
-			if ('none' == $src['address2']) {
-				$src['address2'] = null;
+		if ( ! empty($rec['address2'])) {
+			if ('none' == strtolower($rec['address2'])) {
+				$rec['address2'] = null;
 			}
 		}
 
@@ -211,7 +209,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		// 	}
 		// }
 
-		if (!empty($x['address2'])) {
+		if ( ! empty($rec['address2'])) {
 			if (false === strpos($rec['address1'], $rec['address2'])) {
 				$a[] = $rec['address2'];
 			}
@@ -231,32 +229,15 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 	 * Constructor
-	 * @param $x Array of CRE Options
+	 * @param array $cfg data-array of CRE Options
 	 */
-	function __construct($x=null)
+	function __construct($cfg)
 	{
-		if (empty($x)) {
-			throw new \Exception('Invalid Parameters [LRB-239]');
-		}
+		parent::__construct($cfg);
 
-		if (!is_array($x)) {
-			throw new \Exception('Invalid Parameters [LRB-243]');
-		}
-
-		if (!empty($x['server'])) {
-			$this->_api_base = $x['server'];
-		}
-
-		$this->_company = $x['company'];
-		$this->_username = $x['username'];
-		$this->_password = $x['password'];
-
-		if (!empty($x['session'])) {
-			$this->_sid = $x['session'];
-		}
-
-		if ( ! empty($x['training'])) {
-			$this->setTestMode();
+		if ( ! empty($cfg['training'])) {
+			throw new \Exception('Invalid Parameter [CLB-249]');
+			// $this->setTestMode();
 		}
 
 	}
@@ -299,7 +280,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 	*/
 	function getObjectList()
 	{
-		$ret_list = $this->$obj_list;
+		$ret_list = $this->obj_list;
 
 		switch ($this->_cfg['id']) {
 			case 'usa/hi':
@@ -314,20 +295,20 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@param $company Company Identifier (internally OrgId)
-		@param $username un
-		@param $password pw
-	*/
+	 * @param string $company Company Identifier (internally OrgId)
+	 * @param string $username un
+	 * @param string $password pw
+	 */
 	function auth($company=null, $username=null, $password=null)
 	{
 		if (empty($company)) {
-			$company = $this->_company;
+			$company = $this->_cfg['company'];
 		}
 		if (empty($username)) {
-			$username = $this->_username;
+			$username = $this->_cfg['username'];
 		}
 		if (empty($password)) {
-			$password = $this->_password;
+			$password = $this->_cfg['password'];
 		}
 
 		$arg = array(
@@ -353,15 +334,18 @@ class BioTrack extends \OpenTHC\CRE\Base
 		$ret['success'] = intval($ret['success']);
 
 		if (1 == $ret['success']) {
-			$this->_sid = $ret['sessionid'];
+			$this->_cfg['session'] = $ret['sessionid'];
 		}
 
 		return $ret;
 	}
 
+	/**
+	 *
+	 */
 	function ping()
 	{
-		if (empty($this->_sid)) {
+		if (empty($this->_cfg['session'])) {
 			return [
 				'code' => 403,
 				'data' => null,
@@ -369,8 +353,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 			];
 		}
 
-		$pong = $rbe->sync_check();
-		// print_r($pong);
+		$pong = $this->sync_check();
 
 		return [
 			'code' => 200,
@@ -378,85 +361,6 @@ class BioTrack extends \OpenTHC\CRE\Base
 			'meta' => [],
 		];
 
-	}
-
-	/**
-		Lookup a Customer or Patient in the RBE
-		@param $mp Medical Patient
-		@param $cg Care Giver
-	*/
-	function card_lookup($mp, $cg)
-	{
-		$arg = array(
-			'action' => 'card_lookup',
-			'card_id' => $mp,
-			'caregiver_card_id' => $cg,
-		);
-		$res = $this->_curl_exec($arg);
-		return $res;
-	}
-
-	/**
-		@param $id Employee ID
-		@param $name Name
-		@param $dob Date of Birth
-		@param $doh Date of Hire
-	*/
-	function employee_add($id, $name, $dob, $doh)
-	{
-		$dob = strtotime($dob);
-		$doh = strtotime($doh);
-
-		$arg = array(
-			'action' => 'employee_add',
-			'employee_id' => $id,
-			'employee_name' => trim($name),
-			'birth_year' => date('Y', $dob),
-			'birth_month' => date('m', $dob),
-			'birth_day' => date('d', $dob),
-			'hire_year' => date('Y', $doh),
-			'hire_month' => date('m', $doh),
-			'hire_day' => date('d', $doh),
-		);
-		$res = $this->_curl_exec($arg);
-		return $res;
-	}
-
-	/**
-		@param $id Employee ID
-		@param $name Name
-		@param $dob Date of Birth
-		@param $doh Date of Hire
-	*/
-	function employee_modify($id, $name, $dob, $doh)
-	{
-		$dob = strtotime($dob);
-		$doh = strtotime($doh);
-
-		$res = $this->_curl_exec(array(
-			'action' => 'employee_modify',
-			'employee_id' => $id,
-			'employee_name' => trim($name),
-			'birth_year' => date('Y', $dob),
-			'birth_month' => date('m', $dob),
-			'birth_day' => date('d', $dob),
-			'hire_year' => date('Y', $doh),
-			'hire_month' => date('m', $doh),
-			'hire_day' => date('d', $doh),
-		));
-		return $res;
-	}
-
-	/**
-		@param $id Employee ID
-	*/
-	function employee_remove($id)
-	{
-		$res = $this->_curl_exec(array(
-			'action' => 'employee_remove',
-			'employee_id' => $id,
-		));
-		return $res;
 	}
 
 	/**
@@ -736,7 +640,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 			$arg['employee_id'] = $evid;
 			break;
 		default:
-			throw new Exception('Invalid Sample Type');
+			throw new \Exception('Invalid Sample Type');
 		}
 
 		$res = $this->_curl_exec($arg);
@@ -1453,15 +1357,15 @@ class BioTrack extends \OpenTHC\CRE\Base
 	{
 		$loc = trim($loc);
 		if (empty($loc)) {
-			throw new Exception("Invalid Location");
+			throw new \Exception("Invalid Location");
 		}
 		$val = trim($val);
 		if (empty($val)) {
-			throw new Exception("Invalid Value");
+			throw new \Exception("Invalid Value");
 		}
 		$uom = trim($uom);
 		if (empty($uom)) {
-			throw new Exception("Invalid Unit of Measure");
+			throw new \Exception("Invalid Unit of Measure");
 		}
 
 		$arg = array(
@@ -1652,49 +1556,9 @@ class BioTrack extends \OpenTHC\CRE\Base
 		);
 
 		if (empty($arg['new_username'])) {
-			throw new Exception('Invalid Username for Remove');
+			throw new \Exception('Invalid Username for Remove');
 		}
 
-		return $this->_curl_exec($arg);
-	}
-
-	/**
-		@param $opt Vehicle Description
-		@todo Error Check Each Option
-	*/
-	function vehicle_add($opt)
-	{
-		$arg = array(
-			'action' => 'vehicle_add',
-		);
-		$arg = array_merge($arg, $opt);
-		return $this->_curl_exec($arg);
-
-	}
-
-	/**
-		@param $opt Vehicle Description
-	*/
-	function vehicle_modify($opt)
-	{
-		$arg = array(
-			'action' => 'vehicle_modify',
-		);
-		$arg = array_merge($arg, $opt);
-		return $this->_curl_exec($arg);
-
-	}
-
-	/**
-		vehicle_remove($vid)
-		@param $vehicle ID
-	*/
-	function vehicle_remove($vid)
-	{
-		$arg = array(
-			'action' => 'vehicle_remove',
-			'vehicle_id' => $vid,
-		);
 		return $this->_curl_exec($arg);
 	}
 
@@ -1925,20 +1789,11 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	 * Interface for Variety
+	 * Interface for Contact
 	 */
-	function variety()
+	function contact()
 	{
-		$r = new \OpenTHC\CRE\BioTrack\Variety($this);
-		return $r;
-	}
-
-	/**
-	 * Interface for Section
-	 */
-	function section()
-	{
-		$r = new \OpenTHC\CRE\BioTrack\Section($this);
+		$r = new \OpenTHC\CRE\BioTrack\Contact($this);
 		return $r;
 	}
 
@@ -1952,14 +1807,42 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Interface for Section
+	 */
+	function section()
+	{
+		$r = new \OpenTHC\CRE\BioTrack\Section($this);
+		return $r;
+	}
+
+	/**
+	 * Interface for Variety
+	 */
+	function variety()
+	{
+		$r = new \OpenTHC\CRE\BioTrack\Variety($this);
+		return $r;
+	}
+
+	/**
+	 * Interface for Vehicle
+	 */
+	function vehicle()
+	{
+		$r = new \OpenTHC\CRE\BioTrack\Vehicle($this);
+		return $r;
+	}
+
+
+	/**
 		Executue the Request with the given Arguments
 		@param $arg Array of Arguments for API call
 	*/
 	function _curl_exec($arg)
 	{
 		$arg['API'] = '4.0';
-		if (!empty($this->_sid)) {
-			$arg['sessionid'] = $this->_sid;
+		if ( ! empty($this->_cfg['session'])) {
+			$arg['sessionid'] = $this->_cfg['session'];
 		}
 
 		if (!empty($this->_training)) {
@@ -1998,7 +1881,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 			// OK
 			break;
 		default:
-			//throw new Exception(sprintf('Invalid HTTP Response Code: %d See Log: %s', $inf['http_code'], basename($log_file)));
+			//throw new \Exception(sprintf('Invalid HTTP Response Code: %d See Log: %s', $inf['http_code'], basename($log_file)));
 			if (empty($this->_raw)) {
 				$this->_ret = array(
 					'success' => 0,
@@ -2017,7 +1900,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		// @todo Plugin::notify_run('rbe-error-handler');
 		if (!empty($this->_ret['error'])) {
 			if (preg_match('/session.+expired/', $this->_ret['error'])) {
-				$this->_sid = null;
+				unset($this->_cfg['session']);
 			}
 		}
 

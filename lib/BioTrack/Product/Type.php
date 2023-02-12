@@ -162,7 +162,7 @@ class Type
 	function __construct(int $t)
 	{
 		$this->_t = intval($t);
-		if ( ! isset(self::$_map[ $this->_t ])) {
+		if ( ! isset($this->_map[ $this->_t ])) {
 			throw new \Exception('Invalid Product Type [BPT-058]');
 		}
 	}
