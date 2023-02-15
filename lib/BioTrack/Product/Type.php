@@ -180,7 +180,7 @@ class Type
 	 */
 	function getOpenTHCID()
 	{
-		return self::$_map[ $this->_t ]['id'];
+		return $this->_map[ $this->_t ]['id'];
 	}
 
 	function getPackageType()
