@@ -93,7 +93,7 @@ class Section extends \OpenTHC\CRE\BioTrack\Base
 	{
 		$ret = null;
 
-		$L = new License($obj['license_id']);
+		$L = $this->_client->getLicense();
 
 		// Re-Patch Code/GUID
 		$oid = null;
@@ -110,8 +110,6 @@ class Section extends \OpenTHC\CRE\BioTrack\Base
 			$ret = $this->_client->plant_room_remove($L['guid'], $oid);
 			break;
 		}
-
-		// $ret['data'] = (1 == $ret['success'] ? 'success' : 'failure' );
 
 		return [
 			'data' => (1 == $ret['success']),
