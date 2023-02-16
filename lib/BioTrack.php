@@ -149,20 +149,28 @@ class BioTrack extends \OpenTHC\CRE\Base
 	{
 		switch ($t) {
 		case 1:
+			return 'Grower';
 			return 'G1';
 		case 2:
+			return 'Grower';
 			return 'G2';
 		case 3:
+			return 'Grower';
 			return 'G3';
 		case 4:
+			return 'Grower,Processor';
 			return 'G1P';
 		case 5:
+			return 'Grower,Processor';
 			return 'G2P';
 		case 6:
+			return 'Grower,Processor';
 			return 'G3P';
 		case 7:
+			return 'Processor';
 			return 'P';
 		case 8:
+			return 'Retail';
 			return 'R';
 		case 9: // Appeared on 2016-05-28 w/o notice - seems to be tribal /djb
 			return 'Tribe';
