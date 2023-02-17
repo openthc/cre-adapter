@@ -24,6 +24,8 @@ class Base
 
 	protected $_tz;  // Timezone
 
+	protected $_Company;
+
 	protected $_License;
 
 	const ENGINE = null;
@@ -60,6 +62,14 @@ class Base
 			$this->_tz = new \DateTimezone($cfg['tz']);
 		}
 
+	}
+
+	/**
+	 *
+	 */
+	function getCompany()
+	{
+		return $this->_Company;
 	}
 
 	/**
