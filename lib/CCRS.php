@@ -1,8 +1,10 @@
 <?php
 /**
- * LCB CCRS Utility Class - https://lcb.wa.gov/ccrs
+ * Interface for WSLCB CCRS
  *
  * SPDX-License-Identifier: MIT
+ *
+ * https://lcb.wa.gov/ccrs
  */
 
 namespace OpenTHC\CRE;
@@ -24,7 +26,10 @@ class CCRS extends \OpenTHC\CRE\Base
 	{
 		parent::__construct($cfg);
 
-		$this->cookie_list = $cfg['cookie-list'];
+		if ( ! empty($cfg['cookie-list'])) {
+			$this->cookie_list = $cfg['cookie-list'];
+		}
+
 		$this->_service_key = $cfg['service-key'];
 
 		if ( ! empty($this->_cfg['cookie-file'])) {
