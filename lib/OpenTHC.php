@@ -11,9 +11,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'openthc';
 
-	private $_c; // Client Connection
-
-	private $sid;
+	protected $_c; // Client Connection
 
 	protected $_res_body;
 	protected $_res_code;
