@@ -64,6 +64,16 @@ class Base
 
 	}
 
+
+	/**
+	 *
+	 */
+	function getConfig()
+	{
+		return $this->_cfg;
+	}
+
+
 	/**
 	 *
 	 */
@@ -71,6 +81,7 @@ class Base
 	{
 		return $this->_Company;
 	}
+
 
 	/**
 	 *
