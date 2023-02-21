@@ -24,10 +24,15 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		'product' => 'Product',
 		'variety' => 'Variety',
 		'crop' => 'Crop',
+		'crop-collect' => 'Crop Collect / Harvest / Cure',
 		'lot' => 'Lot',
+		'lab-report' => 'Lab Reports',
 		'b2b' => 'B2B Sales',
+		'b2b_incoming' => 'B2B Incoming (Purchase Orders)',
+		'b2b_outgoing' => 'B2B Outgoing (Sales)',
 		'b2c' => 'B2C Sales'
 	];
+
 
 	/**
 	 * Array of Arguments
@@ -35,9 +40,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	function __construct($cfg)
 	{
 		parent::__construct($cfg);
-
-		$this->sid = $cfg['sid'];
-
 		$this->_init_api();
 	}
 
@@ -46,36 +48,15 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	protected function _init_api()
 	{
-		$jar_secure = true;
-		if ('http' == parse_url($this->_api_base, PHP_URL_SCHEME)) {
-			$jar_secure = false;
-		}
-
-		// @todo Make this Session Persistent?
-		$jar = new \GuzzleHttp\Cookie\CookieJar();
-		if (!empty($this->sid)) {
-			$c = new \GuzzleHttp\Cookie\SetCookie(array(
-				'Domain' => $this->_api_host,
-				'Name' => 'openthc',
-				'Value' => $this->sid,
-				'Secure' => $jar_secure,
-				'HttpOnly' => true,
-			));
-			$jar->setCookie($c);
-		}
-
 		$cfg = array(
 			'base_uri' => $this->_api_base,
 			'allow_redirects' => false,
-			'cookies' => $jar,
+			'cookies' => false,
 			'headers' => array(
 				'accept' => 'application/json',
-				'openthc-service' => $this->_cfg['service-key'],
-				'openthc-company' => $this->_cfg['company'],
-				'user-agent' => 'OpenTHC/CRE/Adapter v420.22.297',
+				'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
 			),
 			'http_errors' => false,
-			'verify' => false,
 		);
 
 		// Override Host Header Here
@@ -90,37 +71,27 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		$this->_c = new \GuzzleHttp\Client($cfg);
 	}
 
-	function setLicense($x)
-	{
-		$l0 = $this->_License;
-		parent::setLicense($x);
-		$l1 = $this->_License;
-
-		if ($l0['id'] != $l1['id']) {
-			$this->auth([
-				'cre' => $this->_cfg['code'],
-				'service' => $this->_cfg['service-key'],
-				'company' => $this->_cfg['company'],
-				'contact' => $this->_cfg['contact'],
-				'license' => $this->_License['id'],
-				// 'license-key' =>
-			]);
-		}
-
-	}
-
 	/**
 	 * Format Error
 	 */
 	function formatError($e)
 	{
 		if (is_array($e)) {
-			if (!empty($e['detail'])) {
+
+			if ( ! empty($e['meta']['note'])) { // v2
+				return $e['meta']['note'];
+			}
+
+			if ( ! empty($e['meta']['detail'])) { // v1
+				return $e['meta']['detail'];
+			}
+
+			if ( ! empty($e['detail'])) { // v0
 				return $e['detail'];
 			}
 		}
 
-		return json_encode($e, JSON_PRETTY_PRINT);
+		return json_encode($e, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 	}
 
@@ -258,7 +229,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function request($v, $u, $o=[])
 	{
-		$o = array_merge_recursive($o, [
+		$o = array_replace_recursive($o, [
 			'headers' => [
 				'openthc-license' => $this->_License['id'],
 			]
@@ -267,7 +238,6 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		return $this->_c->request($v, $u, $o);
 
 	}
-
 
 	/**
 	 * Authentication Interfaces
