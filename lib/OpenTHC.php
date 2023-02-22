@@ -117,7 +117,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			// _exit_text($this->_res_code . ': ' . $res->getBody());
-			throw new Exception(sprintf('Invalid Response "%d" from OpenTHC [LRO-152]', $this->_res_code));
+			throw new \Exception(sprintf('Invalid Response "%d" from OpenTHC [LRO-152]', $this->_res_code));
 		}
 
 		return $ret;
@@ -164,7 +164,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			echo ">>>{$this->_res_body}\n###\n";
-			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-208]', $this->_res_code));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-208]', $this->_res_code));
 		}
 
 		return $ret;
@@ -189,7 +189,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			break;
 		default:
 			var_dump($this->_res_body);
-			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-218]', $this->_res_code));
+			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-218]', $this->_res_code));
 		}
 
 		return $ret;
@@ -224,7 +224,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			$ret['code'] = $this->_res_code;
 			break;
 		default:
-			throw new Exception(sprintf(_('Invalid Response Code "%03d" from OpenTHC [LRO-290]'), $this->_res_code));
+			throw new \Exception(sprintf(_('Invalid Response Code "%03d" from OpenTHC [LRO-290]'), $this->_res_code));
 		}
 
 		return $ret;
