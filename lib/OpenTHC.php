@@ -100,20 +100,24 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	{
 		$res = $this->request('GET', $url);
 
+		$this->_res_body = $res->getBody()->getContents();
+		$this->_res_code = $res->getStatusCode();
+
 		$ret = null;
-		switch ($res->getStatusCode()) {
+		switch ($this->_res_code) {
 		case 200:
 		case 201:
 		case 403:
 		case 404:
+		case 405:
 		case 410:
 		case 423:
-			$ret = json_decode($res->getBody(), true);
-			$ret['code'] = $res->getStatusCode();
+			$ret = json_decode($this->_res_body, true);
+			$ret['code'] = $this->_res_code;
 			break;
 		default:
-			// _exit_text($res->getStatusCode() . ': ' . $res->getBody());
-			throw new \Exception('Invalid Response from OpenTHC [LRO-152]');
+			// _exit_text($this->_res_code . ': ' . $res->getBody());
+			throw new Exception(sprintf('Invalid Response "%d" from OpenTHC [LRO-152]', $this->_res_code));
 		}
 
 		return $ret;
@@ -141,23 +145,26 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 		$res = $this->request('POST', $url, $opt);
 
-		$hsc = $res->getStatusCode();
-		$raw = $res->getBody()->getContents();
+		$this->_res_code = $res->getStatusCode();
+		$this->_res_body = $res->getBody()->getContents();
 
 		$ret = null;
-		switch ($hsc) {
+		switch ($this->_res_code) {
 		case 200:
 		case 201:
 		case 202:
+		case 400:
 		case 403:
 		case 404:
+		case 405:
 		case 409:
 		case 410:
-			$ret = json_decode($raw, true);
-			$ret['code'] = $hsc;
+			$ret = json_decode($this->_res_body, true);
+			$ret['code'] = $this->_res_code;
 			break;
 		default:
-			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-193]', $hsc));
+			echo ">>>{$this->_res_body}\n###\n";
+			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-208]', $this->_res_code));
 		}
 
 		return $ret;
@@ -171,18 +178,18 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		$res = $this->request('PATCH', $url, [ 'json' => $arg ]);
 
 		// Copied from $this->post() /mbw
-		$hsc = $res->getStatusCode();
+		$this->_res_code = $res->getStatusCode();
+		$this->_res_body = $res->getBody()->getContents();
 
 		$ret = null;
-		switch ($hsc) {
+		switch ($this->_res_code) {
 		case 200:
-			$ret = json_decode($res->getBody(), true);
-			$ret['code'] = $hsc;
+			$ret = json_decode($this->_res_body, true);
+			$ret['code'] = $this->_res_code;
 			break;
 		default:
-			$buf = $res->getBody()->getContents();
-			var_dump($buf);
-			throw new \Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-218]', $hsc));
+			var_dump($this->_res_body);
+			throw new Exception(sprintf('Invalid Response Code: %03d from OpenTHC [LRO-218]', $this->_res_code));
 		}
 
 		return $ret;
@@ -200,23 +207,24 @@ class OpenTHC extends \OpenTHC\CRE\Base
 
 		$res = $this->request('DELETE', $url, $opt);
 
-		$hsc = $res->getStatusCode();
-		$raw = $res->getBody()->getContents();
+		$this->_res_code = $res->getStatusCode();
+		$this->_res_body = $res->getBody()->getContents();
 
 		$ret = null;
-		switch ($hsc) {
+		switch ($this->_res_code) {
 		case 200:
 		case 202:
 		case 204:
 		case 403:
 		case 404:
+		case 405:
 		case 410:
 		case 423:
-			$ret = json_decode($raw, true);
-			$ret['code'] = $hsc;
+			$ret = json_decode($this->_res_body, true);
+			$ret['code'] = $this->_res_code;
 			break;
 		default:
-			throw new \Exception(sprintf(_('Invalid Response Code "%03d" from OpenTHC [LRO-250]'), $hsc));
+			throw new Exception(sprintf(_('Invalid Response Code "%03d" from OpenTHC [LRO-290]'), $this->_res_code));
 		}
 
 		return $ret;
@@ -227,8 +235,20 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function request($v, $u, $o=[])
 	{
+		$jwt = new \OpenTHC\JWT([
+			'iat' => time() - 30,
+			'iss' => $_SERVER['SERVER_NAME'],
+			'exp' => (time() + 120),
+			'sub' => $this->_cfg['contact'],
+			'service' => 'cre', // or BONG or PIPE?
+			'cre' => $this->_cfg['id'], // CRE ID
+			'company' => $this->_cfg['company'],
+			'license' => $this->_License['id'],
+		]);
+
 		$o = array_replace_recursive($o, [
 			'headers' => [
+				'authorization' => sprintf('Bearer jwt:%s', $jwt->__toString()),
 				'openthc-license' => $this->_License['id'],
 			]
 		]);
