@@ -1884,6 +1884,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		$t1 = microtime(true);
 
 		// Handle Response
+		$this->_ret['code'] = $this->_inf['http_code'];
 		switch ($this->_inf['http_code']) {
 		case 200:
 			// OK

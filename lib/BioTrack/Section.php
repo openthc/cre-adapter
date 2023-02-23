@@ -112,6 +112,7 @@ class Section extends \OpenTHC\CRE\BioTrack\Base
 		}
 
 		return [
+			'code' => $ret['code'],
 			'data' => (1 == $ret['success']),
 			'meta' => [],
 		];
