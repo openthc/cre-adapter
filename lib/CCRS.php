@@ -309,6 +309,14 @@ class CCRS extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Create an ID for use in CCRS
+	 */
+	static function create_id() : string
+	{
+		return substr(_ulid(), 0, 16);
+	}
+
+	/**
 	 * Get Data Hash of a CSV File
 	 */
 	static function csv_file_hash($source_file)
