@@ -1294,7 +1294,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 			'strain' => trim($name),
 		);
 
-		if (!empty($mother)) {
+		if (isset($mother)) {
 			$arg['mother'] = ($mother ? '1' : '0');
 		}
 
