@@ -239,6 +239,7 @@ class LeafData extends \OpenTHC\CRE\Base
 
 		$this->_req_head = [
 			'content-type' => 'application/json',
+			'openthc-license' => $this->_License['id'],
 			'x-mjf-mme-code' => $x['license'],
 			'x-mjf-key' => $x['license-key'],
 		];
@@ -609,7 +610,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	}
 
 	// Basically a Lots/Inventory
-	function lot()
+	function inventory()
 	{
 		return new LeafData\Lot($this);
 	}
@@ -617,7 +618,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	/**
 	 * Not sure why they didn't make this an UPDATE on the /inventory
 	 */
-	function lot_delta()
+	function inventory_delta()
 	{
 		return new LeafData\Lot_Delta($this);
 	}

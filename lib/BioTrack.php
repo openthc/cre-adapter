@@ -1923,12 +1923,11 @@ class BioTrack extends \OpenTHC\CRE\Base
 	public function _curl_init($uri)
 	{
 		$req = _curl_init($uri);
-		// $h = parse_url($uri, PHP_URL_HOST);
 		$head = array(
 			'content-type: text/JSON', // BT wants this (incorrect) value
-			// sprintf('host: %s', $h),
-			// sprintf('openthc-company: %s', $_SESSION['Company']['id']),
+			sprintf('openthc-license: %s', $this->_License['id'])
 		);
+
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 
 		return $req;
