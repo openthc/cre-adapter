@@ -240,9 +240,9 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'iss' => $_SERVER['SERVER_NAME'],
 			'exp' => (time() + 120),
 			'sub' => $this->_cfg['contact'],
-			'service' => 'cre', // or BONG or PIPE?
+			'service' => $this->_cfg['service'],
 			'cre' => $this->_cfg['id'], // CRE ID
-			'company' => $this->_cfg['company'],
+			'company' => $this->_cfg['company'], // @deprecated
 			'license' => $this->_License['id'],
 		]);
 
