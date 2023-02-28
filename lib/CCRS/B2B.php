@@ -17,7 +17,7 @@ class B2B
 	 *
 	 * @return resource handle to the Stream
 	 */
-	function create_outgoing_csv(array $b2b, $req_ulid)
+	function create_outgoing_csv(array $b2b, ?string $req_ulid=null)
 	{
 		if (empty($req_ulid)) {
 			$req_ulid = _ulid();
