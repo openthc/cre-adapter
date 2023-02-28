@@ -24,31 +24,24 @@ class B2B
 		}
 
 		// Fix Source Email
-		$b2b['source']['email'] = str_replace('+', ' ', $b2b['source']['email']);
-		$b2b['source']['email'] = trim($b2b['source']['email']);
-		$b2b['source']['email'] = strtok($b2b['source']['email'], ' ,+;');
+		$b2b['source']['email'] = strtok($b2b['source']['email'], ' ,;');
 		$b2b['source']['email'] = trim($b2b['source']['email']);
 
 		// Fix Source Phone
 		$b2b['source']['phone'] = str_replace('+', ' ', $b2b['source']['phone']);
-		$b2b['source']['phone'] = trim($b2b['source']['phone']);
-		$b2b['source']['phone'] = strtok($b2b['source']['phone'], ' ,+;');
+		$b2b['source']['phone'] = strtok($b2b['source']['phone'], ',;');
 		$b2b['source']['phone'] = trim($b2b['source']['phone']);
 		$b2b['source']['phone'] = substr($b2b['source']['phone'], 0, 14);
 
 		// Fix Target Email
-		$b2b['target']['email'] = str_replace('+', ' ', $b2b['target']['email']);
-		$b2b['target']['email'] = trim($b2b['target']['email']);
-		$b2b['target']['email'] = strtok($b2b['target']['email'], ' ,+;');
+		$b2b['target']['email'] = strtok($b2b['target']['email'], ' ,;');
 		$b2b['target']['email'] = trim($b2b['target']['email']);
 
 		// Fix Target Phone
 		$b2b['target']['phone'] = str_replace('+', ' ', $b2b['target']['phone']);
-		$b2b['target']['phone'] = trim($b2b['target']['phone']);
-		$b2b['target']['phone'] = strtok($b2b['target']['phone'], ' ,+;');
+		$b2b['target']['phone'] = strtok($b2b['target']['phone'], ',;');
 		$b2b['target']['phone'] = trim($b2b['target']['phone']);
 		$b2b['target']['phone'] = substr($b2b['target']['phone'], 0, 14);
-
 
 		// Should be passed in or available from the CRE?
 		$tz0 = new DateTimezone(\OpenTHC\Config::get('cre/usa/wa/ccrs/tz'));
