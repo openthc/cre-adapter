@@ -44,6 +44,20 @@ class B2B
 		$csv_head = explode(',', 'InventoryExternalIdentifier,PlantExternalIdentifier,Quantity,UOM,WeightPerUnit,ServingsPerUnit,ExternalIdentifier,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate,Operation');
 		$this->col_size = count($csv_head);
 
+		// Fix Email
+		$b2b['source']['email'] = str_replace('+', ' ', $b2b['source']['email']);
+		$b2b['source']['email'] = trim($b2b['source']['email']);
+		$b2b['source']['email'] = strtok($b2b['source']['email'], ' ,+;');
+		$b2b['source']['email'] = trim($b2b['source']['email']);
+
+		// Fix Phone
+		$b2b['source']['phone'] = str_replace('+', ' ', $b2b['source']['phone']);
+		$b2b['source']['phone'] = trim($b2b['source']['phone']);
+		$b2b['source']['phone'] = strtok($b2b['source']['phone'], ' ,+;');
+		$b2b['source']['phone'] = trim($b2b['source']['phone']);
+		$b2b['source']['phone'] = substr($b2b['source']['phone'], 0, 14);
+
+
 		$csv_temp = fopen('php://temp', 'w');
 
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'SubmittedBy', 'OpenTHC' ]));
@@ -53,13 +67,15 @@ class B2B
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'Header Operation','INSERT' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'TransportationType', 'REGULAR' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseNumber', $b2b['source']['code'] ]));
-		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseePhone', substr($b2b['source']['phone'], 0, 14) ]));
-		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseeEmailAddress', sprintf('code+%s@openthc.com', $req_ulid) ]));
+		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseePhone', $b2b['source']['phone'] ]));
+		// \OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseeEmailAddress', sprintf('code+%s@openthc.com', $req_ulid) ]));
+		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'OriginLicenseeEmailAddress', $b2b['source']['email'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'TransportationLicenseNumber', '' ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DriverName', $b2b['shipping']['contact']['name'] ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'DepartureDateTime', $dtD->format('m/d/Y h:i:s A') ]));
 		\OpenTHC\CRE\CCRS::fputcsv_stupidly($csv_temp, $this->_pad_csv_row([ 'ArrivalDateTime', $dtA->format('m/d/Y h:i:s A') ]));
 
+		// Vehicle
 		$v = $b2b['shipping']['vehicle'];
 		$v['tag'] = $v['tag'] ?: $v['plate'];
 		$v['tag'] = str_replace(' ', '', $v['tag']);
