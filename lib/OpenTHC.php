@@ -19,54 +19,53 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	protected $obj_list = [
 		'license' => 'License',
 		'section' => 'Section',
-		'product' => 'Product',
 		'variety' => 'Variety',
+		'product' => 'Product',
 		'crop' => 'Crop',
 		'crop-collect' => 'Crop Collect / Harvest / Cure',
-		'lot' => 'Lot',
+		'inventory' => 'Inventory',
+		'inventory-adjust' => 'Inventory Adjust Logs',
 		'lab-report' => 'Lab Reports',
 		'b2b' => 'B2B Sales',
-		'b2b_incoming' => 'B2B Incoming (Purchase Orders)',
-		'b2b_outgoing' => 'B2B Outgoing (Sales)',
+		'b2b-incoming' => 'B2B Incoming (Purchase Orders)',
+		'b2b-outgoing' => 'B2B Outgoing (Sales)',
 		'b2c' => 'B2C Sales'
 	];
-
 
 	/**
 	 * Array of Arguments
 	 */
-	function __construct($cfg)
+	function __construct(array $cfg)
 	{
 		parent::__construct($cfg);
 		$this->_init_api();
 	}
 
 	/**
-	 *
+	 * Create the GuzzleHTTP Client
 	 */
-	protected function _init_api()
+	protected function _init_api() : void
 	{
+		$head = [
+			'accept' => 'application/json',
+			'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
+			'openthc-cre' => $this->_cfg['id'],
+			// 'openthc-service-id' => $this->_cfg['service']
+			// 'openthc-contact-id' => $this->_cfg['contact']
+			// 'openthc-company-id' => $this->_cfg['company']
+			// 'openthc-license-id' => $this->_cfg['license']
+		];
+
 		$cfg = array(
 			'base_uri' => $this->_api_base,
 			'allow_redirects' => false,
-			'cookies' => false,
-			'headers' => array(
-				'accept' => 'application/json',
-				'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
-			),
+			'cookies' => true,
+			'headers' => $head,
 			'http_errors' => false,
 		);
 
-		// Override Host Header Here
-		// @see https://github.com/guzzle/guzzle/issues/1678#issuecomment-281921604
-		// $host = $this->_api_host;
-		// $ghhs = \GuzzleHttp\HandlerStack::create();
-		// $ghhs->push(\GuzzleHttp\Middleware::mapRequest(function (\Psr\Http\Message\RequestInterface $R) use ($host) {
-		// 	return $R->withHeader('host', $host);
-		// }));
-		// $cfg['handler'] = $ghhs;
-
 		$this->_c = new \GuzzleHttp\Client($cfg);
+
 	}
 
 	/**
@@ -96,7 +95,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	/**
 	 * HTTP GET Utility
 	 */
-	function get($url)
+	function get(string $url)
 	{
 		$res = $this->request('GET', $url);
 
@@ -126,7 +125,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	/**
 	 * HTTP HEAD Utility
 	 */
-	function head($url)
+	function head(string $url)
 	{
 		$res = $this->request('HEAD', $url);
 		return $res;
@@ -137,7 +136,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 *
 	 * @param string $type is un-used
 	 */
-	function post($url, $arg, $type='multipart/form-data')
+	function post(string $url, $arg, $type='multipart/form-data')
 	{
 		$opt = [
 			'form_params' => $arg,
@@ -173,7 +172,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	/**
 	 * HTTP PATCH utility
 	 */
-	function patch($url, $arg)
+	function patch(string $url, $arg)
 	{
 		$res = $this->request('PATCH', $url, [ 'json' => $arg ]);
 
@@ -198,7 +197,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	/**
 	 * HTTP DELETE Utility
 	 */
-	function delete($url, $arg=null)
+	function delete(string $url, $arg=null)
 	{
 		$opt = [
 			// 'form_params' => $arg,
@@ -233,15 +232,16 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	/**
 	 * Common Request Handler
 	 */
-	function request($v, $u, $o=[])
+	function request(string $v, string $u, $o=[])
 	{
 		$jwt = new \OpenTHC\JWT([
 			'iat' => time() - 30,
 			'iss' => $_SERVER['SERVER_NAME'],
 			'exp' => (time() + 120),
 			'sub' => $this->_cfg['contact'],
-			'service' => $this->_cfg['service'],
-			'cre' => $this->_cfg['id'], // CRE ID
+			'service-sk' => $this->_cfg['service-sk'],
+			'service' => $this->_cfg['service'], // @deprecated
+			'cre' => $this->_cfg['id'], // CRE ID ?? NecessarY? Or Not in JWT?
 			'company' => $this->_cfg['company'], // @deprecated
 			'license' => $this->_License['id'],
 		]);
