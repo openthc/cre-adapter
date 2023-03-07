@@ -39,10 +39,6 @@ class Base
 			throw new \Exception('Invalid Parameters [LRB-037]');
 		}
 
-		if ( ! is_array($cfg)) {
-			throw new \Exception('Invalid Parameters [LRB-041]');
-		}
-
 		$this->_cfg = $cfg;
 
 		$this->_api_base = rtrim($cfg['server'], '/');
@@ -52,6 +48,10 @@ class Base
 		}
 
 		// Timezone
+		if (empty($cfg['tz'])) {
+			$cfg['tz'] = $_SESSION['tz'];
+		}
+
 		if (empty($cfg['tz'])) {
 			$cfg['tz'] = date_default_timezone_get();
 		}
