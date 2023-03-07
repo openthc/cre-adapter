@@ -9,49 +9,7 @@ namespace OpenTHC\CRE\OpenTHC;
 
 class Crop extends Base
 {
-	function search($filter=null)
-	{
-		$url = '/plant';
-
-		if (!empty($filter)) {
-			$url.= '?' . http_build_query($filter);
-		}
-
-		$res = $this->_cre->get($url);
-		return $res;
-	}
-
-	function create($obj)
-	{
-		$url = '/plant';
-		$res = $this->_cre->post($url, $obj);
-		return $res;
-	}
-
-	function delete($oid, $arg=null)
-	{
-		$url = sprintf('/plant/%s', rawurlencode($oid));
-		$res = $this->_cre->delete($url, array('json' => $arg));
-		return $res;
-	}
-
-	function single($obj)
-	{
-		$url = sprintf('/plant/%s', rawurlencode($obj));
-		$res = $this->_cre->get($url);
-		return $res;
-	}
-
-	/**
-		@param $pid The Plant ID
-		@param $obj The Plant Attributes to Change
-	*/
-	function update($pid, $obj)
-	{
-		$url = sprintf('/plant/%s', rawurlencode($pid));
-		$res = $this->_cre->post($url, $obj);
-		return $res;
-	}
+	protected $_path = '/crop';
 
 	/**
 	 * Down the rabbit hole

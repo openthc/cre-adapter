@@ -11,9 +11,13 @@ class License extends Base
 {
 	protected $_path = '/license';
 
-	function ping($id)
+	/**
+	 *
+	 */
+	function ping(string $oid)
 	{
-		$res = $this->_cre->get(sprintf('/license/%s', $id));
+		$url = sprintf('/%s/%s', $this->_path, rawurlencode($oid));
+		$res = $this->_cre->head($url);
 		return $res;
 	}
 

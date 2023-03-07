@@ -51,8 +51,8 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
 			'openthc-cre' => $this->_cfg['id'],
 			// 'openthc-service-id' => $this->_cfg['service']
-			// 'openthc-contact-id' => $this->_cfg['contact']
-			// 'openthc-company-id' => $this->_cfg['company']
+			'openthc-contact-id' => $this->_cfg['contact'],
+			'openthc-company-id' => $this->_cfg['company']
 			// 'openthc-license-id' => $this->_cfg['license']
 		];
 

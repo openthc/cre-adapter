@@ -49,8 +49,8 @@ class Base
 			throw new \Exception('Invalid State [COB-049]');
 		}
 
-		$url = sprintf('%s/%s', $this->_path, $oid);
-		$ret = $this->_cre->delete($url);
+		$url = sprintf('%s/%s', $this->_path, rawurlencode($oid));
+		$ret = $this->_cre->delete($url, $arg);
 
 		return $ret;
 

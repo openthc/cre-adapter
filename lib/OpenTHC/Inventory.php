@@ -9,6 +9,8 @@ namespace OpenTHC\CRE\OpenTHC;
 
 class Inventory extends Base
 {
+	protected $_path = '/inventory';
+
 	function search($filter=null)
 	{
 		$url = '/lot';
@@ -21,19 +23,13 @@ class Inventory extends Base
 		return $res;
 	}
 
-	function single($oid)
-	{
-		$url = sprintf('/lot/%s', rawurlencode($oid));
-		$res = $this->_cre->get($url);
-		return $res;
-	}
-
 	/**
-		@param $x Lot Data Array
-	*/
-	function adjust($id, $arg)
+	 * @param $oid Inventory Lot to Adjust
+	 */
+	function adjust(string $oid, $arg)
 	{
-		$res = $this->_cre->post('/lot/' . $id . '/adjust', $arg);
+		$url = sprintf('/%s/%s/adjust', $this->_path, rawurlencode($oid));
+		$res = $this->_cre->post($url, $arg);
 		return $res;
 	}
 
@@ -68,38 +64,31 @@ class Inventory extends Base
 	/**
 		@param $x Lot Data Array
 	*/
-	function create($x)
+	function create($obj)
 	{
-		$res = $this->_cre->post('/lot', $x);
+		$res = $this->_cre->post('/lot', $obj);
 		return $res;
 	}
 
 	/**
 	*/
-	function update($oid, $obj)
+	function update(string $oid, $obj)
 	{
 		$url = sprintf('/lot/%s', rawurlencode($oid));
 		$res = $this->_cre->patch($url, $obj);
 		return $res;
 	}
 
-	function delete($oid, $arg=null)
+	function delete(string $oid, $arg=null)
 	{
 		$res = $this->_cre->delete('/lot/' . $oid);
 		return $res;
 	}
 
 	// Legacy Alias
-	function destroy($oid, $arg)
+	function destroy(string $oid, $arg)
 	{
 		return $this->delete($oid, $arg);
-	}
-
-	function get($lid)
-	{
-		$url = sprintf('/lot/%s', rawurlencode($lid));
-		$res = $this->_cre->get($url);
-		return $res;
 	}
 
 	function sync($lid, $msg)
@@ -204,7 +193,7 @@ class Inventory extends Base
 			// @todo
 			// syslog(LOG_ERR, "RLS#369: No Product / Inventory Type {$rec['product_id']} for Inventory {$rec['id']}");
 
-			// $chk = $this->_rbe->inventory_type()->single($rec['global_inventory_type_id']);
+			// $chk = $this->_cre->inventory_type()->single($rec['global_inventory_type_id']);
 			// if (!empty($chk)) {
 			// 	$PT = new Product_Type($P['product_type_id']);
 			// } else {
