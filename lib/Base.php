@@ -95,7 +95,7 @@ class Base
 	 * Set License
 	 * @param mixed $l License Data Array
 	 */
-	function setLicense(mixed $l)
+	function setLicense($l)
 	{
 		if (is_array($l)) {
 			// Perfect
