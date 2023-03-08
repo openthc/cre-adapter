@@ -12,7 +12,7 @@ class CRE
 	/**
 	 * Factory
 	 */
-	static function factory($cfg)
+	static function factory(array $cfg)
 	{
 		$cre_info = self::getEngine($cfg['code']);
 
@@ -74,7 +74,7 @@ class CRE
 	/**
 	 * Get one Engine Config
 	 */
-	static function getEngine($code)
+	static function getEngine(string $code)
 	{
 		$res = self::getEngineList();
 		$ret = $res[$code];

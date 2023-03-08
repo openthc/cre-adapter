@@ -223,7 +223,7 @@ class LeafData extends \OpenTHC\CRE\Base
 	/**
 		@param $x Array of RBE Options
 	*/
-	function __construct($x)
+	function __construct(array $x)
 	{
 		parent::__construct($x);
 
@@ -251,7 +251,7 @@ class LeafData extends \OpenTHC\CRE\Base
 		@param $path the API Path
 		@param $post The API Data to POST, as Array or String
 	*/
-	public function call($verb, $path, $post=null)
+	public function call(string $verb, string $path, $post=null)
 	{
 		$path = trim($path, '/');
 		$url  = sprintf('%s/%s', $this->_api_base, $path);

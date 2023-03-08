@@ -93,9 +93,9 @@ class Base
 
 	/**
 	 * Set License
-	 * @param array $l License Data Array
+	 * @param mixed $l License Data Array
 	 */
-	function setLicense($l)
+	function setLicense(mixed $l)
 	{
 		if (is_array($l)) {
 			// Perfect
@@ -156,7 +156,7 @@ class Base
 	/**
 	 * GET Helper
 	 */
-	function get($url)
+	function get(string $url)
 	{
 		$req = $this->_curl_init($url);
 
@@ -182,7 +182,7 @@ class Base
 	/**
 	 * POST Helper
 	 */
-	function post($url, $data, $type='auto')
+	function post(string $url, $data, $type='auto')
 	{
 		$req = $this->_curl_init($url);
 
@@ -210,7 +210,7 @@ class Base
 	/**
 	 * Replicated from openthc/common
 	 */
-	function _curl_init($uri)
+	function _curl_init(string $uri)
 	{
 		$req = curl_init($uri);
 
@@ -246,7 +246,7 @@ class Base
 
 	/**
 	 * Normalize record data array and return a hash
-	 * @param array $a Data Object to create hash from
+	 * @param array $obj Data Object to create hash from
 	 * @return string sha256 hash
 	 */
 	static function objHash($obj, $key_list=[])
@@ -287,7 +287,7 @@ class Base
 	 * Key-Sort Array, Recursively
 	 * replicated from openthc/common
 	 */
-	static function ksort_r($a)
+	static function ksort_r(array $a)
 	{
 		static $depth = 0;
 

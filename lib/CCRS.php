@@ -22,7 +22,7 @@ class CCRS extends \OpenTHC\CRE\Base
 
 	protected $_service_key;
 
-	function __construct($cfg)
+	function __construct(array $cfg)
 	{
 		parent::__construct($cfg);
 

@@ -67,7 +67,7 @@ class Metrc extends \OpenTHC\CRE\Base
 			license
 			license-key
 	*/
-	function __construct($cfg)
+	function __construct(array $cfg)
 	{
 		if (empty($cfg['service-key'])) {
 			throw new \Exception('Invalid Service Key [LRM-048]');
@@ -283,7 +283,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	/**
 	 * Prepare a URL for Use with METRC (adds licenseNumber to QS)
 	 */
-	function _make_url($url, $arg=[])
+	function _make_url(string $url, $arg=[])
 	{
 		$arg = array_merge(array(
 			'licenseNumber' => $this->_License['code'],
@@ -486,7 +486,7 @@ class Metrc extends \OpenTHC\CRE\Base
 	/**
 	 * Executes the Single or Multiple Requests
 	 */
-	function _curl_init($uri, $head=null)
+	function _curl_init(string $uri, $head=null)
 	{
 		$uri = ltrim($uri, '/.');
 		$uri = sprintf('%s/%s', $this->_api_base, $uri);
