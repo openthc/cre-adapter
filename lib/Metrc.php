@@ -499,7 +499,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		$head = array(
 			'accept: application/json',
 			'content-type: application/json',
-			sprintf('openthc-license: %s', $this->_License['id']),
+			sprintf('openthc-license-id: %s', $this->_License['id']),
 		);
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 

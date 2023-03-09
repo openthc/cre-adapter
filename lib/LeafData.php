@@ -238,8 +238,9 @@ class LeafData extends \OpenTHC\CRE\Base
 		$this->setLicense($x['license']);
 
 		$this->_req_head = [
+			'accept' => 'application/json',
 			'content-type' => 'application/json',
-			'openthc-license' => $this->_License['id'],
+			'openthc-license-id' => $this->_License['id'],
 			'x-mjf-mme-code' => $x['license'],
 			'x-mjf-key' => $x['license-key'],
 		];

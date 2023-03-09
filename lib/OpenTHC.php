@@ -50,10 +50,10 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'accept' => 'application/json',
 			'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
 			'openthc-cre' => $this->_cfg['id'],
-			// 'openthc-service-id' => $this->_cfg['service']
+			'openthc-service-id' => $this->_cfg['service-id'],
 			'openthc-contact-id' => $this->_cfg['contact'],
-			'openthc-company-id' => $this->_cfg['company']
-			// 'openthc-license-id' => $this->_cfg['license']
+			'openthc-company-id' => $this->_cfg['company'],
+			'openthc-license-id' => $this->_cfg['license']
 		];
 
 		$cfg = array(
@@ -236,7 +236,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	{
 		$jwt = new \OpenTHC\JWT([
 			'iat' => time() - 30,
-			'iss' => $_SERVER['SERVER_NAME'],
+			'iss' => $_SERVER['SERVER_NAME'], // Application ID // $this->_cfg['service-id'] ?: $this->_cfg['service'],
 			'exp' => (time() + 120),
 			'sub' => $this->_cfg['contact'],
 			'service-sk' => $this->_cfg['service-sk'],

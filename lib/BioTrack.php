@@ -1924,8 +1924,9 @@ class BioTrack extends \OpenTHC\CRE\Base
 	{
 		$req = _curl_init($uri);
 		$head = array(
+			'accept: application/json',
 			'content-type: text/JSON', // BT wants this (incorrect) value
-			sprintf('openthc-license: %s', $this->_License['id'])
+			sprintf('openthc-license-id: %s', $this->_License['id']),
 		);
 
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
