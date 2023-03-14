@@ -302,7 +302,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			$csv_time = $csv_time . '000';
 		}
 
-		$csv_time = DateTime::createFromFormat('Ymd\TGisv', $csv_time, $this->_tz);
+		$csv_time = \DateTime::createFromFormat('Ymd\TGisv', $csv_time, $this->_tz);
 
 		return $csv_time;
 
