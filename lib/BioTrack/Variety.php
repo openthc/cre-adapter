@@ -19,6 +19,7 @@ class Variety extends \OpenTHC\CRE\BioTrack\Base
 	function create($x)
 	{
 		return [
+			'code' => 200,
 			'data' => 'success',
 		];
 	}
@@ -26,6 +27,7 @@ class Variety extends \OpenTHC\CRE\BioTrack\Base
 	function delete($x)
 	{
 		return [
+			'code' => 200,
 			'data' => 'success',
 		];
 	}
