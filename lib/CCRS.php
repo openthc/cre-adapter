@@ -32,13 +32,6 @@ class CCRS extends \OpenTHC\CRE\Base
 
 		$this->_service_key = $cfg['service-key'];
 
-		if ( ! empty($this->_cfg['cookie-file'])) {
-			// Try to Read them
-			// if (is_file($cookie_file)) {
-			// 	$this->cookie_list = json_decode(file_get_contents($cookie_file), true);
-			// 	$cfg['cookie-list'] = $cookie_list;
-			// }
-		}
 	}
 
 	/**
@@ -103,14 +96,7 @@ class CCRS extends \OpenTHC\CRE\Base
 
 		$this->cookie_list = $cookie_out;
 
-		// Write and hope for the best?
-		if ( ! empty($this->_cfg['cookie-file'])) {
-			$d = json_encode($cookie_out, JSON_PRETTY_PRINT);
-			$f = $this->_cfg['cookie-file'];
-			$x = file_put_contents($f, $d);
-		}
-
-		return $cookie_out;
+		return $this->cookie_list;
 
 	}
 
