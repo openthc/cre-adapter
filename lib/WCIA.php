@@ -139,6 +139,24 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Map Status Values
+	 */
+	static function lab_status_to_openthc($s)
+	{
+		// Various Lab Status values
+		switch (strtoupper($s)) {
+			case 'FAIL':
+			case 'FAILED':
+			case 'FAILURE':
+				return 400;
+				break;
+		}
+
+		return 200;
+
+	}
+
+	/**
 	 * Maps OpenTHC Product ID to WCIA Category & Type
 	 *
 	 * @return Array
