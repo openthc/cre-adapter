@@ -22,7 +22,7 @@ class Lab_Metric
 			'name' => 'Potency Analysis',
 		],
 		'3' => [
-			'id' => '',
+			'id' => '018NY6XC00LMT0BY5GND653C0C',
 			'name' => 'Foreign Matter Inspection',
 		],
 		'4' => [
