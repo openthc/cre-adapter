@@ -1,6 +1,6 @@
 <?php
 /**
- * Lab Result Helper for BioTrack
+ * Lab Metric Helper for BioTrack
  *
  * SPDX-License-Identifier: MIT
  */
@@ -44,10 +44,10 @@ class Lab_Metric
 			'id' => '018NY6XC00LM0PXPG4592M8J14',
 			'name' => 'Moisture Content',
 			'type' => '1',
-			'uom' => 'ppm',
+			'uom' => 'pct',
 		],
 		'thc' => [
-			'id' => '018NY6XC00PXG4PH0TXS014VVW',
+			'id' => '01FQ0NABTM1YN3WK9FPWYD72A3',
 			'name' => 'THC',
 			'type' => '2',
 			'uom' => 'pct',
@@ -65,7 +65,7 @@ class Lab_Metric
 			'uom' => 'pct',
 		],
 		'cbd' => [
-			'id' => '018NY6XC00DEEZ41QBXR2E3T97',
+			'id' => '018NY6XC00LMK7KHD3HPW0Y90N',
 			'name' => 'CBD',
 			'type' => '2',
 			'uom' => 'pct',
@@ -78,7 +78,7 @@ class Lab_Metric
 		],
 		'cbda' => [
 			'id' => '018NY6XC00LMENDHEH2Y32X903',
-			'name' => 'CBDA Content',
+			'name' => 'CBDA',
 			'type' => '2',
 			'uom' => 'pct',
 		],
