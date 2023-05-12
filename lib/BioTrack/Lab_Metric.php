@@ -47,7 +47,7 @@ class Lab_Metric
 			'uom' => 'pct',
 		],
 		'thc' => [
-			'id' => '01FQ0NABTM1YN3WK9FPWYD72A3',
+			'id' => '018NY6XC00LM49CV7QP9KM9QH9',
 			'name' => 'THC',
 			'type' => '2',
 			'uom' => 'pct',
