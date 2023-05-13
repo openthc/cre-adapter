@@ -249,7 +249,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		$o = array_replace_recursive($o, [
 			'headers' => [
 				'authorization' => sprintf('Bearer jwt:%s', $jwt->__toString()),
-				'openthc-license' => $this->_License['id'],
+				'openthc-license-id' => $this->_License['id'],
 			]
 		]);
 
