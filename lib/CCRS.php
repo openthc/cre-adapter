@@ -54,6 +54,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		// Main Page
 		$page->navigate($this->_api_base)->waitForNavigation();
 		$url0 = $page->getCurrentUrl();
+		$rex1 = sprintf('/%s/', preg_quote($this->_api_base, '/'));
 
 		// Needs Authentication?
 		if (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/auth/', $url0)) {
@@ -77,10 +78,10 @@ class CCRS extends \OpenTHC\CRE\Base
 			// $page->screenshot()->saveToFile('ccrs1.png');
 		} elseif (preg_match('/secureaccess\.wa\.gov\/FIM2\/sps\/sawidp\/saml20\/login/', $url0)) {
 			// OK ? Only see this one intermittently
-		} elseif (preg_match(sprintf('/%s/', preg_quote($this->_api_base)), $url0)) {
+		} elseif (preg_match($rex1, $url0)) {
 			// Authenticated
 		} else {
-			throw new \Exception("Unexpected URL: $url0");
+			throw new \Exception("Unexpected URL: $url0 != $rex1");
 		}
 
 		// Save Cookies
