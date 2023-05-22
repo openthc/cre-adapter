@@ -349,6 +349,15 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Get the B2B interface
+	 * This interface uses BioTrack "Trace 2.0 API"
+	 */
+	function b2b()
+	{
+		return new \OpenTHC\CRE\BioTrack\B2B($this);
+	}
+
+	/**
 	 *
 	 */
 	function ping()
