@@ -1,0 +1,5 @@
+---
+name: "Malta / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Malta"
+...

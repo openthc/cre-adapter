@@ -1,0 +1,5 @@
+---
+name: Brazil / OpenTHC
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Sao_Paulo"
+...

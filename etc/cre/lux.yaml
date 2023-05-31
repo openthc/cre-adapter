@@ -1,0 +1,5 @@
+---
+name: "Luxembourg / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Luxembourg"
+...

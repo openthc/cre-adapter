@@ -1,0 +1,5 @@
+---
+name: "Uruguay / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Montevideo"
+...

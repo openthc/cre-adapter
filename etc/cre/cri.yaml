@@ -1,0 +1,5 @@
+---
+name: "Costa Rica / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Costa_Rica"
+...

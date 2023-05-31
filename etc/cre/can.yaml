@@ -1,0 +1,9 @@
+---
+name: Canada / OpenTHC
+class: \OpenTHC\CRE\OpenTHC
+epoch: "2021-08-04"
+engine: openthc
+server: ~
+service-sk: ~
+tz: "America/Toronto"
+...

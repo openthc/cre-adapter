@@ -1,0 +1,5 @@
+---
+name: "Sweden / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Stockholm"
+...

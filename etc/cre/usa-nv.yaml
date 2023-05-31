@@ -1,0 +1,9 @@
+---
+name: Nevada / Metrc
+class: \OpenTHC\CRE\Metrc
+epoch: "2018-01-01"
+engine: metrc
+server: https://api-nv.metrc.com/
+service-sk: ~
+tz: "America/Los_Angeles"
+...

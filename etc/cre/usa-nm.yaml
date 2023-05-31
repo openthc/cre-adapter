@@ -1,0 +1,8 @@
+---
+name: New Mexico / BioTrack
+class: \OpenTHC\CRE\BioTrack
+epoch: "2021-06-26"
+engine: biotrack
+server: https://mcp-tracking.nmhealth.org/serverjson.asp
+tz: "America/Denver"
+...

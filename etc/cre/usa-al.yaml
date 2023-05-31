@@ -1,0 +1,9 @@
+---
+name: Alabama / Metrc
+class: \OpenTHC\CRE\Metrc
+epoch: "2021-01-01"
+engine: metrc
+server: ~
+service-sk: ~
+tz: "America/Chicago"
+...

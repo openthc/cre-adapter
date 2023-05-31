@@ -1,0 +1,5 @@
+---
+name: "Estonia / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Tallinn"
+...

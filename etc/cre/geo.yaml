@@ -1,0 +1,5 @@
+---
+name: "Georgia / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Asia/Tbilisi"
+...

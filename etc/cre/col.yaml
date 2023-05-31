@@ -1,0 +1,5 @@
+---
+name: "Colombia / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Bogota"
+...

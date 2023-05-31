@@ -1,0 +1,9 @@
+---
+name: Mississippi / Metrc
+class: \OpenTHC\CRE\Metrc
+epoch: "2021-01-01"
+engine: metrc
+server: https://api-ms.metrc.com/
+service-sk: ~
+tz: "America/Chicago"
+...

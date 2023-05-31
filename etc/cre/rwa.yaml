@@ -1,0 +1,5 @@
+---
+name: "Rwanda / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Africa/Kigali"
+...

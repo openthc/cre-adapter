@@ -1,0 +1,6 @@
+---
+name: "Northern Mariana Islands / Metrc"
+class: \OpenTHC\CRE\Metrc
+epoch: "2018-09-21"
+tz: "Pacific/Saipan"
+...

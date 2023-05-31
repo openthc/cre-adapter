@@ -1,0 +1,5 @@
+---
+name: "Czechia / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Prague"
+...

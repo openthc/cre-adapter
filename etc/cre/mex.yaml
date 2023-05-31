@@ -1,0 +1,5 @@
+---
+name: "Mexico / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Mexico_City"
+...

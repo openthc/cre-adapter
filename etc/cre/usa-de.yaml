@@ -1,0 +1,8 @@
+---
+name: Delaware / BioTrack
+class: \OpenTHC\CRE\BioTrack
+epoch: "2022-10-01"
+engine: biotrack
+server: https://delaware.biotrackthc.net/
+tz: "America/New_York"
+...

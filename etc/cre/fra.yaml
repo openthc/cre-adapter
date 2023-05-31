@@ -1,0 +1,5 @@
+---
+name: "France / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Paris"
+...

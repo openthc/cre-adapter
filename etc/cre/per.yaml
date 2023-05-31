@@ -1,0 +1,5 @@
+---
+name: "Peru / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Lima"
+...

@@ -1,0 +1,5 @@
+---
+name: "Finland / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Helsinki"
+...

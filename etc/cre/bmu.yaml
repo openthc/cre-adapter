@@ -1,0 +1,5 @@
+---
+name: "Bermuda / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Atlantic/Bermuda"
+...

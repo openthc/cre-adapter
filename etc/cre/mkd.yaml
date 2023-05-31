@@ -1,0 +1,5 @@
+---
+name: "North Macedonia / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Skopje"
+...

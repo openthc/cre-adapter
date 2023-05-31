@@ -1,0 +1,9 @@
+---
+name: Minnesota / Metrc
+class: \OpenTHC\CRE\Metrc
+epoch: "2018-01-01"
+engine: metrc
+server: https://api-mn.metrc.com/
+service-sk: ~
+tz: "America/Chicago"
+...

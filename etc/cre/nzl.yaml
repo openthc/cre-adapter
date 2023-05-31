@@ -1,0 +1,9 @@
+---
+name: New Zealand / OpenTHC
+class: \OpenTHC\CRE\OpenTHC
+epoch: "2022-01-01"
+engine: openthc
+server: ~
+service-sk: ~
+tz: "Pacific/Auckland"
+...

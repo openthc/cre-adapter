@@ -1,0 +1,8 @@
+---
+name: Puerto Rico / BioTrack
+class: \OpenTHC\CRE\BioTrack
+epoch: "2019-01-01"
+engine: biotrack
+server: "https://cannabispr.biotrackthc.net/serverjson.asp"
+tz: "America/Puerto_Rico"
+...

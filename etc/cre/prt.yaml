@@ -1,0 +1,5 @@
+---
+name: "Portugal / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/Lisbon"
+...

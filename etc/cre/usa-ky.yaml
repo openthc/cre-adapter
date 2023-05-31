@@ -1,0 +1,6 @@
+---
+name: Kentucky / OpenTHC
+epoch: "2023-01-11"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/New_York"
+...

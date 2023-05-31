@@ -1,0 +1,5 @@
+---
+name: "San Marino / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "Europe/San_Marino"
+...

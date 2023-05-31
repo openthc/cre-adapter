@@ -1,0 +1,5 @@
+---
+name: "Jamaica / OpenTHC"
+class: \OpenTHC\CRE\OpenTHC
+tz: "America/Jamaica"
+...

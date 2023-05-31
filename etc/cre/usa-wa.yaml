@@ -1,0 +1,11 @@
+---
+name: Washington / CCRS
+class: \OpenTHC\CRE\CCRS
+epoch: "2021-08-04"
+engine: openthc
+server: ~
+service-sk: ~
+# Pre-Shared Key Configured in BONG
+service-sk: ~
+tz: "America/Los_Angeles"
+...

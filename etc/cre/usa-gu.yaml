@@ -1,0 +1,8 @@
+---
+name: Guam / Metrc
+class: \OpenTHC\CRE\Metrc
+epoch: "2014-11-04"
+server: https://api-gu.metrc.com/
+service-sk: ~
+tz: "Pacific/Guam"
+...

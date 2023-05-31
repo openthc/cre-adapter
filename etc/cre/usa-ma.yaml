@@ -1,0 +1,9 @@
+---
+name: "Massachusetts / Metrc"
+class: \OpenTHC\CRE\Metrc
+epoch: "2019-01-01"
+engine: metrc
+server: https://api-ma.metrc.com/
+service-sk: ~
+tz: "America/New_York"
+...

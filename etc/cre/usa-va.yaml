@@ -1,0 +1,7 @@
+---
+name: "Virginia / OpenTHC"
+class: \OpenTHC\CRE\BioTrack
+agency: "https://www.vdacs.virginia.gov/plant-industry-services-hemp.shtml"
+epoch: "2022-01-01"
+tz: "America/New_York"
+...

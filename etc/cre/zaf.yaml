@@ -1,0 +1,9 @@
+---
+name: South Africa / OpenTHC / Demo
+class: \OpenTHC\CRE\OpenTHC
+epoch: "2020-01-01"
+engine: openthc
+server: ~
+service-sk: ~
+tz: "Africa/Johannesburg"
+...
