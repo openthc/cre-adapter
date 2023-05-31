@@ -19,22 +19,6 @@ class Contact extends \OpenTHC\CRE\Metrc\Base
 		return $res;
 	}
 
-	/**
-	 * Delete a Contact
-	 * @note After Delete they simply disappear from the list, there is no query for archive/delete/inactive status
-	 * @param [type] $id [description]
-	 * @return [type] [description]
-	 */
-	function delete($oid)
-	{
-		$url = sprintf('%s/%s', $this->_path, $oid);
-		$url = $this->_client->_make_url($url);
-		$req = $this->_client->_curl_init($url);
-		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'DELETE');
-		$res = $this->_client->_curl_exec($req);
-		return $res;
-	}
-
 	function search($arg=null)
 	{
 		if (empty($arg)) {
