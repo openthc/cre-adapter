@@ -227,22 +227,22 @@ class LeafData extends \OpenTHC\CRE\Base
 	{
 		parent::__construct($x);
 
-		if (empty($x['license'])) {
+		if (empty($this->_cfg['license'])) {
 			throw new \Exception('Invalid API License [LRL-113]');
 		}
 
-		if (empty($x['license-key'])) {
+		if (empty($this->_cfg['license-sk'])) {
 			throw new \Exception('Invalid API Secret [LRL-177]');
 		}
 
-		$this->setLicense($x['license']);
+		$this->setLicense($this->_cfg['license']);
 
 		$this->_req_head = [
 			'accept' => 'application/json',
 			'content-type' => 'application/json',
 			'openthc-license-id' => $this->_License['id'],
-			'x-mjf-mme-code' => $x['license'],
-			'x-mjf-key' => $x['license-key'],
+			'x-mjf-mme-code' => $this->_cfg['license'],
+			'x-mjf-key' => $this->_cfg['license-sk'],
 		];
 
 	}
@@ -305,7 +305,7 @@ class LeafData extends \OpenTHC\CRE\Base
 			return array(
 				'code' => 500,
 				'data' => $this->_raw,
-				'meta' => [ 'note' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($ch)) ],
+				'meta' => [ 'note' => sprintf('LRL#179: LeafData Server Error #%d', curl_error($req)) ],
 			);
 		}
 

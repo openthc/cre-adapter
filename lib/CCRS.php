@@ -26,11 +26,11 @@ class CCRS extends \OpenTHC\CRE\Base
 	{
 		parent::__construct($cfg);
 
-		if ( ! empty($cfg['cookie-list'])) {
-			$this->cookie_list = $cfg['cookie-list'];
+		if ( ! empty($this->_cfg['cookie-list'])) {
+			$this->cookie_list = $this->_cfg['cookie-list'];
 		}
 
-		$this->_service_key = $cfg['service-key'];
+		$this->_service_key = $this->_cfg['service-sk'];
 
 	}
 

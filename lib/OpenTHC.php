@@ -37,8 +37,15 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function __construct(array $cfg)
 	{
+		// I hate this mess /djb 2023-05-30
+		if (empty($cfg['service-id'])) {
+			$cfg['service-id'] = defined('OPENTHC_SERVICE_ID') ? OPENTHC_SERVICE_ID : ($cfg['service'] ?: $_SERVER['SERVER_NAME']);
+		}
+
 		parent::__construct($cfg);
+
 		$this->_init_api();
+
 	}
 
 	/**
@@ -234,21 +241,24 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function request(string $v, string $u, $o=[])
 	{
-		$jwt = new \OpenTHC\JWT([
+		$arg = [
 			'iat' => time() - 30,
-			'iss' => $_SERVER['SERVER_NAME'], // Application ID // $this->_cfg['service-id'] ?: $this->_cfg['service'],
+			'iss' => $this->_cfg['service-id'],
 			'exp' => (time() + 120),
 			'sub' => $this->_cfg['contact'],
-			'service-sk' => $this->_cfg['service-sk'],
 			'service' => $this->_cfg['service'], // @deprecated
+			'service-sk' => $this->_cfg['service-sk'], // Necessary to Sign
 			'cre' => $this->_cfg['id'], // CRE ID ?? NecessarY? Or Not in JWT?
 			'company' => $this->_cfg['company'], // @deprecated
 			'license' => $this->_License['id'],
-		]);
+		];
+		$jwt = new \OpenTHC\JWT($arg);
 
 		$o = array_replace_recursive($o, [
 			'headers' => [
 				'authorization' => sprintf('Bearer jwt:%s', $jwt->__toString()),
+				'openthc-company-id' => $this->_cfg['company'],
+				'openthc-contact-id' => $this->_cfg['contact'],
 				'openthc-license-id' => $this->_License['id'],
 			]
 		]);

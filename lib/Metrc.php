@@ -63,29 +63,25 @@ class Metrc extends \OpenTHC\CRE\Base
 	}
 
 	/**
-		@param $x RBE Options
-			license
-			license-key
-	*/
+	 * @param $cfg CRE Configuration Options
+	 */
 	function __construct(array $cfg)
 	{
-		if (empty($cfg['service-key'])) {
+		parent::__construct($cfg);
+
+		if (empty($this->_cfg['service-sk'])) {
 			throw new \Exception('Invalid Service Key [LRM-048]');
 		}
 
-		if (empty($cfg['license-key'])) {
+		if (empty($this->_cfg['license-sk'])) {
 			throw new \Exception('Invalid License Key [LRM-052]');
 		}
 
-		if (!empty($cfg['server'])) {
-			$this->_api_base = rtrim($cfg['server'], '/.');
-		}
+		$this->_api_key_vendor = $this->_cfg['service-sk'];
+		$this->_api_key_client = $this->_cfg['license-sk'];
 
-		$this->_api_key_vendor = $cfg['service-key'];
-		$this->_api_key_client = $cfg['license-key'];
-
-		if (!empty($cfg['license'])) {
-			$this->setLicense($cfg['license']);
+		if ( ! empty($this->_cfg['license'])) {
+			$this->setLicense($this->_cfg['license']);
 		}
 
 	}
