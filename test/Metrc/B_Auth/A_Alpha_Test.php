@@ -5,8 +5,8 @@
  * SPDX-License-Identifier: MIT
  *
  * Notes about the Auth module
- * The "service-key" cooresponds to a code that is a company object identifier
- * The "license-key" cooresponds to a code that is a license object identifier
+ * The "service-sk" cooresponds to a code that is a company object identifier
+ * The "license-sk" cooresponds to a code that is a license object identifier
  *
  * Licenses can belong to a company in a 1:M way
  * Companies can have different permissions to act on a license's object
@@ -21,8 +21,8 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 	{
 		$c = new \OpenTHC\CRE\Adapter\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
-			'service-key' => '-',
-			'license-key' => '-',
+			'service-sk' => '-',
+			'license-sk' => '-',
 		]);
 		$l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
@@ -34,8 +34,8 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 	{
 		$c = new \OpenTHC\CRE\Adapter\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
-			'service-key' => 'garbage-data',
-			'license-key' => 'garbage-data',
+			'service-sk' => 'garbage-data',
+			'license-sk' => 'garbage-data',
 		]);
 		$l0 = $c->setLicense('L1');
 		$this->assertIsEmpty($l0);
@@ -50,9 +50,9 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 		// TEST COMPANY A
 		// $res = $this->_post('/auth/open', [
 		$c = new \OpenTHC\CRE\Adapter\Metrc([
-			'service-key' => $_ENV['api-service-a'],
+			'service-sk' => $_ENV['api-service-a'],
 			// 'company-key' => $_ENV['api-company-g0'],
-			'license-key' => $_ENV['api-license-g0'],
+			'license-sk' => $_ENV['api-license-g0'],
 		]);
 
 		$p1 = $c->ping();
@@ -67,8 +67,8 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 	{
 		$c = new \OpenTHC\CRE\Adapter\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
-			'service-key' => $_ENV['api-service-a'],
-			'license-key' => 'garbage-data',
+			'service-sk' => $_ENV['api-service-a'],
+			'license-sk' => 'garbage-data',
 		]);
 		$p1 = $c->ping();
 

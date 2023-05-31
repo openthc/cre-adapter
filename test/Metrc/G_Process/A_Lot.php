@@ -12,8 +12,8 @@ class A_Lot extends \OpenTHC\CRE\Test\Base
 	{
 		$cfg = [
 			'code' => $_ENV['metrc-cfg-code'],
-			'service-key' => $_ENV['metrc-cfg-service-key'],
-			'license-key' => $_ENV['metrc-license-g'],
+			'service-sk' => $_ENV['metrc-cfg-service-sk'],
+			'license-sk' => $_ENV['metrc-license-g-sk'],
 		];
 		$this->cre = \OpenTHC\CRE::factory($cfg);
 	}

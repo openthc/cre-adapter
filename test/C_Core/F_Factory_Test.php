@@ -14,18 +14,20 @@ class F_Factory_Test extends \OpenTHC\CRE\Test\Base_Case
 		$cre_list = \OpenTHC\CRE::getEngineList();
 		foreach ($cre_list as $cre_code => $cfg) {
 
-			$cfg['license'] = 'bunk-license';
-			$cfg['license-key'] = 'bunk-license-key';
+			$cfg['license'] = 'TEST';
+			$cfg['license-sk'] = 'TEST';
+			$cfg['service'] = 'TEST';
+			$cfg['service-sk'] = 'TEST';
 
-			try {
+			// try {
 				$cre = \OpenTHC\CRE::factory($cfg);
 				$this->assertIsObject($cre);
 				$this->assertTrue(
 					$cre instanceof \OpenTHC\CRE\Base
 				);
-			} catch (\Exception $e) {
-				$this->assertEmpty($e, sprintf('Exception on %s: %s', $cre_code, $e->getMessage()));
-			}
+			// } catch (\Exception $e) {
+				// $this->assertEmpty($e, sprintf('Exception on %s: %s', $cre_code, $e->getMessage()));
+			// }
 		}
 	}
 }
