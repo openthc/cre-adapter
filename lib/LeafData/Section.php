@@ -1,9 +1,13 @@
 <?php
 /**
  * LeafData Section
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-class RBE_LeafData_Section extends RBE_LeafData_Base
+namespace OpenTHC\CRE\LeafData;
+
+class Section extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/areas';
 

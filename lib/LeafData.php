@@ -587,6 +587,11 @@ class LeafData extends \OpenTHC\CRE\Base
 		return new LeafData\Batch($this);
 	}
 
+	function company()
+	{
+		return new \stdClass();
+	}
+
 	function contact()
 	{
 		return new LeafData\Contact($this);

@@ -18,7 +18,7 @@ class License extends \OpenTHC\CRE\Metrc\Base
 	 */
 	function search($stat=null)
 	{
-		$req = $this->_client->_curl_init('/facilities/v1');
+		$req = $this->_client->_curl_init($this->_path);
 		$res = $this->_client->_curl_exec($req);
 		return $res;
 	}

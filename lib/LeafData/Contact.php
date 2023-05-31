@@ -1,10 +1,14 @@
 <?php
 /**
-	A Contact
-	What they call a User, we call a Contact
-*/
+ * A Contact
+ * What they call a User, we call a Contact
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
-class RBE_LeafData_Contact extends RBE_LeafData_Base
+namespace OpenTHC\CRE\LeafData;
+
+class Contact extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/users';
 

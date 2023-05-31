@@ -114,7 +114,7 @@ class CCRS extends \OpenTHC\CRE\Base
 		sort($cookie_list);
 
 		// Get to Verify Access and get RVT
-		$req = __curl_init($this->_api_base);
+		$req = _curl_init($this->_api_base);
 		// curl_setopt($req, CURLOPT_VERBOSE, true);
 		curl_setopt($req, CURLOPT_USERAGENT, self::USER_AGENT);
 		curl_setopt($req, CURLOPT_HTTPHEADER, [

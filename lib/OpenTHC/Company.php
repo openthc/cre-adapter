@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\OpenTHC;
 
 class Company extends Base
 {
-	private $_path = '/company';
+	protected $_path = '/company';
 
 	function ping($id)
 	{

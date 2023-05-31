@@ -1,9 +1,13 @@
 <?php
 /**
  * Handle Batch Types
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-class RBE_LeafData_Batch extends RBE_LeafData_Base
+namespace OpenTHC\CRE\LeafData;
+
+class Batch extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/batches';
 

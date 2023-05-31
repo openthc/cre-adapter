@@ -1,6 +1,8 @@
 <?php
 /**
  * A License in the LeafData World
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 namespace OpenTHC\CRE\LeafData;

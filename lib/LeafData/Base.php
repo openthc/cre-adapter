@@ -1,9 +1,11 @@
 <?php
 /**
+ * SPDX-License-Identifier: MIT
+ */
 
-*/
+namespace OpenTHC\CRE\LeafData;
 
-class RBE_LeafData_Base
+class Base extends \OpenTHC\CRE\Base
 {
 	protected $_client;
 	protected $_path = '';

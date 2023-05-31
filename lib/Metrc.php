@@ -330,6 +330,11 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\Batch($this);
 	}
 
+	function company()
+	{
+		return new \stdClass();
+	}
+
 	function contact()
 	{
 		return new Metrc\Contact($this);
@@ -355,10 +360,15 @@ class Metrc extends \OpenTHC\CRE\Base
 		return new Metrc\License($this);
 	}
 
-	function lot()
+	function inventory()
 	{
 		return new Metrc\Lot($this);
 	}
+	// v0
+	// function lot()
+	// {
+	// 	return new Metrc\Lot($this);
+	// }
 
 	function patient()
 	{
@@ -440,8 +450,13 @@ class Metrc extends \OpenTHC\CRE\Base
 			}
 			break;
 		case 400:
-			// throw new \Exception($this->formatError($this->_res));
-			// break;
+		case 405:
+		case 500:
+					return [
+				'code' => $code,
+				'data' => $this->_raw,
+				'meta' => [ 'note' => $this->formatError($this->_res) ]
+			];
 		case 401:
 			return [
 				'code' => $code,
@@ -454,13 +469,6 @@ class Metrc extends \OpenTHC\CRE\Base
 				'data' => $this->_raw,
 				'meta' => [ 'note' => 'Not Found [CLM-439]' ]
 			];
-		case 405:
-			return [
-				'code' => $code,
-				'data' => null,
-				'meta' => [ 'note' => $this->formatError($this->_res) ]
-			];
-			break;
 		default:
 			// var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE-735]', $code);

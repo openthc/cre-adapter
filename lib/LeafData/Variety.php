@@ -1,9 +1,13 @@
 <?php
 /**
  * LeafData Variety API Interface
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-class RBE_LeafData_Variety extends RBE_LeafData_Base
+namespace OpenTHC\CRE\LeafData;
+
+class Variety extends \OpenTHC\CRE\LeafData\Base
 {
 	protected $_path = '/strains';
 
