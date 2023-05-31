@@ -72,4 +72,18 @@ class Base extends \OpenTHC\CRE\Base
 		return $res;
 	}
 
+	/**
+	 * Delete a Section
+	 * @param [type] $id [description]
+	 * @return [type] [description]
+	 */
+	function delete($id)
+	{
+		$url = sprintf('%s/%s', $this->_path, $id);
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
 }
