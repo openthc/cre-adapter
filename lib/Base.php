@@ -39,12 +39,43 @@ class Base
 			throw new \Exception('Invalid Parameters [LRB-037]');
 		}
 
+		$cfg = $this->config_data_patch($cfg);
+
+		// Save Config
 		$this->_cfg = $cfg;
 
-		$this->_api_base = rtrim($cfg['server'], '/');
+		if ( ! empty($this->_cfg['server'])) {
+			$this->_api_base = rtrim($this->_cfg['server'], '/');
+		}
 
 		if (empty($this->_api_host)) {
 			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
+		}
+
+		if (is_object($this->_cfg['tz'])) {
+			$this->_tz = $this->_cfg['tz'];
+		} elseif (is_string($this->_cfg['tz'])) {
+			$this->_tz = new \DateTimezone($this->_cfg['tz']);
+		}
+
+
+	}
+
+	/**
+	 * Fixup Data from Older Data Models
+	 */
+	private function config_data_patch(array $cfg) : array
+	{
+		// Promote v0 to v1
+		if (empty($cfg['service-sk']) && ! empty($cfg['service-key'])) {
+			$cfg['service-sk'] = $cfg['service-key'];
+			unset($cfg['service-key']);
+		}
+
+		// Promote v0 to v1
+		if (empty($cfg['license-sk']) && ! empty($cfg['license-key'])) {
+			$cfg['license-sk'] = $cfg['license-key'];
+			unset($cfg['license-key']);
 		}
 
 		// Timezone
@@ -56,12 +87,7 @@ class Base
 			$cfg['tz'] = date_default_timezone_get();
 		}
 
-		if (is_object($cfg['tz'])) {
-			$this->_tz = $cfg['tz'];
-		} elseif (is_string($cfg['tz'])) {
-			$this->_tz = new \DateTimezone($cfg['tz']);
-		}
-
+		return $cfg;
 	}
 
 
