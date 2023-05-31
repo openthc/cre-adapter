@@ -19,15 +19,16 @@ class QBench extends Base
 	/**
 	 * @param $x Array of RBE Options
 	 */
-	function __construct($x)
+	function __construct(array $cfg)
 	{
-		if (empty($x['server-url'])) {
+		if (empty($cfg['server-url'])) {
 			throw new \Exception('Parameter "server-url" is required');
 		}
 
-		$this->_api_base = $x['server-url'];
-		$this->_pk = $x['public-key'];
-		$this->_sk = $x['secret-key'];
+		$this->_api_base = $cfg['server-url'];
+		$this->_pk = $cfg['public-key'];
+		$this->_sk = $cfg['secret-key'];
+		$this->_access_token = $cfg['access-token'];
 
 	}
 
@@ -122,6 +123,61 @@ class QBench extends Base
 
 		return $res;
 
+	}
+
+	/**
+	 * Get the List of Accessioning Type
+	 */
+	function getAccessionList()
+	{
+		static $lab_accession_list = [];
+
+		$res = $qbc->get('/api/v1/accessioningtype');
+		foreach ($res['data'] as $x) {
+			$x['@id'] = sprintf('qbench:%d', $x['id']);
+			// var_dump($x);
+		}
+
+		return $lab_accession_list;
+
+	}
+
+	/**
+	 * Get the List of Assay
+	 * The Assay is used as the Name of a Lab_Result
+	 */
+	function getAssayList()
+	{
+		static $lab_assay_list = [];
+
+		$res = $qbc->get('/api/v1/assay');
+		foreach ($res['data'] as $x) {
+			$x['@id'] = sprintf('qbench:%d', $x['id']);
+			$lab_assay_list[$x['@id']] = $x;
+			// printf("Assay: %s / '%s'\n", $x['@id'], $x['title']);
+		}
+
+		return $lab_assay_list;
+
+	}
+
+	/**
+	 * Get the List of Panels
+	 */
+	function getPanelList()
+	{
+		static $lab_panel_list = [];
+
+		if (empty($lab_panel_list)) {
+			$res = $qbc->get('/api/v1/panel');
+			foreach ($res['data'] as $x) {
+				$x['@id'] = sprintf('qbench:%d', $x['id']);
+				$lab_panel_list[$x['@id']] = $x;
+				// printf("Panel: %s / '%s'\n", $x['@id'], $x['title']);
+			}
+		}
+
+		return $lab_panel_list;
 	}
 
 }
