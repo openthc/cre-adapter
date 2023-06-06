@@ -38,6 +38,13 @@ class CRE
 	{
 		$ret_data = [];
 
+		$ini_data = self::load_config_ini();
+
+		// Patch data to always have two fields
+		foreach ($ini_data as $cre_code => $cre_info) {
+			$ret_data[$cre_code] = $cre_info;
+		}
+
 		// Load From YAML Data-Set
 		$lib_root = dirname(__DIR__);
 		$cre_list = glob(sprintf('%s/etc/cre/*.yaml', $lib_root));
@@ -46,24 +53,15 @@ class CRE
 			$cre_code = basename($cre_file, '.yaml');
 			$cre_code = str_replace('-', '/', $cre_code); // Use '/' for legacy reasons
 
-			$cre_data = yaml_parse_file($cre_file);
-			if (is_array($cre_data)) {
-				$cre_data['id'] = $cre_code;
-				$cre_data['code'] = $cre_code;
-				$ret_data[$cre_code] = $cre_data;
-			} else {
-				syslog(LOG_NOTICE, "Ignore File: $cre_file");
-			}
+			$cre_data = self::load_config_yaml($cre_code);
+			$ret_data[$cre_code] = $cre_data;
+
 		}
 
-		$ini_data = self::load_config_ini();
-
-		// Patch data to always have two fields
-		foreach ($ini_data as $cre_code => $cre_info) {
-			$ret_data[$cre_code] = $cre_info;
-		}
+		ksort($ret_data);
 
 		return $ret_data;
+
 	}
 
 	/**
@@ -138,6 +136,7 @@ class CRE
 	protected static function load_config_yaml(string $cre_code)
 	{
 		$cre_code = str_replace('/', '-', $cre_code);
+
 		// Trim this SHIT name
 		if ('usa-wa-ccrs' == $cre_code) {
 			$cre_code = 'usa-wa';
