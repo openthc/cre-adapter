@@ -51,7 +51,6 @@ class CRE
 		foreach ($cre_list as $cre_file) {
 
 			$cre_code = basename($cre_file, '.yaml');
-			$cre_code = str_replace('-', '/', $cre_code); // Use '/' for legacy reasons
 
 			$cre_data = self::load_config_yaml($cre_code);
 			$ret_data[$cre_code] = $cre_data;
@@ -65,7 +64,26 @@ class CRE
 	}
 
 	/**
+	 * Get Specific Engine Config
+	 */
+	static function getConfig(string $cre_code)
+	{
+		// Legacy INI Data
+		$cre_data0 = self::load_config_ini($cre_code);
+		if (empty($cre_data0)) {
+			$cre_data0 = [];
+		}
+
+		$cre_data1 = self::load_config_yaml($cre_code);
+
+		$cre_data = array_merge($cre_data0, $cre_data1);
+
+		return $cre_data;
+	}
+
+	/**
 	 * Get one Engine Config
+	 * @deprecated this is basically like the Factory?
 	 */
 	static function getEngine(string $cre_code)
 	{
@@ -153,8 +171,6 @@ class CRE
 		if ( ! is_array($cre_data0)) {
 			throw new \Exception('Invalid CRE Configuration [CLC-114]');
 		}
-		$cre_data0['id'] = $cre_code;
-		$cre_data0['code'] = $cre_code;
 
 		$cre_data1 = [];
 		if (defined('APP_ROOT')) {
@@ -167,9 +183,20 @@ class CRE
 			}
 		}
 
+		// Add a Third Layer?
+
+		// Merge the Overlay Data
 		$cre_data = array_merge($cre_data0, $cre_data1);
 
+		if (empty($cre_data['id'])) {
+			$cre_data['id'] = str_replace('-', '/', $cre_code);
+		}
+		if (empty($cre_data['code'])) {
+			$cre_data['code'] = $cre_data['id'];
+		}
+
 		return $cre_data;
+
 	}
 
 }
