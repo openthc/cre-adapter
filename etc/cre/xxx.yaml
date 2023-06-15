@@ -1,6 +1,6 @@
 ---
 name: OpenTHC / Demo
-class: OpenTHC\CRE\OpenTHC
+class: \OpenTHC\CRE\OpenTHC
 epoch: "2014-04-20"
 engine: openthc
 server: ~

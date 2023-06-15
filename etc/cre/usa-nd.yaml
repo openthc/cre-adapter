@@ -3,6 +3,6 @@ name: North Dakota / BioTrack
 class: \OpenTHC\CRE\BioTrack
 epoch: "2022-10-01"
 engine: biotrack
-server: https://mminventory.health.nd.gov/serverjson.asp
+server: "https://mminventory.health.nd.gov/serverjson.asp"
 tz: "America/Chicago"
 ...
