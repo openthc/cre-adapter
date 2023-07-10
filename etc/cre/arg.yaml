@@ -2,5 +2,6 @@
 id: arg
 name: Argentina / OpenTHC
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "America/Argentina/Cordoba"
 ...

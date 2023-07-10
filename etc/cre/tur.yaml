@@ -1,5 +1,6 @@
 ---
 name: "Türkiye / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Europe/Istanbul"
 ...

@@ -1,5 +1,6 @@
 ---
 name: "Zimbabwe / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Africa/Harare"
 ...

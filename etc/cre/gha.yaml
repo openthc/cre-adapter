@@ -1,5 +1,6 @@
 ---
 name: "Ghana / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Africa/Accra"
 ...

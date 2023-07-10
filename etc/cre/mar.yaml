@@ -1,5 +1,6 @@
 ---
 name: "Morocco / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Africa/Casablanca"
 ...

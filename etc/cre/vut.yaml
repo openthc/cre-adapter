@@ -1,5 +1,6 @@
 ---
 name: "Vanuatu / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Pacific/Efate"
 ...

@@ -1,5 +1,6 @@
 ---
 name: "Ireland / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Europe/Dublin"
 ...

@@ -1,5 +1,6 @@
 ---
 name: "Lebanon / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Asia/Beirut"
 ...

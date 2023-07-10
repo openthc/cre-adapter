@@ -1,5 +1,6 @@
 ---
 name: "Cyprus / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Asia/Nicosia"
 ...

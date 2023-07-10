@@ -1,6 +1,7 @@
 ---
 name: "Ukraine / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 # tzdatabase < 2022b
 tz: "Europe/Kiev"
 # tzdatabase >= 2022b

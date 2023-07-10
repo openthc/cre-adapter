@@ -2,6 +2,6 @@
 name: Barbados / OpenTHC
 class: \OpenTHC\CRE\OpenTHC
 epoch: "2019-11-29"
-engine: openthc
+engine: "openthc"
 tz: "America/Barbados"
 ...

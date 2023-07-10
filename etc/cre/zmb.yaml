@@ -1,5 +1,6 @@
 ---
 name: "Zambia / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Africa/Lusaka"
 ...

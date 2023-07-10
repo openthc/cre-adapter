@@ -1,5 +1,6 @@
 ---
 name: "Jamaica / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "America/Jamaica"
 ...

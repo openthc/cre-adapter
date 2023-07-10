@@ -1,5 +1,6 @@
 ---
 name: "Sri Lanka / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Asia/Colombo"
 ...

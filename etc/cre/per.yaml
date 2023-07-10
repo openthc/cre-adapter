@@ -1,5 +1,6 @@
 ---
 name: "Peru / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "America/Lima"
 ...

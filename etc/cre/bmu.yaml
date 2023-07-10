@@ -1,5 +1,6 @@
 ---
 name: "Bermuda / OpenTHC"
 class: \OpenTHC\CRE\OpenTHC
+engine: "openthc"
 tz: "Atlantic/Bermuda"
 ...
