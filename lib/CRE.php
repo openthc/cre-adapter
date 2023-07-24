@@ -108,6 +108,8 @@ class CRE
 	{
 		if (empty(self::$ini_data)) {
 
+			self::$ini_data = [];
+
 			$ini_file = null;
 
 			// Use Application Specific
@@ -124,19 +126,17 @@ class CRE
 				$ini_file = sprintf('%s/etc/cre.ini', $lib_root);
 			}
 
-			if ( ! is_file($ini_file)) {
-				throw new \Exception('CRE configuration file not found [CLC-050]');
-			}
-
-			$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
-			foreach ($ini_data as $tmp_code => $tmp_data) {
-				if (empty($tmp_data['id'])) {
-					$tmp_data['id'] = $tmp_code;
+			if (is_file($ini_file)) {
+				$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
+				foreach ($ini_data as $tmp_code => $tmp_data) {
+					if (empty($tmp_data['id'])) {
+						$tmp_data['id'] = $tmp_code;
+					}
+					if (empty($tmp_data['code'])) {
+						$tmp_data['code'] = $tmp_code;
+					}
+					self::$ini_data[$tmp_code] = $tmp_data;
 				}
-				if (empty($tmp_data['code'])) {
-					$tmp_data['code'] = $tmp_code;
-				}
-				self::$ini_data[$tmp_code] = $tmp_data;
 			}
 		}
 
