@@ -10,7 +10,6 @@ namespace OpenTHC\CRE;
 class Base
 {
 	protected $_api_base = '';
-	protected $_api_host = '';
 
 	protected $obj_list;
 
@@ -46,10 +45,6 @@ class Base
 
 		if ( ! empty($this->_cfg['server'])) {
 			$this->_api_base = rtrim($this->_cfg['server'], '/');
-		}
-
-		if (empty($this->_api_host)) {
-			$this->_api_host = parse_url($this->_api_base, PHP_URL_HOST);
 		}
 
 		if (is_object($this->_cfg['tz'])) {
