@@ -10,7 +10,6 @@ namespace OpenTHC;
 class CRE
 {
 	private static $cre_list = [];
-	private static $ini_data = [];
 
 	/**
 	 * Factory
@@ -38,14 +37,7 @@ class CRE
 	{
 		$ret_data = [];
 
-		$ini_data = self::load_config_ini();
-
-		// Patch data to always have two fields
-		foreach ($ini_data as $cre_code => $cre_info) {
-			$ret_data[$cre_code] = $cre_info;
-		}
-
-		// Load From YAML Data-Set
+		// Load from Library YAML dataset
 		$lib_root = dirname(__DIR__);
 		$cre_list = glob(sprintf('%s/etc/cre/*.yaml', $lib_root));
 		foreach ($cre_list as $cre_file) {
@@ -56,6 +48,22 @@ class CRE
 			$ret_data[$cre_code] = $cre_data;
 
 		}
+
+		// Load from Application YAML dataset
+		if (defined('APP_ROOT')) {
+
+			$cre_list = glob(sprintf('%s/etc/cre/*.yaml', APP_ROOT));
+			foreach ($cre_list as $cre_file) {
+
+				$cre_code = basename($cre_file, '.yaml');
+
+				$cre_data = self::load_config_yaml($cre_code);
+				$ret_data[$cre_code] = $cre_data;
+
+			}
+
+		}
+
 
 		ksort($ret_data);
 
@@ -68,16 +76,7 @@ class CRE
 	 */
 	static function getConfig(string $cre_code)
 	{
-		// Legacy INI Data
-		$cre_data0 = self::load_config_ini($cre_code);
-		if (empty($cre_data0)) {
-			$cre_data0 = [];
-		}
-
-		$cre_data1 = self::load_config_yaml($cre_code);
-
-		$cre_data = array_merge($cre_data0, $cre_data1);
-
+		$cre_data = self::load_config_yaml($cre_code);
 		return $cre_data;
 	}
 
@@ -87,65 +86,7 @@ class CRE
 	 */
 	static function getEngine(string $cre_code)
 	{
-		// Legacy INI Data
-		$cre_data0 = self::load_config_ini($cre_code);
-		if (empty($cre_data0)) {
-			$cre_data0 = [];
-		}
-
-		$cre_data1 = self::load_config_yaml($cre_code);
-
-		$cre_data = array_merge($cre_data0, $cre_data1);
-
-		return $cre_data;
-
-	}
-
-	/**
-	 *
-	 */
-	protected static function load_config_ini(?string $cre_code=null)
-	{
-		if (empty(self::$ini_data)) {
-
-			self::$ini_data = [];
-
-			$ini_file = null;
-
-			// Use Application Specific
-			if (defined('APP_ROOT')) {
-				$chk = sprintf('%s/etc/cre.ini', APP_ROOT);
-				if (is_file($chk)) {
-					$ini_file = $chk;
-				}
-			}
-
-			// Use Default
-			if (empty($ini_file)) {
-				$lib_root = dirname(__DIR__);
-				$ini_file = sprintf('%s/etc/cre.ini', $lib_root);
-			}
-
-			if (is_file($ini_file)) {
-				$ini_data = parse_ini_file($ini_file, true, INI_SCANNER_RAW);
-				foreach ($ini_data as $tmp_code => $tmp_data) {
-					if (empty($tmp_data['id'])) {
-						$tmp_data['id'] = $tmp_code;
-					}
-					if (empty($tmp_data['code'])) {
-						$tmp_data['code'] = $tmp_code;
-					}
-					self::$ini_data[$tmp_code] = $tmp_data;
-				}
-			}
-		}
-
-		if ( ! empty($cre_code)) {
-			return self::$ini_data[$cre_code];
-		}
-
-		return self::$ini_data;
-
+		return self::getConfig($cre_code);
 	}
 
 	/**
