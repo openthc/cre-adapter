@@ -352,10 +352,13 @@ class BioTrack extends \OpenTHC\CRE\Base
 	 * Get the B2B interface
 	 * This interface uses BioTrack "Trace 2.0 API"
 	 */
-	function b2b()
+	function b2b($type='incoming')
 	{
-		return new \OpenTHC\CRE\BioTrack\B2B($this);
+		// switch()
+		return new \stdClass();
+		// return new \OpenTHC\CRE\BioTrack\B2B($this);
 	}
+
 
 	/**
 	 *
@@ -1806,12 +1809,50 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Interface for Company
+	 */
+	function company()
+	{
+		// $r = new \OpenTHC\CRE\BioTrack\License($this);
+		// return $r;
+		return new \stdClass();
+	}
+
+	/**
 	 * Interface for Contact
 	 */
 	function contact()
 	{
 		$r = new \OpenTHC\CRE\BioTrack\Contact($this);
 		return $r;
+	}
+
+	/**
+	 * Interface for License
+	 */
+	function license()
+	{
+		return new \stdClass();
+		// $r = new \OpenTHC\CRE\BioTrack\License($this);
+		// return $r;
+	}
+
+	/**
+	 * Get the B2C Interface
+	 */
+	function b2c()
+	{
+		return new \OpenTHC\CRE\BioTrack\B2C($this);
+	}
+
+	function crop()
+	{
+		return new \stdClass();
+	}
+
+	function inventory()
+	{
+		return new \stdClass();
 	}
 
 	/**
@@ -1942,5 +1983,11 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 		return $req;
 	}
+
+	// function _curl_init_v2();
+	// function _curl_exec_v2();
+
+	// function _curl_init_v3();
+	// function _curl_exec_v3();
 
 }
