@@ -1813,9 +1813,8 @@ class BioTrack extends \OpenTHC\CRE\Base
 	 */
 	function company()
 	{
-		// $r = new \OpenTHC\CRE\BioTrack\License($this);
-		// return $r;
-		return new \stdClass();
+		$r = new \OpenTHC\CRE\BioTrack\Company($this);
+		return $r;
 	}
 
 	/**
@@ -1832,9 +1831,8 @@ class BioTrack extends \OpenTHC\CRE\Base
 	 */
 	function license()
 	{
-		return new \stdClass();
-		// $r = new \OpenTHC\CRE\BioTrack\License($this);
-		// return $r;
+		$r = new \OpenTHC\CRE\BioTrack\License($this);
+		return $r;
 	}
 
 	/**
