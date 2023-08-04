@@ -23,13 +23,16 @@ class Crop extends Base
 	}
 
 	/**
-	 * Down the rabbit hole
-	 * @return [type] [description]
+	 * Finish the Crop
+	 * Either just marking it done because of harvest or other reason
 	 */
-	function finish($pid, $obj)
+	function finish($oid, $arg)
 	{
-		$pc = new \OpenTHC\CRE\OpenTHC\Crop_Collect($this->_cre);
-		return $pc->finish($pid, $obj);
+		// $pc = new \OpenTHC\CRE\OpenTHC\Crop_Collect($this->_cre);
+		// return $pc->finish($pid, $obj);
+		$url = sprintf('%s/%s/finish', $this->_path, rawurlencode($oid));
+		$res = $this->_cre->post($url, $arg);
+		return $res;
 	}
 
 }
