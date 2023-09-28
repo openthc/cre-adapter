@@ -172,7 +172,7 @@ class Type
 	 */
 	function getName()
 	{
-
+		return $this->_map[ $this->_t ]['name'];
 	}
 
 	/**
