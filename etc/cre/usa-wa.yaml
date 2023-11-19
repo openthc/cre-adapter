@@ -4,6 +4,10 @@ class: \OpenTHC\CRE\CCRS
 epoch: "2021-08-04"
 engine: openthc
 server: "https://cannabisreporting.lcb.wa.gov/"
-service-sk: ~
 tz: "America/Los_Angeles"
+# SAW Account Username & Password
+username: ~
+password: ~
+# Service Key from LCB
+service-sk: ~
 ...
