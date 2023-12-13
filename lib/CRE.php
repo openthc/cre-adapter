@@ -35,37 +35,30 @@ class CRE
 	 */
 	static function getEngineList()
 	{
-		$ret_data = [];
+		$cre_code_list = [];
 
 		// Load from Library YAML dataset
 		$lib_root = dirname(__DIR__);
 		$cre_list = glob(sprintf('%s/etc/cre/*.yaml', $lib_root));
 		foreach ($cre_list as $cre_file) {
-
 			$cre_code = basename($cre_file, '.yaml');
-
-			$cre_data = self::load_config_yaml($cre_code);
-			$ret_data[$cre_code] = $cre_data;
-
+			$cre_code_list[$cre_code] = $cre_code;
 		}
 
 		// Load from Application YAML dataset
 		if (defined('APP_ROOT')) {
-
 			$cre_list = glob(sprintf('%s/etc/cre/*.yaml', APP_ROOT));
 			foreach ($cre_list as $cre_file) {
-
 				$cre_code = basename($cre_file, '.yaml');
-
-				$cre_data = self::load_config_yaml($cre_code);
-				$ret_data[$cre_code] = $cre_data;
-
+				$cre_code_list[$cre_code] = $cre_code;
 			}
-
 		}
 
-
-		ksort($ret_data);
+		$ret_data = [];
+		foreach ($cre_code_list as $cre_code) {
+			$cre_data = self::load_config_yaml($cre_code);
+			$ret_data[$cre_code] = $cre_data;
+		}
 
 		return $ret_data;
 
@@ -101,16 +94,17 @@ class CRE
 			$cre_code = 'usa-wa';
 		}
 
+		$cre_data0 = [];
+		$cre_data1 = [];
+
 		// YAML Data from This Library
 		$lib_root = dirname(__DIR__);
 		$cre_file = sprintf('%s/etc/cre/%s.yaml', $lib_root, $cre_code);
-		if ( ! is_file($cre_file)) {
-			throw new \Exception(sprintf('Invalid CRE Adapter Config "%s" [CLC-093]', $cre_code));
-		}
-
-		$cre_data0 = yaml_parse_file($cre_file);
-		if ( ! is_array($cre_data0)) {
-			throw new \Exception('Invalid CRE Configuration [CLC-114]');
+		if (is_file($cre_file)) {
+			$cre_data0 = yaml_parse_file($cre_file);
+			if ( ! is_array($cre_data0)) {
+				throw new \Exception(sprintf('Invalid CRE Configuration "%s" [CLC-114]', $cre_code));
+			}
 		}
 
 		$cre_data1 = [];
