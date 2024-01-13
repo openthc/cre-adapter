@@ -1782,11 +1782,17 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	*/
+	 * Not Implemented Everywhere
+	 * So we fake a response
+	 */
 	function sync_third_party_transporter($min=null)
 	{
 		$arg = $this->_sync_object('sync_third_party_transporter', $min);
-		return $this->_curl_exec($arg);
+		$res = $this->_curl_exec($arg);
+		if (empty($res['third_party_transporter'])) {
+			$res['third_party_transporter'] = [];
+		}
+		return $res;
 	}
 
 	/**
