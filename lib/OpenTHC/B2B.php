@@ -12,6 +12,19 @@ class B2B extends Base
 	protected $_path = '/b2b';
 
 	/**
+	 * Get file attachments
+	 */
+	function attachment(string $oid, string $fid = null)
+	{
+		$url = sprintf('%s/%s/file', $this->_path, rawurlencode($oid));
+		if ($fid) {
+			$url = sprintf('%s/%s', $url, rawurlencode($fid));
+		}
+		$res = $this->_cre->get($url);
+		return $res;
+	}
+
+	/**
 	 * Do the COMMIT thing
 	 */
 	function commit(string $oid)
