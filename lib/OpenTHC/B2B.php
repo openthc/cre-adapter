@@ -42,7 +42,7 @@ class B2B extends Base
 	 */
 	function incoming()
 	{
-		return new \OpenTHC\CRE\OpenTHC\B2B\Incoming($this);
+		return new \OpenTHC\CRE\OpenTHC\B2B\Incoming($this->_cre);
 	}
 
 	/**
@@ -50,6 +50,6 @@ class B2B extends Base
 	 */
 	function outgoing()
 	{
-		return new \OpenTHC\CRE\OpenTHC\B2B\Outgoing($this);
+		return new \OpenTHC\CRE\OpenTHC\B2B\Outgoing($this->_cre);
 	}
 }
