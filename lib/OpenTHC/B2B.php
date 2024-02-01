@@ -36,4 +36,20 @@ class B2B extends Base
 		$res = $this->_cre->post($url, $arg);
 		return $res;
 	}
+
+	/**
+	 * Get the B2B Incoming interface
+	 */
+	function incoming()
+	{
+		return new \OpenTHC\CRE\OpenTHC\B2B\Incoming($this);
+	}
+
+	/**
+	 * Get the B2B Outgoing interface
+	 */
+	function outgoing()
+	{
+		return new \OpenTHC\CRE\OpenTHC\B2B\Outgoing($this);
+	}
 }
