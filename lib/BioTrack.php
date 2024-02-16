@@ -158,13 +158,13 @@ class BioTrack extends \OpenTHC\CRE\Base
 			return 'Grower';
 			return 'G3';
 		case 4:
-			return 'Grower,Processor';
+			return 'Grower+Processor';
 			return 'G1P';
 		case 5:
-			return 'Grower,Processor';
+			return 'Grower+Processor';
 			return 'G2P';
 		case 6:
-			return 'Grower,Processor';
+			return 'Grower+Processor';
 			return 'G3P';
 		case 7:
 			return 'Processor';
