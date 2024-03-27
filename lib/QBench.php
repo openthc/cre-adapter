@@ -126,6 +126,36 @@ class QBench extends Base
 	}
 
 	/**
+	 * Put Something
+	 */
+	function post($url, $obj)
+	{
+		$url = ltrim($url, '/');
+		$url = sprintf('%s/%s', $this->_api_base, $url);
+
+		$req = __curl_init($url);
+
+		curl_setopt($req, CURLOPT_POST, true);
+		curl_setopt($req, CURLOPT_POSTFIELDS, json_encode($obj));
+
+		$req_head = [];
+		$req_head[] = sprintf('authorization: Bearer %s', $this->_access_token);
+		$req_head[] = 'content-type: application/json';
+		curl_setopt($req, CURLOPT_HTTPHEADER, $req_head);
+
+		// curl_setopt($req, CURLOPT_VERBOSE, true);
+		// $ofh = fopen(__DIR__ . '/curl-output.log', 'a');
+		// curl_setopt($req, CURLOPT_STDERR, $ofh);
+
+		$res = curl_exec($req);
+		$inf = curl_getinfo($req);
+		$res = json_decode($res, true);
+
+		return $res;
+
+	}
+
+	/**
 	 * Get the List of Accessioning Type
 	 */
 	function getAccessionList()
