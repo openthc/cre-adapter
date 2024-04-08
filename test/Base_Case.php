@@ -7,8 +7,8 @@
 
 namespace OpenTHC\CRE\Test;
 
-class Base_Case extends \PHPUnit\Framework\TestCase
-{
+class Base_Case extends \OpenTHC\Test\Base {
+
 	function _data_stash_get() : array
 	{
 		if (is_file($f)) {
@@ -32,42 +32,19 @@ class Base_Case extends \PHPUnit\Framework\TestCase
 		return file_put_contents($f, $d);
 	}
 
-		/**
-	* Intends to become an assert wrapper for a bunch of common response checks
-	* @param $res, Response Object
-	* @return void
-	*/
-	function assertValidResponse($res, $code=200, $dump=null) : array
-	{
-		$this->assertNotEmpty($res);
-		$this->assertIsArray($res);
+	function assertValidResponse($res, $code_expect=200, $type_expect=null, $dump=null) {
 
-		// Dump on Errors
-		switch ($res['code']) {
-		case 400:
-		case 422:
-		case 500:
-			if (empty($dump)) {
-				$dump = sprintf('%d Response Code', $res['code']);
-			}
+		$ret = parent::assertValidResponse($res, $code_expect, $type_expect, $dump);
+		switch ($type_expect) {
+		case 'application/json':
+			$this->assertIsArray($ret['data']);
+			$this->assertIsArray($ret['meta']);
 			break;
+		default:
+			// Nothing
 		}
 
-		if ( ! empty($dump)) {
-			echo "\n<<<$dump<<<\n";
-			var_dump($res);
-			echo "\n###\n";
-		}
-		// $ret = \json_decode($this->raw, true);
-
-		$this->assertEquals($code, $res['code']);
-
-		// $this->assertCount(2, $res);
-
-		$this->assertIsArray($res['data']);
-		$this->assertIsArray($res['meta']);
-
-		return $res;
+		return $ret;
 
 	}
 
