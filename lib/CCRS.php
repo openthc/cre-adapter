@@ -448,7 +448,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'IntermediateProduct';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'PropagationMaterial';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'HarvestedMaterial';
-			// case '018NY6XC00PT8AXVZGNZN3A0QT':
+			case '018NY6XC00PT8AXVZGNZN3A0QT': return 'HarvestedMaterial';
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-156]");
 		}
@@ -491,6 +491,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return 'Infused Cooking Medium';
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'Seed';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'Flower Unlotted';
+			case '018NY6XC00PT8AXVZGNZN3A0QT': return 'Waste';
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-194]");
 		}
