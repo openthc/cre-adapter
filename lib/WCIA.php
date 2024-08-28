@@ -228,6 +228,7 @@ class WCIA extends \OpenTHC\CRE\Base
 			case 'ENDPRODUCT/TRANSDERMAL':                      return '018NY6XC00PTHPB8YG56S0MCAC';
 			case 'ENDPRODUCT/USABLE MARIJUANA':                 return '018NY6XC00PTGMB39NHCZ8EDEZ';
 			case 'ENDPRODUCT/USABLE CANNABIS':                  return '018NY6XC00PTGMB39NHCZ8EDEZ'; // WCIA Product Type mapping disagreement
+			case 'ENDPRODUCT/PRE-ROLLS':                        return '018NY6XC00PTGMB39NHCZ8EDEZ'; // Doesn't Exist but Other groups think it should
 			case 'ENDPRODUCT/WASTE':                            return '018NY6XC00PT8AXVZGNZN3A0QT';
 			case 'HARVESTEDMATERIAL/FLOWER LOT':                return '018NY6XC00PTAF3TFBB51C8HX6'; // Grade A Bulk/Lot
 			case 'HARVEST_MATERIALS/FLOWER_LOTS':               return '018NY6XC00PTAF3TFBB51C8HX6'; // Grade A Bulk/Lot - Cultivera Typo
