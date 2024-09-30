@@ -115,13 +115,13 @@ class Contact extends \OpenTHC\CRE\BioTrack\Base
 	/**
 	 *
 	 */
-	function update($oid, $obj)
+	function update(string $oid, $obj)
 	{
 		// if (empty($obj['type'])) {
 		// 	throw new \Exception('Invalid Contact Type [CBC-121]');
 		// }
 
-		if (empty($obj['id'])) {
+		if (empty($oid)) {
 			throw new \Exception('Invalid Contact, ID Required [CBC-125]');
 		}
 		if (empty($obj['name'])) {

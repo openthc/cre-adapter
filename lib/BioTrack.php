@@ -1510,20 +1510,21 @@ class BioTrack extends \OpenTHC\CRE\Base
 	}
 
 	/**
-	*/
-	function sale_refund()
+	 *
+	 */
+	function sale_refund($tid, $inv_list)
 	{
 		$arg = [];
 		$arg['action'] = 'sale_refund';
 		$arg['transactionid'] = $tid;
 		// $arg['sale_time'] = ''; //refund time
 		// $arg['item_number'] =
-		$arg['data'] = [];
-		$arg['data'][] = [
-			'barcodeid' => '',
-			'quantity' => '',
-			'price' => '',
-		];
+		$arg['data'] = $inv_list;
+		// $arg['data'][] = [
+		// 	'barcodeid' => '',
+		// 	'quantity' => '',
+		// 	'price' => '',
+		// ];
 
 		$res = $this->_curl_exec($arg);
 
