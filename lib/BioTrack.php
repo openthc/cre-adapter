@@ -1515,9 +1515,9 @@ class BioTrack extends \OpenTHC\CRE\Base
 	{
 		$arg = [];
 		$arg['action'] = 'sale_refund';
-		$arg['transactionid'] = $tid,
+		$arg['transactionid'] = $tid;
 		// $arg['sale_time'] = ''; //refund time
-		// $arg['item_number'] = 
+		// $arg['item_number'] =
 		$arg['data'] = [];
 		$arg['data'][] = [
 			'barcodeid' => '',
