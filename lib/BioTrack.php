@@ -55,6 +55,7 @@ class BioTrack extends \OpenTHC\CRE\Base
 		'vehicle' => 'Vehicle',
 		'inventory_room' => 'Section/Inventory',
 		'plant_room' => 'Section/Plant',
+		// 'section' => 'Section/Inventory & Plant',
 		'inventory' => 'Inventory',
 		'plant' => 'Plant',
 		'plant_derivative' => 'Plant Derivative',
@@ -1772,6 +1773,11 @@ class BioTrack extends \OpenTHC\CRE\Base
 		return $this->_curl_exec($arg);
 	}
 
+	function sync_section($min=null)
+	{
+
+	}
+
 	/**
 		@param $arg array of data for Sync Check
 	*/
@@ -1964,7 +1970,12 @@ class BioTrack extends \OpenTHC\CRE\Base
 		if (!empty($this->_ret['error'])) {
 			if (preg_match('/session.+expired/', $this->_ret['error'])) {
 				unset($this->_cfg['session']);
+				$this->_ret['code'] = 403;
 			}
+		}
+
+		if (empty($this->_ret['success'])) {
+			$this->_ret['code'] = 400;
 		}
 
 		return $this->_ret;
@@ -1980,6 +1991,8 @@ class BioTrack extends \OpenTHC\CRE\Base
 		$head = array(
 			'accept: application/json',
 			'content-type: text/JSON', // BT wants this (incorrect) value
+			// sprintf('openthc-contact-id: %s', $this->_License['id']),
+			// sprintf('openthc-company-id: %s', $this->_License['id']),
 			sprintf('openthc-license-id: %s', $this->_License['id']),
 		);
 
@@ -1987,11 +2000,5 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 		return $req;
 	}
-
-	// function _curl_init_v2();
-	// function _curl_exec_v2();
-
-	// function _curl_init_v3();
-	// function _curl_exec_v3();
 
 }
