@@ -50,7 +50,7 @@ class Vehicle extends \OpenTHC\CRE\BioTrack\Base
 			'action' => 'vehicle_modify',
 		);
 		$arg = array_merge($arg, $obj);
-		return $this->_curl_exec($arg);
+		return $this->_client->curl_exec($arg);
 
 	}
 }

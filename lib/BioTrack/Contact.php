@@ -137,7 +137,7 @@ class Contact extends \OpenTHC\CRE\BioTrack\Base
 		$dt_dob = new \DateTime($obj['dob']);
 		$dt_doh = new \DateTime($obj['doh']);
 
-		$res = $this->_curl_exec(array(
+		$res = $this->_client->_curl_exec(array(
 			'action'        => 'employee_modify',
 			'employee_id'   => $oid,
 			'employee_name' => $obj['name'],
