@@ -1494,23 +1494,55 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 	/**
 	*/
-	function sale_modify()
+	function sale_modify($tid, $oid, $unit_price)
 	{
-		die(__FUNCTION__  . ' not implemented');
+		$arg = [];
+		$arg['action'] = 'sale_modify';
+		$arg['transactionid'] = '';
+		$arg['barcodeid'] = $oid;
+		$arg['price'] = $unit_price;
+		// $arg['item_number'] = '';
+		// $arg['sale_time'] = '';
+
+		$res = $this->_curl_exec($arg);
+
+		return $res;
 	}
 
 	/**
 	*/
 	function sale_refund()
 	{
-		die(__FUNCTION__  . ' not implemented');
+		$arg = [];
+		$arg['action'] = 'sale_refund';
+		$arg['transactionid'] = $tid,
+		// $arg['sale_time'] = ''; //refund time
+		// $arg['item_number'] = 
+		$arg['data'] = [];
+		$arg['data'][] = [
+			'barcodeid' => '',
+			'quantity' => '',
+			'price' => '',
+		];
+
+		$res = $this->_curl_exec($arg);
+
+		return $res;
+
 	}
 
 	/**
 	*/
-	function sale_void()
+	function sale_void($tid)
 	{
-		die(__FUNCTION__  . ' not implemented');
+		$arg = [];
+		$arg['action'] = 'sale_void';
+		$arg['transactionid'] = $tid;
+
+		$res = $this->_curl_exec($arg);
+
+		return $res;
+
 	}
 
 	/**
