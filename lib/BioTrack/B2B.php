@@ -7,7 +7,7 @@
 
 namespace OpenTHC\CRE\BioTrack;
 
-class B2B
+class B2B extends \OpenTHC\CRE\BioTrack\Base
 {
 	protected $_path = '/v1/manifest';
 	protected $_training = 0;
