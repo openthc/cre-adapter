@@ -1478,15 +1478,15 @@ class BioTrack extends \OpenTHC\CRE\Base
 		@param $cust_key Customer Card Key
 		@param $sale_data Array of { barcode, quantity, price }
 	*/
-	function sale_dispense($item_list, $card_key) // $term_id, $cust_id, $cust_key, )
+	function sale_dispense($time, $term, $b2c_item_list) // $cust_id, $cust_key, , $card_key
 	{
 		$arg = array(
 			'action' => 'sale_dispense',
-			//'terminal_id' => $term_id,
-			'sale_time' => $_SERVER['REQUEST_TIME'],
+			'terminal_id' => $term,
+			'sale_time' => $time,
 			// 'card_id' => $cust_id,
-			'card_key' => $card_key,
-			'data' => $item_list,
+			// 'card_key' => $card_key,
+			'data' => $b2c_item_list,
 		);
 		$res = $this->_curl_exec($arg);
 		return $res;
@@ -1956,16 +1956,16 @@ class BioTrack extends \OpenTHC\CRE\Base
 
 		$t0 = microtime(true);
 
-		$ch = $this->_curl_init($this->_api_base);
+		$req = $this->_curl_init($this->_api_base);
 
 		$this->_arg = $arg;
 		$this->_req = json_encode($this->_arg);
-		curl_setopt($ch, CURLOPT_POST, true);
-		// curl_setopt($ch, CURLOPT_HEADER, true); // Get Headers in Response?
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_req);
+		curl_setopt($req, CURLOPT_POST, true);
+		// curl_setopt($req, CURLOPT_HEADER, true); // Get Headers in Response?
+		curl_setopt($req, CURLOPT_POSTFIELDS, $this->_req);
 
-		$this->_raw = curl_exec($ch);
-		$this->_inf = curl_getinfo($ch);
+		$this->_raw = curl_exec($req);
+		$this->_inf = curl_getinfo($req);
 
 		// this is a workaround for a biotrack bug where headers leak into the response body /djb 20170723
 		$this->_raw = str_replace('Content-Type: text/plain', null, $this->_raw);
