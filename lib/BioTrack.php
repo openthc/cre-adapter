@@ -2024,8 +2024,8 @@ class BioTrack extends \OpenTHC\CRE\Base
 		$head = array(
 			'accept: application/json',
 			'content-type: text/JSON', // BT wants this (incorrect) value
-			// sprintf('openthc-contact-id: %s', $this->_License['id']),
-			// sprintf('openthc-company-id: %s', $this->_License['id']),
+			sprintf('openthc-contact-id: %s', $this->_cfg['contact']),
+			sprintf('openthc-company-id: %s', $this->_cfg['company']),
 			sprintf('openthc-license-id: %s', $this->_License['id']),
 		);
 
