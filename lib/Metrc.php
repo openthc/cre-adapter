@@ -128,7 +128,7 @@ class Metrc extends \OpenTHC\CRE\Base
 			return array(
 				'code' => 500,
 				'data' => null,
-				'meta' => [ 'detail' => $e->getMessage() ],
+				'meta' => [ 'note' => $e->getMessage() ],
 			);
 		}
 
@@ -148,14 +148,14 @@ class Metrc extends \OpenTHC\CRE\Base
 			return array(
 				'code' => 500,
 				'data' => null,
-				'meta' => [ 'detail' => $e->getMessage() ],
+				'meta' => [ 'note' => $e->getMessage() ],
 			);
 		}
 
 		return array(
 			'code' => 200,
 			'data' => [],
-			'meta' => [ 'detail' => 'Everything is Awesome!' ],
+			'meta' => [ 'note' => 'Everything is Awesome!' ],
 		);
 	}
 
@@ -503,6 +503,8 @@ class Metrc extends \OpenTHC\CRE\Base
 		$head = array(
 			'accept: application/json',
 			'content-type: application/json',
+			sprintf('openthc-contact-id: %s', $this->_cfg['contact']),
+			sprintf('openthc-company-id: %s', $this->_cfg['company']),
 			sprintf('openthc-license-id: %s', $this->_License['id']),
 		);
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
