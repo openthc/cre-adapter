@@ -26,7 +26,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		'inventory' => 'Inventory',
 		'inventory-adjust' => 'Inventory Adjust Logs',
 		'lab-report' => 'Lab Reports',
-		'b2b' => 'B2B Sales',
+		// 'b2b' => 'B2B Sales',
 		'b2b-incoming' => 'B2B Incoming (Purchase Orders)',
 		'b2b-outgoing' => 'B2B Outgoing (Sales)',
 		'b2c' => 'B2C Sales'
@@ -56,11 +56,10 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		$head = [
 			'accept' => 'application/json',
 			'user-agent' => 'OpenTHC/CRE/Adapter v420.23.052',
-			'openthc-cre' => $this->_cfg['id'],
 			'openthc-service-id' => $this->_cfg['service-id'],
 			'openthc-contact-id' => $this->_cfg['contact'],
 			'openthc-company-id' => $this->_cfg['company'],
-			'openthc-license-id' => $this->_cfg['license']
+			'openthc-license-id' => $this->_License['id'],
 		];
 
 		$cfg = array(
@@ -72,6 +71,61 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		);
 
 		$this->_c = new \GuzzleHttp\Client($cfg);
+
+	}
+
+	function auth($x)
+	{
+		if (empty($this->_cfg['server-pk'])) {
+			throw new \Exception('Invalid Configuration [CLO-081]');
+		}
+		if (empty($this->_cfg['client-pk'])) {
+			throw new \Exception('Invalid Configuration [CLO-084]');
+		}
+		if (empty($this->_cfg['client-sk'])) {
+			throw new \Exception('Invalid Configuration [CLO-087]');
+		}
+
+		// v2024 Token
+		$plain_tok = [];
+		$plain_tok['pk'] = $this->_cfg['client-pk'];
+		$plain_tok['ts'] = time();
+		$plain_tok['contact'] = $this->_cfg['contact'];
+		$plain_tok['company'] = $this->_cfg['company'];
+		$plain_tok['license'] = $this->_License['id'];
+		$plain_tok = json_encode($plain_tok);
+
+		$crypt_box = \OpenTHC\Sodium::encrypt($plain_tok, $this->_cfg['client-sk'], $this->_cfg['server-pk']);
+		$crypt_box = \OpenTHC\Sodium::b64encode($crypt_box);
+
+		$opt = [
+			'headers' => [
+				'authorization' => sprintf('Bearer v2024/%s/%s', $this->_cfg['client-pk'], $crypt_box),
+			]
+		];
+
+		$res = $this->_c->request('POST', '/auth/open', $opt);
+
+		$this->_res_code = $res->getStatusCode();
+		$this->_res_body = $res->getBody()->getContents();
+		$this->_res_type = $res->getHeaderLine('content-type');
+		$this->_res_type = strtok($this->_res_type, ';');
+
+		// $res = $this->post('/auth/open', [], $opt);
+		$res = json_decode($this->_res_body, true);
+
+		$ret = [];
+		$ret['code'] = $this->_res_code;
+		$ret['data'] = $res['data'];
+		$ret['meta'] = $res['meta'];
+
+		switch ($ret['code']) {
+		case 200:
+			$this->_cfg['session-id'] = $ret['data']['sid'];
+			break;
+		}
+
+		return $ret;
 
 	}
 
@@ -106,8 +160,10 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	{
 		$res = $this->request('GET', $url);
 
-		$this->_res_body = $res->getBody()->getContents();
 		$this->_res_code = $res->getStatusCode();
+		$this->_res_body = $res->getBody()->getContents();
+		$this->_res_type = $res->getHeaderLine('content-type');
+		$this->_res_type = strtok($this->_res_type, ';');
 
 		$ret = null;
 		switch ($this->_res_code) {
@@ -118,8 +174,26 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		case 405:
 		case 410:
 		case 423:
-			$ret = json_decode($this->_res_body, true);
-			$ret['code'] = $this->_res_code;
+			switch ($this->_res_type) {
+			case 'application/json':
+				$ret = json_decode($this->_res_body, true);
+				$ret['code'] = $this->_res_code;
+				break;
+			case 'application/pdf':
+				$ret['code'] = $this->_res_code;
+				$ret['data'] = $this->_res_body; // It's BINARY
+				$ret['meta'] = [
+					// Not really what it's called.
+					'name' => $res->getHeaderLine('content-filename'),
+				];
+				break;
+			case 'text/html':
+				$ret['code'] = $this->_res_code;
+				$ret['data'] = $this->_res_body;
+				break;
+			default:
+				throw new \Exception('Invalid MIME Type [LRO-131]');
+			}
 			break;
 		default:
 			// _exit_text($this->_res_code . ': ' . $res->getBody());
@@ -241,39 +315,21 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	 */
 	function request(string $v, string $u, $o=[])
 	{
-		$arg = [
-			'iat' => time() - 30,
-			'iss' => $this->_cfg['service-id'],
-			'exp' => (time() + 120),
-			'sub' => $this->_cfg['contact'],
-			'service' => $this->_cfg['service'], // @deprecated
-			'service-sk' => $this->_cfg['service-sk'], // Necessary to Sign
-			'cre' => $this->_cfg['id'], // CRE ID ?? NecessarY? Or Not in JWT?
-			'company' => $this->_cfg['company'], // @deprecated
-			'license' => $this->_License['id'],
-		];
-		$jwt = new \OpenTHC\JWT($arg);
-
-		$o = array_replace_recursive($o, [
+		// Encrypt Data In Header
+		$h = [
 			'headers' => [
-				'authorization' => sprintf('Bearer jwt:%s', $jwt->__toString()),
-				'openthc-company-id' => $this->_cfg['company'],
-				'openthc-contact-id' => $this->_cfg['contact'],
 				'openthc-license-id' => $this->_License['id'],
 			]
-		]);
+		];
+
+		if ( ! empty($this->_cfg['session-id'])) {
+			$h['headers']['authorization'] = sprintf('Bearer v2024/%s', $this->_cfg['session-id']);
+		}
+
+		$o = array_merge($o, $h);
 
 		return $this->_c->request($v, $u, $o);
 
-	}
-
-	/**
-	 * Authentication Interfaces
-	 */
-	function auth($p)
-	{
-		$r = $this->post('/auth/open', $p);
-		return $r;
 	}
 
 	/**
