@@ -2,6 +2,7 @@
 name: Connecticut / BioTrack
 class: \OpenTHC\CRE\BioTrack
 epoch: "2021-07-01"
-tz: "America/New_York"
+engine: "biotrack"
 server: "https://trace.ct.biotr.ac/serverjson.asp"
+tz: "America/New_York"
 ...
