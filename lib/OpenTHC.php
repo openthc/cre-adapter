@@ -90,6 +90,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		$plain_tok = [];
 		$plain_tok['pk'] = $this->_cfg['client-pk'];
 		$plain_tok['ts'] = time();
+		$plain_tok['service'] = $this->_cfg['service'];
 		$plain_tok['contact'] = $this->_cfg['contact'];
 		$plain_tok['company'] = $this->_cfg['company'];
 		$plain_tok['license'] = $this->_License['id'];
