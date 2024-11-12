@@ -452,7 +452,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		case 400:
 		case 405:
 		case 500:
-					return [
+			return [
 				'code' => $code,
 				'data' => $this->_raw,
 				'meta' => [ 'note' => $this->formatError($this->_res) ]
@@ -503,6 +503,7 @@ class Metrc extends \OpenTHC\CRE\Base
 		$head = array(
 			'accept: application/json',
 			'content-type: application/json',
+			sprintf('openthc-service-id: %s', $this->_cfg['service']),
 			sprintf('openthc-contact-id: %s', $this->_cfg['contact']),
 			sprintf('openthc-company-id: %s', $this->_cfg['company']),
 			sprintf('openthc-license-id: %s', $this->_License['id']),
