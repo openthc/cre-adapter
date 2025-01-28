@@ -4,6 +4,7 @@
 	"license": "MIT",
 	"autoload": {
 		"exclude-from-classmap": [
+			"lib/LeafData",
 			"vendor/erusev/parsedown-extra/test"
 		],
 		"files": [
