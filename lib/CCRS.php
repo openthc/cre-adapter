@@ -409,6 +409,30 @@ class CCRS extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * Take FileName Part and return our table and path names
+	 */
+	static function map_filename_to_object($t) : string {
+
+		switch (strtoupper($t)) {
+		case 'AREA':
+			return 'section';
+		case 'MANIFEST':
+			return 'b2b/outgoing/file';
+		case 'PLANT':
+			return 'crop';
+		case 'SALE':
+			return 'b2b/outgoing';
+		case 'STRAIN':
+			return 'variety';
+		case 'INVENTORY':
+		case 'PRODUCT';
+			return strtolower($t);
+		default:
+			throw new \Exception(sprintf('Invalid Object Type "%s"', $t));
+		}
+	}
+
+	/**
 	 *
 	 */
 	static function map_product_type0($x)
