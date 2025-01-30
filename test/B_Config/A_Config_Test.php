@@ -52,12 +52,9 @@ class A_Config_Test extends \OpenTHC\CRE\Test\Base_Case
 			// 	// $this->assertArrayHasKey('engine', $cre, sprintf('%s missing engine', $cre_code));
 
 			if ( ! empty($cre['engine'])) {
-				$this->assertContains($cre_data['engine'], [ 'biotrack', 'leafdata', 'metrc', 'openthc' ]);
+				$this->assertContains($cre_data['engine'], [ 'biotrack', 'metrc', 'openthc' ]);
 				switch ($cre['engine']) {
 					case 'biotrack':
-						$this->assertArrayHasKey('server', $cre_data, sprintf('%s missing server', $cre_code));
-						break;
-					case 'leafdata':
 						$this->assertArrayHasKey('server', $cre_data, sprintf('%s missing server', $cre_code));
 						break;
 					case 'metrc':

@@ -40,13 +40,6 @@ class A_Fire_Test extends \OpenTHC\CRE\Test\Base_Case
 		// $p1 = $c->ping();
 		// var_dump($p1);
 
-		$c = new \OpenTHC\CRE\LeafData($cre_config);
-		$l0 = $c->setLicense('L1');
-		$this->assertIsArray($l0);
-		$p1 = $c->ping();
-		$this->assertNotEmpty($p1);
-		// var_dump($p1);
-
 		$c = new \OpenTHC\CRE\Metrc($cre_config);
 		// $l0 = $c->setLicense('L1');
 		$this->assertIsArray($l0);
