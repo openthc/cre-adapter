@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class Lab_Result extends \OpenTHC\CRE\Metrc2023\Base
 {
-	protected $_path = '/labtests/v1';
+	protected $_path = '/labtests/v2';
 
 	/**
 	 *
@@ -41,7 +41,7 @@ class Lab_Result extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function commit(string $pkg)
 	{
-		// /labtests/v1/results/release
+		// /labtests/v2/results/release
 	}
 
 	/**

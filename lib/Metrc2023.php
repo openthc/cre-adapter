@@ -93,6 +93,16 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		return new Metrc2023\Contact($this);
 	}
 
+	function crop()
+	{
+		return new Metrc2023\Crop($this);
+	}
+
+	function inventory()
+	{
+		return new Metrc2023\Inventory($this);
+	}
+
 	function license()
 	{
 		return new Metrc2023\License($this);
@@ -213,18 +223,21 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 			return [
 				'code' => $code,
 				'data' => $this->_raw,
-				'meta' => [ 'note' => $this->formatError($this->_res) ]
+				'meta' => [ 'note' => 'Unexpected Server Error [CLM-226]' ]
 			];
 		case 401:
 			return [
 				'code' => $code,
-				'data' => $this->_raw,
-				'meta' => [ 'note' => 'Not Authorized [CLM-433]' ]
+				'data' => null,
+				'meta' => [
+					'note' => 'Not Authorized [CLM-433]',
+					'message' => $this->_res['Message'],
+				]
 			];
 		case 404:
 			return [
 				'code' => $code,
-				'data' => $this->_raw,
+				'data' => null,
 				'meta' => [ 'note' => 'Not Found [CLM-439]' ]
 			];
 		default:
@@ -234,14 +247,14 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		}
 
 		if (empty($this->_res)) {
-			$this->_res = array();
+			$this->_res = [];
 		}
 
-		return array(
+		return [
 			'code' => $code,
 			'data' => $this->_res,
 			'meta' => [],
-		);
+		];
 
 	}
 

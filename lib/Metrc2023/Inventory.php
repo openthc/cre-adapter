@@ -16,7 +16,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function getAdjustReasonList()
 	{
-		$url = $this->_client->_make_url('/packages/v1/adjust/reasons');
+		$url = $this->_client->_make_url('/packages/v2/adjust/reasons');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
 		return $res;
@@ -24,7 +24,6 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 
 	/**
 	 * Adjust the Unit of Measure on one or more items
-	 * @see https://api-or.metrc.com/Documentation#Packages.post_packages_v1_adjust
 	 */
 	function adjust($arg)
 	{
@@ -40,7 +39,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function finish($arg)
 	{
-		$url = $this->_client->_make_url('/packages/v1/finish');
+		$url = $this->_client->_make_url('/packages/v2/finish');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -51,7 +50,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function finish_undo($arg)
 	{
-		$url = $this->_client->_make_url('/packages/v1/unfinish');
+		$url = $this->_client->_make_url('/packages/v2/unfinish');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -62,7 +61,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function plant($arg)
 	{
-		$url = $this->_client->_make_url('/packages/v1/create/plantings');
+		$url = $this->_client->_make_url('/packages/v2/create/plantings');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -78,7 +77,14 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		return $res;
+
+		$ret = [];
+		$ret['code'] = $res['code'];
+		$ret['data'] = $res['data']['Data'];
+		unset($res['data']['Data']);
+		$ret['meta'] = $res['data'];
+
+		return $ret;
 	}
 
 }

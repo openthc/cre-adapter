@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class Batch extends \OpenTHC\CRE\Metrc2023\Base
 {
-	protected $_path = '/plantbatches/v1';
+	protected $_path = '/plantbatches/v2';
 
 	function change($obj)
 	{
@@ -61,7 +61,7 @@ class Batch extends \OpenTHC\CRE\Metrc2023\Base
 			$stat = 'active';
 		}
 
-		$url = sprintf('/plantbatches/v1/%s', $stat);
+		$url = sprintf('/plantbatches/v2/%s', $stat);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);

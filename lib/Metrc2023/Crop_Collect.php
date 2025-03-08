@@ -11,7 +11,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 {
 	function harvest($arg)
 	{
-		$url = $this->_client->_make_url('/plants/v1/harvestplants');
+		$url = $this->_client->_make_url('/plants/v2/harvestplants');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -19,7 +19,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 
 	function manicure($arg)
 	{
-		$url = $this->_client->_make_url('/plants/v1/manicureplants');
+		$url = $this->_client->_make_url('/plants/v2/manicureplants');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -31,7 +31,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 	*/
 	function harvestFinish($arg)
 	{
-		$url = $this->_client->_make_url('/harvests/v1/finish');
+		$url = $this->_client->_make_url('/harvests/v2/finish');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -39,7 +39,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 
 	function harvestFinishUndo($arg)
 	{
-		$url = $this->_client->_make_url('/harvests/v1/unfinish');
+		$url = $this->_client->_make_url('/harvests/v2/unfinish');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -47,7 +47,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 
 	function harvestPackageCreate($arg)
 	{
-		$url = $this->_client->_make_url('/harvests/v1/create/packages');
+		$url = $this->_client->_make_url('/harvests/v2/create/packages');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -55,7 +55,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 
 	function harvestWasteRemove($arg)
 	{
-		$url = $this->_client->_make_url('/harvests/v1/removewaste');
+		$url = $this->_client->_make_url('/harvests/v2/removewaste');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -77,7 +77,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 		////case 'packageharvestedproducts':
 		////case 'removewastefromharvests':
 		////case 'unfinish':
-		//	$url = '/harvests/v1/' . $a;
+		//	$url = '/harvests/v2/' . $a;
 		//	break;
 		//}
 
@@ -85,7 +85,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 			$stat = 'active';
 		}
 
-		$url = sprintf('/harvests/v1/%s', $stat);
+		$url = sprintf('/harvests/v2/%s', $stat);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);

@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class B2C extends \OpenTHC\CRE\Metrc2023\Base
 {
-	protected $_path = '/sales/v1/receipts';
+	protected $_path = '/sales/v2/receipts';
 
 	function create($obj)
 	{
@@ -48,7 +48,7 @@ class B2C extends \OpenTHC\CRE\Metrc2023\Base
 
 	function customers($arg=null)
 	{
-		$url = '/sales/v1/customertypes';
+		$url = '/sales/v2/customertypes';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -57,7 +57,7 @@ class B2C extends \OpenTHC\CRE\Metrc2023\Base
 
 	function patientRegistrationLocations($arg=null)
 	{
-		$url = '/sales/v1/patientregistration/locations';
+		$url = '/sales/v2/patientregistration/locations';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);

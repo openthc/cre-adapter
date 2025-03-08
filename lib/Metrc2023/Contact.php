@@ -9,7 +9,7 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class Contact extends \OpenTHC\CRE\Metrc2023\Base
 {
-	// protected $_path = '/patients/v1';
+	// protected $_path = '/patients/v2';
 
 	/**
 	 *
@@ -63,7 +63,7 @@ class Contact extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function update($arg)
 	{
-		$url = $this->_client->_make_url('/patients/v1/update');
+		$url = $this->_client->_make_url('/patients/v2/update');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $arg ]);
 		return $res;

@@ -15,18 +15,16 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 
 		if (empty($obj['ShipperLicenseNumber']) && !empty($obj['Name'])) {
 			// It's a Template
-			$url = $this->_client->_make_url('/transfers/v1/templates');
+			$url = $this->_client->_make_url('/transfers/v2/templates');
 		} else {
 			// It's an INCOMING
-			$url = $this->_client->_make_url('/transfers/v1/external/incoming');
+			$url = $this->_client->_make_url('/transfers/v2/external/incoming');
 		}
 
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
 
 		return $res;
-
-
 
 	}
 
@@ -53,7 +51,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function outgoing()
 	{
-		$url = '/transfers/v1/outgoing';
+		$url = '/transfers/v2/outgoing';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -65,7 +63,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function incoming()
 	{
-		$url = '/transfers/v1/incoming';
+		$url = '/transfers/v2/incoming';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -77,7 +75,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function rejected()
 	{
-		$url = '/transfers/v1/rejected';
+		$url = '/transfers/v2/rejected';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -89,7 +87,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function templates()
 	{
-		$url = '/transfers/v1/templates';
+		$url = '/transfers/v2/templates';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -101,7 +99,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	*/
 	function getTypeList()
 	{
-		$url = '/transfers/v1/types';
+		$url = '/transfers/v2/types';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
@@ -114,7 +112,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	*/
 	function deliveries($oid)
 	{
-		$url = '/transfers/v1/%s/deliveries';
+		$url = '/transfers/v2/%s/deliveries';
 		$url = sprintf($url, $oid);
 
 		$req = $this->_client->_curl_init($url);
@@ -128,7 +126,7 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 	*/
 	function packages($oid)
 	{
-		$url = '/transfers/v1/delivery/%s/packages';
+		$url = '/transfers/v2/delivery/%s/packages';
 		$url = sprintf($url, $oid);
 
 		$req = $this->_client->_curl_init($url);

@@ -11,11 +11,11 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class Crop extends \OpenTHC\CRE\Metrc2023\Base
 {
-	protected $_path = '/plants/v1';
+	protected $_path = '/plants/v2';
 
 	function change($obj)
 	{
-		$url = $this->_client->_make_url('/plants/v1/changegrowthphases');
+		$url = $this->_client->_make_url('/plants/v2/changegrowthphases');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
 		return $res;
@@ -51,7 +51,7 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 		// 	)
 		// );
 
-		$url = $this->_client->_make_url('/plants/v1/destroyplants');
+		$url = $this->_client->_make_url('/plants/v2/destroyplants');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -62,7 +62,7 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 	 */
 	function move($arg)
 	{
-		$url = '/plants/v1/moveplants';
+		$url = '/plants/v2/moveplants';
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
@@ -80,12 +80,26 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 			$stat = 'flowering';
 		}
 
-		$url = sprintf('/plants/v1/%s', $stat);
+		$url = sprintf('/plants/v2/%s', $stat);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		return $res;
 
+		switch ($res['code']) {
+		case 200:
+
+			$ret = [];
+			$ret['code'] = $res['code'];
+			$ret['data'] = $res['data']['Data'];
+			unset($res['data']['Data']);
+			$ret['meta'] = $res['data'];
+
+			return $ret;
+
+			break;
+		}
+
+		return $res;
 	}
 
 }
