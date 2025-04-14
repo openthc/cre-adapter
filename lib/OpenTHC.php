@@ -62,6 +62,11 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'openthc-license-id' => $this->_License['id'],
 		];
 
+		// Session ID?
+		if ( ! empty($this->_cfg['session-id'])) {
+			$head['authorization'] = sprintf('Bearer v2024/%s', $this->_cfg['session-id']);
+		}
+
 		$cfg = array(
 			'base_uri' => $this->_api_base,
 			'allow_redirects' => false,
