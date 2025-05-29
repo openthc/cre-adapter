@@ -194,7 +194,7 @@ class WCIA extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTNPA4TPCYSKD5XN': return [ 'IntermediateProduct', 'Non-Solvent Based Concentrate' ];
 			case '018NY6XC00PTR9M5Z9S4T31C4R': return [ 'IntermediateProduct', 'CO2 Concentrate' ];
 			case '018NY6XC00PTRPPDT8NJY2MWQW': return [ 'PropagationMaterial', 'Plant' ];
-			case '018NY6XC00PTSF5NTC899SR0JF': return [ 'EndProduct', 'Marijuana Mix Infused' ]; // Concentrate For Inhalation
+			case '018NY6XC00PTSF5NTC899SR0JF': return [ 'EndProduct', 'Concentrate For Inhalation' ];
 			case '018NY6XC00PTY5XPA4KJT6W3K4': return [ 'IntermediateProduct', 'Infused Cooking Medium' ];
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return [ 'PropagationMaterial', 'Seed' ];
 			case '018NY6XC00PTZZWCH7XVREHK6T': return [ 'HarvestedMaterial', 'Flower Unlotted' ];
