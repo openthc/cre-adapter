@@ -16,7 +16,7 @@ class Inventory extends Base
 	 */
 	function adjust(string $oid, $arg)
 	{
-		$url = sprintf('/%s/%s/adjust', $this->_path, rawurlencode($oid));
+		$url = sprintf('%s/%s/adjust', $this->_path, rawurlencode($oid));
 		$res = $this->_cre->post($url, $arg);
 		return $res;
 	}
