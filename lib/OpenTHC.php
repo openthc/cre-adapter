@@ -175,6 +175,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 		switch ($this->_res_code) {
 		case 200:
 		case 201:
+		case 401:
 		case 403:
 		case 404:
 		case 405:
