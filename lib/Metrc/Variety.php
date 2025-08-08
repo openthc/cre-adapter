@@ -11,7 +11,7 @@ class Variety extends \OpenTHC\CRE\Metrc\Base
 {
 	protected $_path = '/strains/v1';
 
-	// @param $id ID of Variety to get, default 'active'
+	// @param $id ID of Variety to get, default 'active' or 'inactive'
 	function search($arg=null)
 	{
 		if (empty($arg)) {

@@ -45,4 +45,9 @@ class Crop_Collect extends Base
 
 	}
 
+	function finish()
+	{
+
+	}
+
 }
