@@ -452,6 +452,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'EndProduct';
 			case '018NY6XC00PT8ZPGMPR8H2TAXH': return 'HarvestedMaterial';
 			case '018NY6XC00PTAF3TFBB51C8HX6': return 'HarvestedMaterial';
+			case '018NY6XC00PTYM8J81K9HFGEMQ': return 'HarvestedMaterial';
 			case '018NY6XC00PTBJ3G5FDAJN60EX': return 'EndProduct';
 			case '018NY6XC00PTBNDY5VJ8JQ6NKP': return 'EndProduct';
 			case '018NY6XC00PTCS5AZV189X1YRK': return 'EndProduct';
@@ -495,6 +496,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PT7N83PFNCX8ZFEF': return 'Liquid Edible';
 			case '018NY6XC00PT8ZPGMPR8H2TAXH': return 'Other Material Lot';
 			case '018NY6XC00PTAF3TFBB51C8HX6': return 'Flower Lot';
+			case '018NY6XC00PTYM8J81K9HFGEMQ': return 'Flower Lot';
 			case '018NY6XC00PTBJ3G5FDAJN60EX': return 'Suppository';
 			case '018NY6XC00PTBNDY5VJ8JQ6NKP': return 'Solid Edible';
 			case '018NY6XC00PTCS5AZV189X1YRK': return 'Hydrocarbon Concentrate';
