@@ -20,6 +20,23 @@ class Base extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 *
+	 */
+	protected function formatResponse($res)
+	{
+		$ret = [];
+		$ret['code'] = $res['code'];
+
+		$ret['data'] = $res['data']['Data'];
+		unset($res['data']['Data']);
+
+		$ret['meta'] = $res['data'];
+
+		return $ret;
+
+	}
+
+	/**
 	 * Find "all", need to maybe pass pages
 	 */
 	function search($arg=null)
@@ -41,7 +58,7 @@ class Base extends \OpenTHC\CRE\Base
 	 */
 	function create($obj)
 	{
-		$url = sprintf('%s/create', $this->_path);
+		$url = sprintf('%s/', $this->_path);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);

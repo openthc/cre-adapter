@@ -21,6 +21,16 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 		return $res;
 	}
 
+	/**
+	 * From a Plant, this makes a Clone or Seed, Creates a PlantBatch
+	 * @param $arg,
+	 * 	Label =>
+	 * 	BatchName =>
+	 * 	PlantBatchType =>
+	 * 	PlantCount =>
+	 * 	StrainName =>
+	 * 	ActualDate =>
+	 */
 	function create($obj)
 	{
 		$url = sprintf('%s/create/plantings', $this->_path);
@@ -84,22 +94,10 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-
-		switch ($res['code']) {
-		case 200:
-
-			$ret = [];
-			$ret['code'] = $res['code'];
-			$ret['data'] = $res['data']['Data'];
-			unset($res['data']['Data']);
-			$ret['meta'] = $res['data'];
-
-			return $ret;
-
-			break;
-		}
+		$res = $this->formatResponse($res);
 
 		return $res;
+
 	}
 
 }

@@ -13,13 +13,13 @@
  *
  */
 
-namespace OpenTHC\CRE\Test\Metrc\B_Auth;
+namespace OpenTHC\CRE\Test\E_Metrc\A_Core;
 
-class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
+class A_Auth_Bunk_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	public function test_auth()
 	{
-		$c = new \OpenTHC\CRE\Adapter\Metrc([
+		$c = new \OpenTHC\CRE\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
 			'service-sk' => '-',
 			'license-sk' => '-',
@@ -32,13 +32,13 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 
 	public function test_open_fail()
 	{
-		$c = new \OpenTHC\CRE\Adapter\Metrc([
+		$c = new \OpenTHC\CRE\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
 			'service-sk' => 'garbage-data',
 			'license-sk' => 'garbage-data',
 		]);
 		$l0 = $c->setLicense('L1');
-		$this->assertIsEmpty($l0);
+		$this->assertEmpty($l0);
 		$p1 = $c->ping();
 
 		$res = $this->assertValidResponse($p1, 403);
@@ -49,10 +49,9 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 	{
 		// TEST COMPANY A
 		// $res = $this->_post('/auth/open', [
-		$c = new \OpenTHC\CRE\Adapter\Metrc([
-			'service-sk' => $_ENV['api-service-a'],
-			// 'company-key' => $_ENV['api-company-g0'],
-			'license-sk' => $_ENV['api-license-g0'],
+		$c = new \OpenTHC\CRE\Metrc([
+			'service-sk' => getenv('OPENTHC_TEST_METRC_SERVICE_SK'),
+			'license-sk' => getenv('OPENTHC_TEST_METRC_LICENSE_SK'),
 		]);
 
 		$p1 = $c->ping();
@@ -65,9 +64,9 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 
 	function test_open_fail_company_license()
 	{
-		$c = new \OpenTHC\CRE\Adapter\Metrc([
+		$c = new \OpenTHC\CRE\Metrc([
 			'server' => 'https://bunk.openthc.org/metrc',
-			'service-sk' => $_ENV['api-service-a'],
+			'service-sk' => getenv('OPENTHC_TEST_METRC_SERVICE_SK'),
 			'license-sk' => 'garbage-data',
 		]);
 		$p1 = $c->ping();

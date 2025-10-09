@@ -35,14 +35,13 @@ class Contact extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url('/employees/v2/');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		// var_dump($res);
-		$ret['code'] = $res['code'];
-		$ret['data'] = $res['data']['Data'];
-		unset($res['data']['Data']);
+		$res = $this->formatResponse($res);
 
 		$url = $this->_client->_make_url('/patients/v2/active');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
+		$res = $this->formatResponse($res);
+
 		switch ($res['code']) {
 		case 200:
 			// OK

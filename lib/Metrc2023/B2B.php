@@ -55,7 +55,8 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		return $res;
+		$res = $this->formatResponse($res);
+		return $ret;
 	}
 
 	/**
@@ -67,7 +68,8 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		return $res;
+		$res = $this->formatResponse($res);
+		return $ret;
 	}
 
 	/**
@@ -79,7 +81,8 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-		return $res;
+		$res = $this->formatResponse($res);
+		return $ret;
 	}
 
 	/**

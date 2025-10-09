@@ -12,7 +12,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	protected $_path = '/packages/v2';
 
 	/**
-	 * Should this be on a Lot_Delta object?
+	 * Should this be on a Inventory_Adjust object?
 	 */
 	function getAdjustReasonList()
 	{
@@ -22,12 +22,23 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 		return $res;
 	}
 
+	// 	$res = $this->packageTypeList();
+	// function packageTypeList()
+	function getTypeList()
+	{
+		$url = $this->_client->_make_url('/packages/v2/types');
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+
+	}
+
 	/**
 	 * Adjust the Unit of Measure on one or more items
 	 */
 	function adjust($arg)
 	{
-		$url = $this->_client->_make_url('/packages/v1/adjust');
+		$url = $this->_client->_make_url('/packages/v2/adjust');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, $arg);
 		return $res;
@@ -46,7 +57,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	}
 
 	/**
-	 * Finish Undo for Array of Lots
+	 * Finish Undo for Array of Inventory
 	 */
 	function finish_undo($arg)
 	{
@@ -57,7 +68,7 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	}
 
 	/**
-	 * Convert Lot to Plant
+	 * Convert Inventory to Plant
 	 */
 	function plant($arg)
 	{
@@ -77,14 +88,8 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-
-		$ret = [];
-		$ret['code'] = $res['code'];
-		$ret['data'] = $res['data']['Data'];
-		unset($res['data']['Data']);
-		$ret['meta'] = $res['data'];
-
-		return $ret;
+		$res = $this->formatResponse($res);
+		return $res;
 	}
 
 }

@@ -6,22 +6,8 @@
  */
 namespace OpenTHC\CRE\Test\Metrc\G_Process;
 
-class A_Lot extends \OpenTHC\CRE\Test\Base
+class A_Lot extends \OpenTHC\CRE\Test\Metrc_Case
 {
-	protected function setUp() : void
-	{
-		$cfg = [
-			'code' => $_ENV['metrc-cfg-code'],
-			'service-sk' => $_ENV['metrc-cfg-service-sk'],
-			'license-sk' => $_ENV['metrc-license-g-sk'],
-		];
-		$this->cre = \OpenTHC\CRE::factory($cfg);
-	}
-
-	public function testSearch() : void {}
-
-	public function testCreate() : void {}
-
 	/**
 	 * Convert harvest flower into lotted material
 	 */

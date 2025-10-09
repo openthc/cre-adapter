@@ -9,14 +9,67 @@ namespace OpenTHC\CRE;
 
 class Metrc2023 extends \OpenTHC\CRE\Base
 {
-	private $_date_alpha;
+	const ENGINE = 'metrc';
 
-	private $_date_omega;
+	private $_api_key_vendor = null;
+
+	private $_api_key_client = null;
+
+	private $_datetime_alpha;
+
+	private $_datetime_omega;
+
+	public static $license_type_list = array(
+		'F' => 'Producer',
+		'R' => 'Retailer',
+		'P' => 'Processor',
+		'QA' => 'Labs',
+		'RC' => 'Research',
+	);
+
+	protected $obj_list = array(
+		'uom' => 'Units of Measure',
+		'license' => 'License',
+		'contact' => 'Contact / Patient',
+		'section-type' => 'Section Type',
+		'section' => 'Section',
+		'variety' => 'Variety',
+		'product-type' => 'Product Type / Item Categories',
+		'product' => 'Product',
+		'crop' => 'Crop',
+		'cropbatch' => 'Crop Batches',
+		'cropcollect' => 'Crop Collect',
+		'inventory' => 'Inventory',
+		'lab-result' => 'Lab Result',
+		'b2b' => 'B2B / Wholesale',
+		'b2c' => 'B2C / Retail',
+	);
 
 	/**
-	 *
+	 * Cleanup Shitty Data
+	 * @param [type] $rec [description]
+	 * @return $rec but fixed
 	 */
-	function __construct(array $cfg)
+	public static function de_fuck($rec)
+	{
+		$key_list = array(
+			'EstimatedDepartureDateTime',
+			'EstimatedArrivalDateTime',
+		);
+
+		foreach ($key_list as $k) {
+			if ('0001-01-01T00:00:00.000' == $rec[$k]) {
+				$rec[$k] = null;
+			}
+		}
+
+		return $rec;
+	}
+
+	/**
+	 * @param $cfg CRE Configuration Options
+	 */
+	function __construct(array $cfg, $dbc=null)
 	{
 		parent::__construct($cfg);
 
@@ -88,9 +141,85 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		);
 	}
 
+	/**
+	 * Error Formatter
+	 */
+	function formatError($res)
+	{
+		if ( ! is_array($res)) {
+			$chk = json_decode($res, true);
+			if (is_array($chk)) {
+				$res = $chk;
+			}
+		}
+
+		if (is_array($res)) {
+			if (( ! empty($res['code'])) && ( ! empty($res['meta']['note']))) {
+				return $res['meta']['note'];
+			}
+			if (!empty($res['Message'])) {
+				return $res['Message'];
+			}
+		}
+
+		if ( ! empty($res[0]['message'])) {
+			return $res[0]['message'];
+		}
+
+		var_dump($res);
+		// var_dump(debug_print_backtrace());
+		throw new \Exception('METRC Really Broken [LRM-159]');
+		exit(0);
+	}
+
+	/**
+	 * Determines if the Object is a METRC time-aware resource
+	 * @param [type] $k [description]
+	 * @return boolean [description]
+	 */
+	function _is_time_aware($obj)
+	{
+		switch ($obj) {
+		case 'b2b':
+		case 'b2c':
+		case 'crop':
+		case 'crop':
+		case 'cropbatch':
+		case 'cropcollect':
+		case 'harvest': // v1
+		case 'inventory':
+		case 'lot': // v1
+		case 'plant': // v1
+		case 'plantbatch': // v1
+		case 'variety':
+			return true;
+		case 'contact': // is patients & employees -- time aware or not?
+		case 'lab-result':
+		case 'patients':
+		case 'product':
+		case 'product-type':
+		case 'section':
+		case 'section-type':
+		case 'variety':
+		case 'uom':
+			return false;
+		default:
+			throw new \Exception(sprintf('Unknown Object Type: "%s"', $obj));
+		}
+	}
+
 	function contact()
 	{
 		return new Metrc2023\Contact($this);
+	}
+	// function patient()
+	// {
+	// 	return new Metrc\Patient($this);
+	// }
+
+	function license()
+	{
+		return new Metrc2023\License($this);
 	}
 
 	function crop()
@@ -98,14 +227,24 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		return new Metrc2023\Crop($this);
 	}
 
+	function crop_batch()
+	{
+		return new Metrc2023\Crop_Batch($this);
+	}
+
+	function crop_collect()
+	{
+		return new Metrc2023\Crop_Collect($this);
+	}
+
 	function inventory()
 	{
 		return new Metrc2023\Inventory($this);
 	}
 
-	function license()
+	function labresult()
 	{
-		return new Metrc2023\License($this);
+		return new Metrc2023\Lab_Result($this);
 	}
 
 	function product()
@@ -121,6 +260,16 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 	function variety()
 	{
 		return new Metrc2023\Variety($this);
+	}
+
+	function b2b()
+	{
+		return new Metrc2023\B2B($this);
+	}
+
+	function b2c()
+	{
+		return new Metrc2023\B2C($this);
 	}
 
 	function is_time_aware($obj)
@@ -155,12 +304,12 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 	function setTimeAlpha($dt)
 	{
-
+		$this->_datetime_alpha = $x;
 	}
 
 	function setTimeOmega($dt)
 	{
-
+		$this->_datetime_omega = $x;
 	}
 
 	/**
@@ -216,6 +365,13 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 					);
 				}
 			}
+
+			// $ret = [];
+			// $ret['code'] = $res['code'];
+			// $ret['data'] = $res['data']['Data'];
+			// unset($res['data']['Data']);
+			// $ret['meta'] = $res['data'];
+
 			break;
 		case 400:
 		case 405:
@@ -269,10 +425,12 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		$req = parent::_curl_init($uri);
 
 		$auth = sprintf('%s:%s', $this->_api_key_vendor, $this->_api_key_client);
+		// $auth = base64_encode($auth);
 		curl_setopt($req, CURLOPT_USERPWD, $auth);
 
 		$head = array(
 			'accept: application/json',
+			// sprintf('authorization: Basic %s', $auth),
 			'content-type: application/json',
 			// sprintf('openthc-service-id: %s', $this->_cfg['service']),
 			// sprintf('openthc-contact-id: %s', $this->_cfg['contact']),
@@ -294,14 +452,14 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		), $arg);
 
 		if (empty($d0)) {
-			if (!empty($this->_time_alpha)) {
-				$d0 = $this->_time_alpha;
+			if (!empty($this->_datetime_alpha)) {
+				$d0 = $this->_datetime_alpha;
 			}
 		}
 
 		if (empty($d1)) {
-			if (!empty($this->_time_omega)) {
-				$d1 = $this->_time_omega;
+			if (!empty($this->_datetime_omega)) {
+				$d1 = $this->_datetime_omega;
 			}
 		}
 
