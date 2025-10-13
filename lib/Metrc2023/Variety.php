@@ -22,14 +22,8 @@ class Variety extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-
-		$ret = [];
-		$ret['code'] = $res['code'];
-		$ret['data'] = $res['data']['Data'];
-		unset($res['data']['Data']);
-		$ret['meta'] = $res['data'];
-
-		return $ret;
+		$res = $this->formatResponse($res);
+		return $res;
 
 	}
 

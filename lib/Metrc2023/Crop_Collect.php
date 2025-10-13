@@ -89,6 +89,7 @@ class Crop_Collect extends \OpenTHC\CRE\Metrc2023\Base
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
+		$res = $this->formatResponse($res);
 		return $res;
 
 	}

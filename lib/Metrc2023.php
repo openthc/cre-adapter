@@ -29,6 +29,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 	protected $obj_list = array(
 		'uom' => 'Units of Measure',
+		'tag' => 'Tags',
 		'license' => 'License',
 		'contact' => 'Contact / Patient',
 		'section-type' => 'Section Type',
@@ -270,6 +271,11 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 	function b2c()
 	{
 		return new Metrc2023\B2C($this);
+	}
+
+	function tag()
+	{
+		return new Metrc2023\Tag($this);
 	}
 
 	function is_time_aware($obj)

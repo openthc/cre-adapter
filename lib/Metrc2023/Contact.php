@@ -9,7 +9,9 @@ namespace OpenTHC\CRE\Metrc2023;
 
 class Contact extends \OpenTHC\CRE\Metrc2023\Base
 {
-	// protected $_path = '/patients/v2';
+	const TYPE_CLIENT = 'CLIENT';
+	const TYPE_EMPLOYEE = 'EMPLOYEE';
+	const TYPE_PATIENT = 'PATIENT';
 
 	/**
 	 *
@@ -25,22 +27,24 @@ class Contact extends \OpenTHC\CRE\Metrc2023\Base
 	/**
 	 *
 	 */
-	function search($arg=null)
+	function search(string $type='EMPLOYEE')
 	{
-		// if (empty($arg)) {
-		// 	$arg = 'active';
-		// }
 		$ret = [];
 
-		$url = $this->_client->_make_url('/employees/v2/');
-		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($req);
-		$res = $this->formatResponse($res);
-
-		$url = $this->_client->_make_url('/patients/v2/active');
-		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($req);
-		$res = $this->formatResponse($res);
+		switch ($type) {
+			case self::TYPE_EMPLOYEE:
+				$url = $this->_client->_make_url('/employees/v2/');
+				$req = $this->_client->_curl_init($url);
+				$res = $this->_client->_curl_exec($req);
+				$res = $this->formatResponse($res);
+				break;
+			case self::TYPE_PATIENT:
+				$url = $this->_client->_make_url('/patients/v2/active');
+				$req = $this->_client->_curl_init($url);
+				$res = $this->_client->_curl_exec($req);
+				$res = $this->formatResponse($res);
+				break;
+		}
 
 		switch ($res['code']) {
 		case 200:
@@ -52,9 +56,9 @@ class Contact extends \OpenTHC\CRE\Metrc2023\Base
 		default:
 			throw new \Exception('Invalid Response from Contact/Patients [CMC-054]', 500);
 		}
-		// var_dump($res);
 
-		return $ret;
+		return $res;
+
 	}
 
 	/**
