@@ -201,6 +201,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		case 'product-type':
 		case 'section':
 		case 'section-type':
+		case 'tag':
 		case 'variety':
 		case 'uom':
 			return false;
