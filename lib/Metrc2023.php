@@ -311,12 +311,12 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 	function setTimeAlpha($dt)
 	{
-		$this->_datetime_alpha = $x;
+		$this->_datetime_alpha = $dt;
 	}
 
 	function setTimeOmega($dt)
 	{
-		$this->_datetime_omega = $x;
+		$this->_datetime_omega = $dt;
 	}
 
 	/**
