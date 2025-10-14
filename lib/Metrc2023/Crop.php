@@ -15,7 +15,7 @@ class Crop extends \OpenTHC\CRE\Metrc2023\Base
 
 	function change($obj)
 	{
-		$url = $this->_client->_make_url('/plants/v2/changegrowthphases');
+		$url = $this->_client->_make_url('/plants/v2/growthphases');
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
 		return $res;

@@ -11,9 +11,34 @@ class Crop_Batch extends \OpenTHC\CRE\Metrc2023\Base
 {
 	protected $_path = '/plantbatches/v2';
 
+	function getAdjustReasons()
+	{
+		$url = '/packages/v2/adjust/reasons';
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		$res = $this->formatResponse($res);
+
+		// $url = '/plantbatches/v2/waste/reasons';
+		// $url = $this->_client->_make_url($url);
+		// $req = $this->_client->_curl_init($url);
+		// $res = $this->_client->_curl_exec($req);
+
+		return $res;
+	}
+
+	function adjust($obj)
+	{
+		$url = sprintf('%s/adjust', $this->_path);
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req, [ $obj ]);
+		return $res;
+	}
+
 	function change($obj)
 	{
-		$url = sprintf('%s/changegrowthphase', $this->_path);
+		$url = sprintf('%s/growthphase', $this->_path);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
@@ -22,7 +47,7 @@ class Crop_Batch extends \OpenTHC\CRE\Metrc2023\Base
 
 	function create($obj)
 	{
-		$url = sprintf('%s/createplantings', $this->_path);
+		$url = sprintf('%s/plantings', $this->_path);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req, [ $obj ]);
