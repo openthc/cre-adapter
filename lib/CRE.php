@@ -16,7 +16,7 @@ class CRE
 	 */
 	static function factory(array $cfg)
 	{
-		$cre_info = self::getEngine($cfg['code']);
+		$cre_info = self::getConfig($cfg['code']);
 
 		$cfg = array_merge($cre_info, $cfg);
 
@@ -28,6 +28,15 @@ class CRE
 
 		return $cre;
 
+	}
+
+	/**
+	 * Get Specific Engine Config
+	 */
+	static function getConfig(string $cre_code)
+	{
+		$cre_data = self::load_config_yaml($cre_code);
+		return $cre_data;
 	}
 
 	/**
@@ -62,24 +71,6 @@ class CRE
 
 		return $ret_data;
 
-	}
-
-	/**
-	 * Get Specific Engine Config
-	 */
-	static function getConfig(string $cre_code)
-	{
-		$cre_data = self::load_config_yaml($cre_code);
-		return $cre_data;
-	}
-
-	/**
-	 * Get one Engine Config
-	 * @deprecated this is basically like the Factory?
-	 */
-	static function getEngine(string $cre_code)
-	{
-		return self::getConfig($cre_code);
 	}
 
 	/**

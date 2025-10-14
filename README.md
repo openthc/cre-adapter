@@ -10,7 +10,7 @@ There is a convenience factory method to use with the proper configuration (load
 
 
 ```php
-$cfg = \OpenTHC\CRE::getEngine('usa/wa');
+$cfg = \OpenTHC\CRE::getConfig('usa/wa');
 $cre = \OpenTHC\CRE::factory($cfg);
 $res = $cre->license()->search();
 $res = $cre->crop()->search();

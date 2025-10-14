@@ -65,7 +65,7 @@ class Metrc_Case extends \OpenTHC\CRE\Test\Base_Case
 				'name' => getenv('OPENTHC_TEST_METRC_LICENSE_PK'),
 			]
 		];
-		$cfg = \OpenTHC\CRE::getEngine(getenv('OPENTHC_TEST_METRC_CRE'));
+		$cfg = \OpenTHC\CRE::getConfig(getenv('OPENTHC_TEST_METRC_CRE'));
 		$cfg = array_merge($cfg, $opt);
 		return \OpenTHC\CRE::factory($cfg);
 	}
