@@ -221,11 +221,12 @@ class Base
 		curl_setopt($req, CURLOPT_HTTPHEADER, $head);
 
 		$this->_raw = curl_exec($req);
-		$ret = json_decode($this->_raw, true);
+		$this->_inf = curl_getinfo($req);
+		$this->_res = json_decode($this->_raw, true);
 		$this->_err = json_last_error();
 		$this->_err_text = json_last_error_msg();
 
-		return $ret;
+		return $this->_res;
 	}
 
 	/**
