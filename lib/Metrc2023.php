@@ -381,6 +381,14 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 			break;
 		case 400:
+			return [
+				'code' => $code,
+				'data' => $this->_raw,
+				'meta' => [
+					'note' => 'Unexpected Server Error [CLM-388]',
+					'message' => $this->_res['Message']
+				]
+			];
 		case 405:
 		case 500:
 			return [
