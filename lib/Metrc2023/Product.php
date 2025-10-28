@@ -24,6 +24,19 @@ class Product extends \OpenTHC\CRE\Metrc2023\Base
 		return $res;
 	}
 
+	function addPhoto($name, $data)
+	{
+		$arg = [];
+		$arg['FileName'] = $name;
+		$arg['EncodedImageBase64'] = $data;
+
+		$url = sprintf('%s/photo', $this->_path);
+		$url = $this->_client->_make_url($url);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req, [ $arg ]);
+		return $res;
+	}
+
 	/**
 	 * Returns a list of Items - Like 'Buds' or 'Plants' or something
 	 * @param $path - Specific ID or 'active'*

@@ -322,19 +322,16 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 	/**
 	 * Do the CURL thing
 	 */
-	function _curl_exec($ch, $arg=null)
+	function _curl_exec($ch, $arg=null, $verb='GET')
 	{
-		$verb = 'GET';
-
 		$t0 = microtime(true);
 
 		if (!empty($arg)) {
 
-			$verb = 'POST';
+			$verb = ('GET' == $verb) ? 'POST' : $verb;
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $verb);
 
 			$arg = json_encode($arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-
-			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $arg);
 
 		}
@@ -385,8 +382,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 				'code' => $code,
 				'data' => $this->_raw,
 				'meta' => [
-					'note' => 'Unexpected Server Error [CLM-388]',
-					'message' => $this->_res['Message']
+					'note' => sprintf('Unexpected Server Error [CLM-388]: %s', $this->formatError($this->_res))
 				]
 			];
 		case 405:
@@ -401,8 +397,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 				'code' => $code,
 				'data' => null,
 				'meta' => [
-					'note' => 'Not Authorized [CLM-433]',
-					'message' => $this->_res['Message'],
+					'note' => sprintf('Unexpected Server Error [CLM-403]: %s', $this->_res['Message']),
 				]
 			];
 		case 404:

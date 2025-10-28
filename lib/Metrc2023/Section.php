@@ -18,6 +18,7 @@ class Section extends \OpenTHC\CRE\Metrc2023\Base
 	function getTypeList()
 	{
 		$url = sprintf('%s/types', $this->_path);
+		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
 		$res = $this->formatResponse($res);

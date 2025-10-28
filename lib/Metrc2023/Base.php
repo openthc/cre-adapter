@@ -80,12 +80,12 @@ class Base extends \OpenTHC\CRE\Base
 	 * Update OBJECT
 	 * @param $obj Object Descriptor
 	 */
-	function update($obj)
+	function update(string $oid, $obj)
 	{
-		$url = sprintf('%s/update', $this->_path);
+		$url = sprintf('%s/', $this->_path);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($req, [ $obj ]);
+		$res = $this->_client->_curl_exec($req, [ $obj ], 'PUT');
 		return $res;
 	}
 

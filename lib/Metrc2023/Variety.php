@@ -27,13 +27,4 @@ class Variety extends \OpenTHC\CRE\Metrc2023\Base
 
 	}
 
-	function update($obj)
-	{
-		$url = sprintf('/%s/update', $this->_path);
-		$url = $this->_client->_make_url($url);
-		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($req, [ $obj ]);
-		return $res;
-	}
-
 }
