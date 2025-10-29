@@ -1,9 +1,0 @@
----
-# Pennsylvania does not have a API (yet?)
-hide: true
-name: "Pennsylvania / LeafData"
-class: \OpenTHC\CRE\LeafData
-epoch: "2019-01-01"
-engine: "leafdata"
-server: "https://pa.leafdatazone.com/api/v1/"
-...
