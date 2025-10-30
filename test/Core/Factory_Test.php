@@ -7,13 +7,15 @@
 
 namespace OpenTHC\CRE\Test\C_Core;
 
-class F_Factory_Test extends \OpenTHC\CRE\Test\Base_Case
+class Factory_Test extends \OpenTHC\CRE\Test\Base_Case
 {
 	function test_factory()
 	{
 		$cre_list = \OpenTHC\CRE::getEngineList();
 		foreach ($cre_list as $cre_code => $cfg) {
 
+			$cfg['contact'] = 'TEST';
+			$cfg['company'] = 'TEST';
 			$cfg['license'] = 'TEST';
 			$cfg['license-sk'] = 'TEST';
 			$cfg['service'] = 'TEST';

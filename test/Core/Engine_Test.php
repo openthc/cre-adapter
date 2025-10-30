@@ -7,7 +7,7 @@
 
 namespace OpenTHC\CRE\Test\C_Core;
 
-class G_Engine_Test extends \OpenTHC\CRE\Test\Base_Case
+class Engine_Test extends \OpenTHC\CRE\Test\Base_Case
 {
 	/**
 	 *
@@ -15,9 +15,11 @@ class G_Engine_Test extends \OpenTHC\CRE\Test\Base_Case
 	function test_engine_ping()
 	{
 		$cfg_base = [
+			'contact' => 'TEST',
 			'company' => 'TEST',
 			'username' => 'TEST',
 			'password' => 'TEST',
+			'service' => 'TEST',
 			'service-sk' => 'TEST',
 			'license' => 'TEST',
 			'license-sk' => 'TEST',
