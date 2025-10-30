@@ -1,9 +1,0 @@
----
-name: "Maryland / Metrc"
-class: \OpenTHC\CRE\Metrc
-epoch: "2020-01-01"
-engine: metrc
-server: https://api-md.metrc.com/
-service-sk: ~
-tz: "America/New_York"
-...

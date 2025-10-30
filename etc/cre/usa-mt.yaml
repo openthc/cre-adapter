@@ -1,9 +1,0 @@
----
-name: Montana / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2019-01-01"
-engine: metrc
-server: https://api-mt.metrc.com/
-service-sk: ~
-tz: "America/Denver"
-...

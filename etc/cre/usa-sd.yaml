@@ -1,9 +1,0 @@
----
-name: South Dakota / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2021-01-01"
-engine: metrc
-server: https://api-sd.metrc.com/
-service-sk: ~
-tz: "America/Chicago"
-...

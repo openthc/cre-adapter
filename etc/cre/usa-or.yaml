@@ -1,9 +1,0 @@
----
-name: Oregon / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2017-01-01"
-engine: metrc
-server: https://api-or.metrc.com/
-service-sk: ~
-tz: "America/Los_Angeles"
-...

@@ -1,9 +1,0 @@
----
-name: "OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2014-04-20"
-engine: "openthc"
-server: "https://cre.openthc.com/"
-service: "cre"
-service-sk: = ~
-...

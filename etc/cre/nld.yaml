@@ -1,6 +1,0 @@
----
-name: "Netherlands / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "Europe/Amsterdam"
-...

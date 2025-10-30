@@ -33,95 +33,59 @@ class CRE
 	/**
 	 * Get Specific Engine Config
 	 */
-	static function getConfig(string $cre_code)
+	static function getConfig(string $cre_code, string $app_root='')
 	{
-		$cre_data = self::load_config_yaml($cre_code);
+		// Use the / name as the canonical
+		$cre_code = str_replace('-', '/', $cre_code);
+		if ('usa/wa/ccrs' == $cre_code) {
+			$cre_code = 'usa/wa';
+		}
+
+		$cre_list = self::getEngineList($app_root);
+		if (empty($cre_list[$cre_code])) {
+			throw new \Exception('Invalid CRE Configuration [CLC-041]');
+		}
+		$cre_data = $cre_list[$cre_code];
 		return $cre_data;
 	}
 
 	/**
 	 * Return CRE Engine Configuration
+	 * Only Returns engines that are Live
 	 */
-	static function getEngineList()
+	static function getEngineList(string $app_root='')
 	{
-		$cre_code_list = [];
-
-		// Load from Library YAML dataset
+		// Load Core Library Configuration
 		$lib_root = dirname(__DIR__);
-		$cre_list = glob(sprintf('%s/etc/cre/*.yaml', $lib_root));
-		foreach ($cre_list as $cre_file) {
-			$cre_code = basename($cre_file, '.yaml');
-			$cre_code_list[$cre_code] = $cre_code;
-		}
+		$cre_file = sprintf('%s/etc/cre.yaml', $lib_root);
+		$ret_data = yaml_parse_file($cre_file);
 
-		// Load from Application YAML dataset
-		if (defined('APP_ROOT')) {
-			$cre_list = glob(sprintf('%s/etc/cre/*.yaml', APP_ROOT));
-			foreach ($cre_list as $cre_file) {
-				$cre_code = basename($cre_file, '.yaml');
-				$cre_code_list[$cre_code] = $cre_code;
+		// Use "default" app-root if none provided
+		if (empty($app_root)) {
+			if (defined('APP_ROOT')) {
+				$app_root = APP_ROOT;
 			}
 		}
 
-		$ret_data = [];
-		foreach ($cre_code_list as $cre_code) {
-			$cre_data = self::load_config_yaml($cre_code);
-			$ret_data[$cre_code] = $cre_data;
+		// Merge the Other Data
+		if ( ! empty($app_root)) {
+			$cre_file = sprintf('%s/etc/cre.yaml', $app_root);
+			if (is_file($cre_file)) {
+				$cre_data = yaml_parse_file($cre_file);
+				foreach ($cre_data as $k => $v) {
+					$a = [];
+					$b = $v;
+					if ( ! empty($ret_data[$k])) {
+						$a = $ret_data[$k];
+					}
+					$c = array_merge($a, $b);
+					$ret_data[$k] = $c;
+				}
+			}
+
 		}
 
 		return $ret_data;
-
-	}
-
-	/**
-	 *
-	 */
-	protected static function load_config_yaml(string $cre_code)
-	{
-		$cre_code = str_replace('/', '-', $cre_code);
-
-		// Trim this SHIT name
-		if ('usa-wa-ccrs' == $cre_code) {
-			$cre_code = 'usa-wa';
-		}
-
-		$cre_data0 = [];
-		$cre_data1 = [];
-
-		// YAML Data from This Library
-		$lib_root = dirname(__DIR__);
-		$cre_file = sprintf('%s/etc/cre/%s.yaml', $lib_root, $cre_code);
-		if (is_file($cre_file)) {
-			$cre_data0 = yaml_parse_file($cre_file);
-			if ( ! is_array($cre_data0)) {
-				throw new \Exception(sprintf('Invalid CRE Configuration "%s" [CLC-114]', $cre_code));
-			}
-		}
-
-		$cre_data1 = [];
-		if (defined('APP_ROOT')) {
-			$cre_file = sprintf('%s/etc/cre/%s.yaml', APP_ROOT, $cre_code);
-			if (is_file($cre_file)) {
-				$tmp = yaml_parse_file($cre_file);
-				if (is_array($tmp)) {
-					$cre_data1 = $tmp;
-				}
-			}
-		}
-
-		// Add a Third Layer?
-
-		// Merge the Overlay Data
-		$cre_data = array_merge($cre_data0, $cre_data1);
-
-		if (empty($cre_data['id'])) {
-			$cre_data['id'] = str_replace('-', '/', $cre_code);
-		}
-		if (empty($cre_data['code'])) {
-			$cre_data['code'] = $cre_data['id'];
-		}
-
-		return $cre_data;
 
 	}
 

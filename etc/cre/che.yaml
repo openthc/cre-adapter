@@ -1,6 +1,0 @@
----
-name: "Switzerland / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "Europe/Zurich"
-...

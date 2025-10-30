@@ -1,8 +1,0 @@
----
-id: aus
-name: Australia / OpenTHC
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2022-01-01"
-engine: "openthc"
-tz: "Australia/Sydney"
-...

@@ -1,9 +1,0 @@
----
-name: "Michigan / Metrc"
-class: \OpenTHC\CRE\Metrc
-epoch: "2018-01-01"
-engine: metrc
-server: "https://api-mi.metrc.com/"
-service-sk: ~
-tz: "America/Detroit"
-...

@@ -1,9 +1,0 @@
----
-name: "Colorado / Metrc"
-class: \OpenTHC\CRE\Metrc
-epoch: "2014-01-01"
-engine: metrc
-server: https://api-co.metrc.com/
-service-sk: ~
-tz: "America/Denver"
-...

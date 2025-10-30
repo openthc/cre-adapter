@@ -1,6 +1,0 @@
----
-name: "Colombia / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "America/Bogota"
-...

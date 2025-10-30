@@ -1,9 +1,0 @@
----
-name: West Virginia / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2021-01-01"
-engine: metrc
-server: https://api-wv.metrc.com/
-service-sk: ~
-tz: "America/New_York"
-...

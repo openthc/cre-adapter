@@ -1,9 +1,0 @@
----
-name: Oklahoma / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2021-04-01"
-engine: metrc
-server: https://api-ok.metrc.com/
-service-sk: ~
-tz: "America/Chicago"
-...

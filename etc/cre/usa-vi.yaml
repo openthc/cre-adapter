@@ -1,6 +1,0 @@
----
-name: "Virgin Islands / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2023-01-01"
-tz: "America/St_Thomas"
-...

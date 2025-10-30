@@ -1,7 +1,0 @@
----
-name: "Kingdom of Lesotho / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2021-08-01"
-engine: openthc
-tz: "Africa/Maseru"
-...

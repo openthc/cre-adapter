@@ -1,8 +1,0 @@
----
-name: Louisiana / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2015-06-30"
-engine: "metrc"
-server: https://api-la.metrc.com/
-tz: "America/Chicago"
-...

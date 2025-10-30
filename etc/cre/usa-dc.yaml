@@ -1,9 +1,0 @@
----
-name: "Washington, D.C. / Metrc"
-class: \OpenTHC\CRE\Metrc
-epoch: "2015-02-26"
-engine: "metrc"
-server: "https://api-dc.metrc.com"
-service-sk: ~
-tz: "America/New_York"
-...

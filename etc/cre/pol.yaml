@@ -1,6 +1,0 @@
----
-name: "Poland / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "Europe/Warsaw"
-...

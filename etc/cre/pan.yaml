@@ -1,6 +1,0 @@
----
-name: "Panama / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "America/Panama"
-...

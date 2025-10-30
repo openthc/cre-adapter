@@ -1,6 +1,0 @@
----
-name: "Saint Vincent and the Grenadines / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "America/St_Vincent"
-...

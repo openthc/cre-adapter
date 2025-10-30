@@ -1,9 +1,0 @@
----
-name: Rhode Island / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2022-05-05"
-engine: "metrc"
-server: https://api-ri.metrc.com/
-service-sk: ~
-tz: "America/New_York"
-...

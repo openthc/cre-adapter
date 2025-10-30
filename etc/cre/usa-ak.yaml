@@ -1,9 +1,0 @@
----
-name: Alaska / Metrc
-class: \OpenTHC\CRE\Metrc
-epoch: "2017-01-01"
-engine: metrc
-server: "https://api-ak.metrc.com/"
-service-sk: ~
-tz: "America/Juneau"
-...

@@ -1,9 +1,0 @@
----
-name: "Ecuador / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2021-01-01"
-engine: openthc
-server: ~
-service-sk: ~
-tz: "America/Guayaquil"
-...

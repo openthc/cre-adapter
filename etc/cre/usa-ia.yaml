@@ -1,6 +1,0 @@
----
-name: Iowa / OpenTHC
-epoch: "2023-04-21"
-class: \OpenTHC\CRE\OpenTHC
-tz: "America/Chicago"
-...

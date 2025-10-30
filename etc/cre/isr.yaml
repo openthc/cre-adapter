@@ -1,6 +1,0 @@
----
-name: "Israel / OpenTHC"
-class: \OpenTHC\CRE\OpenTHC
-engine: "openthc"
-tz: "Asia/Jerusalem"
-...
