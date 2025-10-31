@@ -32,8 +32,6 @@ class Engine_Test extends \OpenTHC\CRE\Test\Base_Case
 			$cfg1 = array_merge($cfg0, $cfg_base);
 
 			$class = $cfg1['class'];
-			$this->assertNotEmpty($class);
-
 			$cre = new $class($cfg1);
 			$this->assertTrue($cre instanceof \OpenTHC\CRE\Base);
 

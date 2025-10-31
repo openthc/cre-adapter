@@ -11,9 +11,9 @@ openthc:
   service: cre
   service-sk: ~
   tz: UTC
-usa/ak:
+usa-ak:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ak
+  code: usa-ak
   engine: metrc
   epoch: "2017-01-01"
   id: usa-ak
@@ -22,9 +22,9 @@ usa/ak:
   server: https://api-ak.metrc.com/
   service-sk: ~
   tz: America/Juneau
-usa/ak/test:
+usa-ak-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ak/test
+  code: usa-ak-test
   engine: metrc
   epoch: "2017-01-01"
   id: usa-ak-test
@@ -33,9 +33,9 @@ usa/ak/test:
   server: https://sandbox-api-or.metrc.com/
   service-sk: ~
   tz: America/Juneau
-usa/al:
+usa-al:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/al
+  code: usa-al
   engine: metrc
   epoch: "2021-01-01"
   id: usa-al
@@ -44,9 +44,9 @@ usa/al:
   server: ~
   service-sk: ~
   tz: America/Chicago
-usa/ar:
+usa-ar:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/ar
+  code: usa-ar
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-ar
@@ -54,9 +54,9 @@ usa/ar:
   name: Arkansas / BioTrack
   server: https://arstems.arkansas.gov/serverjson.asp
   tz: America/Chicago
-usa/az:
+usa-az:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/az
+  code: usa-az
   engine: openthc
   epoch: "2021-01-01"
   id: usa-az
@@ -65,9 +65,9 @@ usa/az:
   server: https://cre.openthc.com
   service-sk: ~
   tz: America/Phoenix
-usa/ca:
+usa-ca:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ca
+  code: usa-ca
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ca
@@ -76,9 +76,9 @@ usa/ca:
   server: https://api-ca.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/ca/test:
+usa-ca-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ca/test
+  code: usa-ca-test
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ca-test
@@ -87,9 +87,9 @@ usa/ca/test:
   server: https://sandbox-api-ca.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/co:
+usa-co:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/co
+  code: usa-co
   engine: metrc
   epoch: "2014-01-01"
   id: usa-co
@@ -98,9 +98,9 @@ usa/co:
   server: https://api-co.metrc.com/
   service-sk: ~
   tz: America/Denver
-usa/co/test:
+usa-co-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/co/test
+  code: usa-co-test
   engine: metrc
   epoch: "2014-01-01"
   id: usa-co-test
@@ -109,9 +109,9 @@ usa/co/test:
   server: https://sandbox-api-co.metrc.com/
   service-sk: ~
   tz: America/Denver
-usa/ct:
+usa-ct:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/ct
+  code: usa-ct
   engine: biotrack
   epoch: "2021-07-01"
   id: usa-ct
@@ -119,9 +119,9 @@ usa/ct:
   name: Connecticut / BioTrack
   server: https://trace.ct.biotr.ac/serverjson.asp
   tz: America/New_York
-usa/dc:
+usa-dc:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/dc
+  code: usa-dc
   engine: metrc
   epoch: "2015-02-26"
   id: usa-dc
@@ -130,9 +130,9 @@ usa/dc:
   server: https://api-dc.metrc.com
   service-sk: ~
   tz: America/New_York
-usa/de:
+usa-de:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/de
+  code: usa-de
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-de
@@ -140,9 +140,9 @@ usa/de:
   name: Delaware / BioTrack
   server: https://delaware.biotrackthc.net/
   tz: America/New_York
-usa/fl:
+usa-fl:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/fl
+  code: usa-fl
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-fl
@@ -150,9 +150,9 @@ usa/fl:
   name: Florida / BioTrack
   server: ~
   tz: America/New_York
-usa/gu:
+usa-gu:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/gu
+  code: usa-gu
   engine: metrc
   epoch: "2014-11-04"
   id: usa-gu
@@ -161,9 +161,9 @@ usa/gu:
   server: https://api-gu.metrc.com/
   service-sk: ~
   tz: Pacific/Guam
-usa/hi:
+usa-hi:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/hi
+  code: usa-hi
   engine: biotrack
   epoch: "2015-01-01"
   id: usa-hi
@@ -171,9 +171,9 @@ usa/hi:
   name: Hawaii / BioTrack
   server: https://hicsts.hawaii.gov/serverjson.asp
   tz: Pacific/Honolulu
-usa/ia:
+usa-ia:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/ia
+  code: usa-ia
   engine: openthc
   epoch: "2023-04-21"
   id: usa-ia
@@ -182,9 +182,9 @@ usa/ia:
   server: https://cre.openthc.com
   service-sk: ~
   tz: America/Chicago
-usa/il:
+usa-il:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/il
+  code: usa-il
   engine: biotrack
   epoch: "2018-01-01"
   id: usa-il
@@ -192,9 +192,9 @@ usa/il:
   name: Illinois / BioTrack
   server: https://mcmonitoring.agr.illinois.gov/serverjson.asp
   tz: America/Chicago
-usa/ky:
+usa-ky:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/ky
+  code: usa-ky
   engine: openthc
   epoch: "2023-01-11"
   id: usa-ky
@@ -203,9 +203,9 @@ usa/ky:
   server: https://cre.openthc.com
   service-sk: ~
   tz: America/New_York
-usa/la:
+usa-la:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/la
+  code: usa-la
   engine: metrc
   epoch: "2015-06-30"
   id: usa-la
@@ -214,9 +214,9 @@ usa/la:
   server: https://api-la.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/ma:
+usa-ma:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ma
+  code: usa-ma
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ma
@@ -225,9 +225,9 @@ usa/ma:
   server: https://api-ma.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/ma/test:
+usa-ma-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ma/test
+  code: usa-ma-test
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ma-test
@@ -236,9 +236,9 @@ usa/ma/test:
   server: https://sandbox-api-ma.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/md:
+usa-md:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/md
+  code: usa-md
   engine: metrc
   epoch: "2020-01-01"
   id: usa-md
@@ -247,9 +247,9 @@ usa/md:
   server: https://api-md.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/md/test:
+usa-md-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/md/test
+  code: usa-md-test
   engine: metrc
   epoch: "2020-01-01"
   id: usa-md-test
@@ -258,9 +258,9 @@ usa/md/test:
   server: https://sandbox-api-md.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/me:
+usa-me:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/me
+  code: usa-me
   engine: metrc
   epoch: "2020-01-01"
   id: usa-me
@@ -269,9 +269,9 @@ usa/me:
   server: https://api-me.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/me/test:
+usa-me-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/me/test
+  code: usa-me-test
   engine: metrc
   epoch: "2020-01-01"
   id: usa-me-test
@@ -280,9 +280,9 @@ usa/me/test:
   server: https://sandbox-api-me.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/mi:
+usa-mi:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mi
+  code: usa-mi
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mi
@@ -291,9 +291,9 @@ usa/mi:
   server: https://api-mi.metrc.com/
   service-sk: ~
   tz: America/Detroit
-usa/mi/test:
+usa-mi-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mi/test
+  code: usa-mi-test
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mi-test
@@ -302,9 +302,9 @@ usa/mi/test:
   server: https://sandbox-api-mi.metrc.com/
   service-sk: ~
   tz: America/Detroit
-usa/mn:
+usa-mn:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mn
+  code: usa-mn
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mn
@@ -313,9 +313,9 @@ usa/mn:
   server: https://api-mn.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/mo:
+usa-mo:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mo
+  code: usa-mo
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mo
@@ -324,9 +324,9 @@ usa/mo:
   server: https://api-mo.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/mp:
+usa-mp:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/mp
+  code: usa-mp
   engine: openthc
   epoch: "2018-09-21"
   id: usa-mp
@@ -335,9 +335,9 @@ usa/mp:
   server: https://cre.openthc.com/
   service-sk: ~
   tz: Pacific/Saipan
-usa/ms:
+usa-ms:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ms
+  code: usa-ms
   engine: metrc
   epoch: "2021-01-01"
   id: usa-ms
@@ -346,9 +346,9 @@ usa/ms:
   server: https://api-ms.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/mt:
+usa-mt:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mt
+  code: usa-mt
   engine: metrc
   epoch: "2019-01-01"
   id: usa-mt
@@ -357,9 +357,9 @@ usa/mt:
   server: https://api-mt.metrc.com/
   service-sk: ~
   tz: America/Denver
-usa/mt/test:
+usa-mt-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/mt/test
+  code: usa-mt-test
   engine: metrc
   epoch: "2019-01-01"
   id: usa-mt-test
@@ -368,9 +368,9 @@ usa/mt/test:
   server: https://sandbox-api-mt.metrc.com/
   service-sk: ~
   tz: America/Denver
-usa/nd:
+usa-nd:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/nd
+  code: usa-nd
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-nd
@@ -378,9 +378,9 @@ usa/nd:
   name: North Dakota / BioTrack
   server: https://mminventory.health.nd.gov/serverjson.asp
   tz: America/Chicago
-usa/nj:
+usa-nj:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/nj
+  code: usa-nj
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nj
@@ -389,9 +389,9 @@ usa/nj:
   server: https://api-nj.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/nm:
+usa-nm:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/nm
+  code: usa-nm
   engine: biotrack
   epoch: "2021-06-26"
   id: usa-nm
@@ -401,9 +401,9 @@ usa/nm:
   server-v2021: https://api.nm.trace.biotrackthc.net/
   server-v2022: https://v3.api.nm.trace.biotrackthc.net/
   tz: America/Denver
-usa/nv:
+usa-nv:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/nv
+  code: usa-nv
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nv
@@ -412,9 +412,9 @@ usa/nv:
   server: https://api-nv.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/nv/test:
+usa-nv-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/nv/test
+  code: usa-nv-test
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nv-test
@@ -423,9 +423,9 @@ usa/nv/test:
   server: https://sandbox-api-nv.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/ny:
+usa-ny:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ny
+  code: usa-ny
   engine: metrc
   epoch: "2025-11-01"
   id: usa-ny
@@ -434,9 +434,9 @@ usa/ny:
   server: https://apy-ny.metrc.com
   service-sk: ~
   tz: America/New_York
-usa/oh:
+usa-oh:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/oh
+  code: usa-oh
   engine: metrc
   epoch: "2018-01-01"
   id: usa-oh
@@ -445,9 +445,9 @@ usa/oh:
   server: https://api-oh.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/ok:
+usa-ok:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ok
+  code: usa-ok
   engine: metrc
   epoch: "2021-04-01"
   id: usa-ok
@@ -456,9 +456,9 @@ usa/ok:
   server: https://api-ok.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/ok/test:
+usa-ok-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ok/test
+  code: usa-ok-test
   engine: metrc
   epoch: "2021-04-01"
   hide: true
@@ -468,9 +468,9 @@ usa/ok/test:
   server: https://sandbox-api-ok.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/or:
+usa-or:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/or
+  code: usa-or
   engine: metrc
   epoch: "2017-01-01"
   id: usa-or
@@ -479,9 +479,9 @@ usa/or:
   server: https://api-or.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/or/test:
+usa-or-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/or/test
+  code: usa-or-test
   engine: metrc
   epoch: "2017-01-01"
   id: usa-or-test
@@ -490,9 +490,9 @@ usa/or/test:
   server: https://sandbox-api-or.metrc.com/
   service-sk: ~
   tz: America/Los_Angeles
-usa/pr:
+usa-pr:
   class: \OpenTHC\CRE\BioTrack
-  code: usa/pr
+  code: usa-pr
   engine: biotrack
   epoch: "2019-01-01"
   id: usa-pr
@@ -500,9 +500,9 @@ usa/pr:
   name: Puerto Rico / BioTrack
   server: https://cannabispr.biotrackthc.net/serverjson.asp
   tz: America/Puerto_Rico
-usa/ri:
+usa-ri:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/ri
+  code: usa-ri
   engine: metrc
   epoch: "2022-05-05"
   id: usa-ri
@@ -511,9 +511,9 @@ usa/ri:
   server: https://api-ri.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/sd:
+usa-sd:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/sd
+  code: usa-sd
   engine: metrc
   epoch: "2021-01-01"
   id: usa-sd
@@ -522,9 +522,9 @@ usa/sd:
   server: https://api-sd.metrc.com/
   service-sk: ~
   tz: America/Chicago
-usa/va:
+usa-va:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/va
+  code: usa-va
   engine: metrc
   epoch: "2022-01-01"
   id: usa-va
@@ -533,9 +533,9 @@ usa/va:
   server: https://api-va.metrc.com/
   service-sk: ~
   tz: America/New_York
-usa/vi:
+usa-vi:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/vi
+  code: usa-vi
   engine: openthc
   epoch: "2023-01-01"
   id: usa-vi
@@ -544,9 +544,9 @@ usa/vi:
   server: https://cre.openthc.com/
   service-sk: ~
   tz: America/St_Thomas
-usa/vt:
+usa-vt:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa/vt
+  code: usa-vt
   engine: openthc
   epoch: "2022-01-01"
   id: usa-vt
@@ -555,9 +555,9 @@ usa/vt:
   server: ~
   service-sk: ~
   tz: America/New_York
-usa/wa:
+usa-wa:
   class: \OpenTHC\CRE\CCRS
-  code: usa/wa
+  code: usa-wa
   engine: openthc
   epoch: "2021-08-04"
   id: usa-wa
@@ -568,9 +568,9 @@ usa/wa:
   service-sk: ~
   tz: America/Los_Angeles
   username: ~
-usa/wv:
+usa-wv:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa/wv
+  code: usa-wv
   engine: metrc
   epoch: "2021-01-01"
   id: usa-wv

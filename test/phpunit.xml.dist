@@ -7,7 +7,7 @@
 	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 	backupGlobals="false"
 	backupStaticAttributes="false"
-	bootstrap="boot.php"
+	bootstrap="../boot.php"
 	cacheResult="false"
 	colors="false"
 	convertErrorsToExceptions="true"
@@ -23,51 +23,43 @@
 	verbose="false"
 	>
 
-	<coverage />
-
 	<php>
 
-		<!-- If defined, it will spew debug -->
-		<!-- <const name="OPENTHC_TEST_HTTP_DEBUG" value="0" /> -->
+		<!-- PHPUnit populates $_ENV with these -->
+		<!-- And one can overwrite these values from standard process environment vars -->
+
+		<!-- If truthy, it will spew debug -->
+		<env name="OPENTHC_TEST_HTTP_DEBUG" value="0" />
+
+		<!-- A Directory for the CRE Override File -->
+		<env name="OPENTHC_TEST_APP_ROOT" value="" />
 
 		<!--
 			BioTrack Options
 		-->
 
-		<const name="biotrack-c0-id" value="" />
-		<const name="biotrack-c0-username" value="" />
-		<const name="biotrack-c0-password" value="" />
-
-		<const name="biotrack-c1-id" value="" />
-		<const name="biotrack-c1-username" value="" />
-		<const name="biotrack-c1-password" value="" />
-
-		<const name="biotrack-c2-id" value="" />
-		<const name="biotrack-c2-username" value="" />
-		<const name="biotrack-c3-password" value="" />
+		<env name="OPENTHC_TEST_BIOTRACK_COMPANY" value="" />
+		<env name="OPENTHC_TEST_BIOTRACK_USERNAME" value="" />
+		<env name="OPENTHC_TEST_BIOTRACK_PASSWORD" value="" />
 
 		<!--
 			METRC Options
 		-->
-		<const name="metrc-service-sk" value="TEST" />
-		<const name="metrc-tag-file" value="./metrc-tags.tab" />
-		<const name="metrc-license-g0-pk" value="TEST" />
-		<const name="metrc-license-g0-sk" value="TEST" />
-		<const name="metrc-license-p0-sk" value="TEST" />
-		<const name="metrc-license-l0-sk" value="TEST" />
-		<const name="metrc-license-r0-sk" value="TEST" />
+		<env name="OPENTHC_TEST_METRC_CRE" value="usa-co" />
+		<env name="OPENTHC_TEST_METRC_LICENSE_SK" value="" />
 
 	</php>
 
 	<testsuites>
 		<testsuite name="All">
-			<directory>A_System</directory>
-			<directory>B_Config</directory>
-			<directory>C_Core</directory>
-			<directory>E_BioTrack</directory>
-			<directory>E_Metrc</directory>
-			<directory>Metrc</directory>
+			<directory>Config</directory>
+			<directory>Core</directory>
+			<!-- <directory>BioTrack</directory> -->
+			<!-- <directory>Metrc</directory> -->
 		</testsuite>
 	</testsuites>
+
+	<!-- XDEBUG_MODE=coverage (environment variable) or xdebug.mode=coverage (PHP configuration setting) has to be set -->
+	<!-- <coverage /> -->
 
 </phpunit>

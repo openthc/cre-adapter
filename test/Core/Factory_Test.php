@@ -21,15 +21,17 @@ class Factory_Test extends \OpenTHC\CRE\Test\Base_Case
 			$cfg['service'] = 'TEST';
 			$cfg['service-sk'] = 'TEST';
 
-			// try {
-				$cre = \OpenTHC\CRE::factory($cfg);
-				$this->assertIsObject($cre);
-				$this->assertTrue(
-					$cre instanceof \OpenTHC\CRE\Base
-				);
-			// } catch (\Exception $e) {
-				// $this->assertEmpty($e, sprintf('Exception on %s: %s', $cre_code, $e->getMessage()));
-			// }
+			$cre = \OpenTHC\CRE::factory($cfg);
+			$this->assertIsObject($cre);
+			$this->assertTrue($cre instanceof \OpenTHC\CRE\Base);
+
+			$cfg['id'] = str_replace('-', '/', $cfg['id']);
+			$cfg['code'] = str_replace('-', '/', $cfg['code']);
+
+			$cre = \OpenTHC\CRE::factory($cfg);
+			$this->assertIsObject($cre);
+			$this->assertTrue($cre instanceof \OpenTHC\CRE\Base);
+
 		}
 	}
 }

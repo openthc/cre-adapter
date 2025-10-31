@@ -36,9 +36,9 @@ class CRE
 	static function getConfig(string $cre_code, string $app_root='')
 	{
 		// Use the / name as the canonical
-		$cre_code = str_replace('-', '/', $cre_code);
-		if ('usa/wa/ccrs' == $cre_code) {
-			$cre_code = 'usa/wa';
+		$cre_code = str_replace('/', '-', $cre_code);
+		if ('usa-wa-ccrs' == $cre_code) {
+			$cre_code = 'usa-wa';
 		}
 
 		$cre_list = self::getEngineList($app_root);
