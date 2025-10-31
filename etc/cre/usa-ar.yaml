@@ -1,8 +1,0 @@
----
-name: Arkansas / BioTrack
-class: \OpenTHC\CRE\BioTrack
-epoch: "2022-10-01"
-engine: biotrack
-server: https://arstems.arkansas.gov/serverjson.asp
-tz: "America/Chicago"
-...

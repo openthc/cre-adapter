@@ -1,8 +1,0 @@
----
-name: "Hawaii / BioTrack"
-epoch: "2015-01-01"
-class: \OpenTHC\CRE\BioTrack
-engine: biotrack
-server: "https://hicsts.hawaii.gov/serverjson.asp"
-tz: "Pacific/Honolulu"
-...

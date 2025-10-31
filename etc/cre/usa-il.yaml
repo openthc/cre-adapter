@@ -1,8 +1,0 @@
----
-name: Illinois / BioTrack
-epoch: "2018-01-01"
-class: \OpenTHC\CRE\BioTrack
-engine: biotrack
-server: "https://mcmonitoring.agr.illinois.gov/serverjson.asp"
-tz: "America/Chicago"
-...

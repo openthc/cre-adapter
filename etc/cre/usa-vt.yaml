@@ -1,9 +1,0 @@
----
-name: Vermont / OpenTHC
-class: \OpenTHC\CRE\OpenTHC
-epoch: "2022-01-01"
-engine: openthc
-server: ~
-service-sk: ~
-tz: "America/New_York"
-...
