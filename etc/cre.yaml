@@ -313,6 +313,17 @@ usa-mn:
   server: https://api-mn.metrc.com/
   service-sk: ~
   tz: America/Chicago
+usa-mn-test:
+  class: \OpenTHC\CRE\Metrc2023
+  code: usa-mn-test
+  engine: metrc
+  epoch: "2018-01-01"
+  id: usa-mn-test
+  live: false
+  name: Minnesota / Metrc / Test
+  server: https://sandbox-api-mn.metrc.com/
+  service-sk: ~
+  tz: America/Chicago
 usa-mo:
   class: \OpenTHC\CRE\Metrc2023
   code: usa-mo
