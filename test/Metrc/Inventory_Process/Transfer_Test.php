@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\Metrc\G_Process;
+namespace OpenTHC\CRE\Test\Metrc\Process;
 
-class D_Lot_Transfer_Test extends \OpenTHC\CRE\Test\Metrc_Case
+class Lot_Transfer_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	public function testTransferBasic()
 	{

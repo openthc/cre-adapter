@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\B_Config;
+namespace OpenTHC\CRE\Test\Config;
 
 class A_Config_Test extends \OpenTHC\CRE\Test\Base_Case
 {

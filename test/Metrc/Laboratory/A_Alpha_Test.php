@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\E_Metrc\G_Laboratory;
+namespace OpenTHC\CRE\Test\Metrc\Laboratory;
 
 class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

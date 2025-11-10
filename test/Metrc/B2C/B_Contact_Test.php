@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\E_Metrc\J_B2C;
+namespace OpenTHC\CRE\Test\Metrc\B2C;
 
 class B_Contact_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

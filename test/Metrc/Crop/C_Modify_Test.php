@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\Metrc\E_Crop;
+namespace OpenTHC\CRE\Test\Metrc\Crop;
 
 class C_Modify_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

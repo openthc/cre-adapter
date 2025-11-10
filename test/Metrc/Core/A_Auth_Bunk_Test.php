@@ -13,7 +13,7 @@
  *
  */
 
-namespace OpenTHC\CRE\Test\E_Metrc\A_Core;
+namespace OpenTHC\CRE\Test\Metrc\Core;
 
 class A_Auth_Bunk_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

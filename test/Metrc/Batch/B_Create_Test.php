@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\E_Metrc\C_Batch;
+namespace OpenTHC\CRE\Test\Metrc\Batch;
 
 class B_Create_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

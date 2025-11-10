@@ -7,7 +7,7 @@
  * Remove this maybe
  */
 
-namespace OpenTHC\CRE\Test\C_Core;
+namespace OpenTHC\CRE\Test\Core;
 
 class Fire_Test extends \OpenTHC\CRE\Test\Base_Case
 {

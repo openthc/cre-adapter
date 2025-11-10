@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\Metrc\C_Core;
+namespace OpenTHC\CRE\Test\Metrc\Core;
 
 class A_Lot_Basic_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

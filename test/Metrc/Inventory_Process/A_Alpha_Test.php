@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-namespace OpenTHC\CRE\Test\E_Metrc\F_Lot_Process;
+namespace OpenTHC\CRE\Test\Metrc\Inventory_Process;
 
 class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 {

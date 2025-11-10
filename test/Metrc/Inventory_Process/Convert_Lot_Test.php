@@ -4,9 +4,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-namespace OpenTHC\CRE\Test\Metrc\G_Process;
+namespace OpenTHC\CRE\Test\Metrc\Process;
 
-class A_Lot extends \OpenTHC\CRE\Test\Metrc_Case
+class Inventory extends \OpenTHC\CRE\Test\Metrc_Case
 {
 	/**
 	 * Convert harvest flower into lotted material
