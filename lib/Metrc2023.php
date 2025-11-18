@@ -344,6 +344,11 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 		$code = $this->_inf['http_code'];
 
+		// Sometimes it's a text/html with plain text contnet:
+		// 		"The provided API key is only valid for V1 API endpoints."
+		// http_code =
+		// 401
+
 		$mime = strtolower(strtok($this->_inf['content_type'], ';'));
 		if ('application/json' == $mime) {
 			$this->_res = json_decode($this->_raw, true);
@@ -393,11 +398,12 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 				'meta' => [ 'note' => 'Unexpected Server Error [CLM-226]' ]
 			];
 		case 401:
+			// Might be a Plaint Text Response (see note above)
 			return [
 				'code' => $code,
 				'data' => null,
 				'meta' => [
-					'note' => sprintf('Unexpected Server Error [CLM-403]: %s', $this->_res['Message']),
+					'note' => sprintf('Client Not Authorized [CLM-403]: %s', $this->_res['Message']),
 				]
 			];
 		case 404:
