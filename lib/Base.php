@@ -75,7 +75,7 @@ class Base
 
 		// Timezone
 		if (empty($cfg['tz'])) {
-			$cfg['tz'] = $_SESSION['tz'];
+			$cfg['tz'] = !empty($_SESSION['tz']) ? $_SESSION['tz'] : '';
 		}
 
 		if (empty($cfg['tz'])) {

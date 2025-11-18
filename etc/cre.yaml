@@ -1,7 +1,7 @@
 ---
 openthc:
   class: \OpenTHC\CRE\OpenTHC
-  code: openthc
+  region: openthc
   engine: openthc
   epoch: "2014-04-20"
   id: openthc
@@ -13,7 +13,7 @@ openthc:
   tz: UTC
 usa-ak:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ak
+  region: usa-ak
   engine: metrc
   epoch: "2017-01-01"
   id: usa-ak
@@ -24,7 +24,7 @@ usa-ak:
   tz: America/Juneau
 usa-ak-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ak-test
+  region: usa-ak
   engine: metrc
   epoch: "2017-01-01"
   id: usa-ak-test
@@ -35,7 +35,7 @@ usa-ak-test:
   tz: America/Juneau
 usa-al:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-al
+  region: usa-al
   engine: metrc
   epoch: "2021-01-01"
   id: usa-al
@@ -46,7 +46,7 @@ usa-al:
   tz: America/Chicago
 usa-ar:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-ar
+  region: usa-ar
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-ar
@@ -56,7 +56,7 @@ usa-ar:
   tz: America/Chicago
 usa-az:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-az
+  region: usa-az
   engine: openthc
   epoch: "2021-01-01"
   id: usa-az
@@ -67,7 +67,7 @@ usa-az:
   tz: America/Phoenix
 usa-ca:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ca
+  region: usa-ca
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ca
@@ -78,7 +78,7 @@ usa-ca:
   tz: America/Los_Angeles
 usa-ca-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ca-test
+  region: usa-ca
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ca-test
@@ -89,7 +89,7 @@ usa-ca-test:
   tz: America/Los_Angeles
 usa-co:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-co
+  region: usa-co
   engine: metrc
   epoch: "2014-01-01"
   id: usa-co
@@ -100,7 +100,7 @@ usa-co:
   tz: America/Denver
 usa-co-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-co-test
+  region: usa-co
   engine: metrc
   epoch: "2014-01-01"
   id: usa-co-test
@@ -111,7 +111,7 @@ usa-co-test:
   tz: America/Denver
 usa-ct:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-ct
+  region: usa-ct
   engine: biotrack
   epoch: "2021-07-01"
   id: usa-ct
@@ -121,7 +121,7 @@ usa-ct:
   tz: America/New_York
 usa-dc:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-dc
+  region: usa-dc
   engine: metrc
   epoch: "2015-02-26"
   id: usa-dc
@@ -132,7 +132,7 @@ usa-dc:
   tz: America/New_York
 usa-de:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-de
+  region: usa-de
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-de
@@ -142,7 +142,7 @@ usa-de:
   tz: America/New_York
 usa-fl:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-fl
+  region: usa-fl
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-fl
@@ -152,7 +152,7 @@ usa-fl:
   tz: America/New_York
 usa-gu:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-gu
+  region: usa-gu
   engine: metrc
   epoch: "2014-11-04"
   id: usa-gu
@@ -163,7 +163,7 @@ usa-gu:
   tz: Pacific/Guam
 usa-hi:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-hi
+  region: usa-hi
   engine: biotrack
   epoch: "2015-01-01"
   id: usa-hi
@@ -173,7 +173,7 @@ usa-hi:
   tz: Pacific/Honolulu
 usa-ia:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-ia
+  region: usa-ia
   engine: openthc
   epoch: "2023-04-21"
   id: usa-ia
@@ -184,7 +184,7 @@ usa-ia:
   tz: America/Chicago
 usa-il:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-il
+  region: usa-il
   engine: biotrack
   epoch: "2018-01-01"
   id: usa-il
@@ -194,7 +194,7 @@ usa-il:
   tz: America/Chicago
 usa-ky:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-ky
+  region: usa-ky
   engine: openthc
   epoch: "2023-01-11"
   id: usa-ky
@@ -205,7 +205,7 @@ usa-ky:
   tz: America/New_York
 usa-la:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-la
+  region: usa-la
   engine: metrc
   epoch: "2015-06-30"
   id: usa-la
@@ -216,7 +216,7 @@ usa-la:
   tz: America/Chicago
 usa-ma:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ma
+  region: usa-ma
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ma
@@ -227,7 +227,7 @@ usa-ma:
   tz: America/New_York
 usa-ma-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ma-test
+  region: usa-ma
   engine: metrc
   epoch: "2019-01-01"
   id: usa-ma-test
@@ -238,7 +238,7 @@ usa-ma-test:
   tz: America/New_York
 usa-md:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-md
+  region: usa-md
   engine: metrc
   epoch: "2020-01-01"
   id: usa-md
@@ -249,7 +249,7 @@ usa-md:
   tz: America/New_York
 usa-md-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-md-test
+  region: usa-md
   engine: metrc
   epoch: "2020-01-01"
   id: usa-md-test
@@ -260,7 +260,7 @@ usa-md-test:
   tz: America/New_York
 usa-me:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-me
+  region: usa-me
   engine: metrc
   epoch: "2020-01-01"
   id: usa-me
@@ -271,7 +271,7 @@ usa-me:
   tz: America/New_York
 usa-me-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-me-test
+  region: usa-me
   engine: metrc
   epoch: "2020-01-01"
   id: usa-me-test
@@ -282,7 +282,7 @@ usa-me-test:
   tz: America/New_York
 usa-mi:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mi
+  region: usa-mi
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mi
@@ -293,7 +293,7 @@ usa-mi:
   tz: America/Detroit
 usa-mi-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mi-test
+  region: usa-mi
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mi-test
@@ -304,7 +304,7 @@ usa-mi-test:
   tz: America/Detroit
 usa-mn:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mn
+  region: usa-mn
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mn
@@ -315,7 +315,7 @@ usa-mn:
   tz: America/Chicago
 usa-mn-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mn-test
+  region: usa-mn
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mn-test
@@ -326,7 +326,7 @@ usa-mn-test:
   tz: America/Chicago
 usa-mo:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mo
+  region: usa-mo
   engine: metrc
   epoch: "2018-01-01"
   id: usa-mo
@@ -337,7 +337,7 @@ usa-mo:
   tz: America/Chicago
 usa-mp:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-mp
+  region: usa-mp
   engine: openthc
   epoch: "2018-09-21"
   id: usa-mp
@@ -348,7 +348,7 @@ usa-mp:
   tz: Pacific/Saipan
 usa-ms:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ms
+  region: usa-ms
   engine: metrc
   epoch: "2021-01-01"
   id: usa-ms
@@ -359,7 +359,7 @@ usa-ms:
   tz: America/Chicago
 usa-mt:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mt
+  region: usa-mt
   engine: metrc
   epoch: "2019-01-01"
   id: usa-mt
@@ -370,7 +370,7 @@ usa-mt:
   tz: America/Denver
 usa-mt-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-mt-test
+  region: usa-mt
   engine: metrc
   epoch: "2019-01-01"
   id: usa-mt-test
@@ -381,7 +381,7 @@ usa-mt-test:
   tz: America/Denver
 usa-nd:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-nd
+  region: usa-nd
   engine: biotrack
   epoch: "2022-10-01"
   id: usa-nd
@@ -391,7 +391,7 @@ usa-nd:
   tz: America/Chicago
 usa-nj:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-nj
+  region: usa-nj
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nj
@@ -402,7 +402,7 @@ usa-nj:
   tz: America/New_York
 usa-nm:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-nm
+  region: usa-nm
   engine: biotrack
   epoch: "2021-06-26"
   id: usa-nm
@@ -414,7 +414,7 @@ usa-nm:
   tz: America/Denver
 usa-nv:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-nv
+  region: usa-nv
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nv
@@ -425,7 +425,7 @@ usa-nv:
   tz: America/Los_Angeles
 usa-nv-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-nv-test
+  region: usa-nv
   engine: metrc
   epoch: "2018-01-01"
   id: usa-nv-test
@@ -436,7 +436,7 @@ usa-nv-test:
   tz: America/Los_Angeles
 usa-ny:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ny
+  region: usa-ny
   engine: metrc
   epoch: "2025-11-01"
   id: usa-ny
@@ -447,7 +447,7 @@ usa-ny:
   tz: America/New_York
 usa-oh:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-oh
+  region: usa-oh
   engine: metrc
   epoch: "2018-01-01"
   id: usa-oh
@@ -458,7 +458,7 @@ usa-oh:
   tz: America/New_York
 usa-ok:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ok
+  region: usa-ok
   engine: metrc
   epoch: "2021-04-01"
   id: usa-ok
@@ -469,7 +469,7 @@ usa-ok:
   tz: America/Chicago
 usa-ok-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ok-test
+  region: usa-ok
   engine: metrc
   epoch: "2021-04-01"
   hide: true
@@ -481,7 +481,7 @@ usa-ok-test:
   tz: America/Chicago
 usa-or:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-or
+  region: usa-or
   engine: metrc
   epoch: "2017-01-01"
   id: usa-or
@@ -492,7 +492,7 @@ usa-or:
   tz: America/Los_Angeles
 usa-or-test:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-or-test
+  region: usa-or
   engine: metrc
   epoch: "2017-01-01"
   id: usa-or-test
@@ -503,7 +503,7 @@ usa-or-test:
   tz: America/Los_Angeles
 usa-pr:
   class: \OpenTHC\CRE\BioTrack
-  code: usa-pr
+  region: usa-pr
   engine: biotrack
   epoch: "2019-01-01"
   id: usa-pr
@@ -513,7 +513,7 @@ usa-pr:
   tz: America/Puerto_Rico
 usa-ri:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-ri
+  region: usa-ri
   engine: metrc
   epoch: "2022-05-05"
   id: usa-ri
@@ -524,7 +524,7 @@ usa-ri:
   tz: America/New_York
 usa-sd:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-sd
+  region: usa-sd
   engine: metrc
   epoch: "2021-01-01"
   id: usa-sd
@@ -535,7 +535,7 @@ usa-sd:
   tz: America/Chicago
 usa-va:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-va
+  region: usa-va
   engine: metrc
   epoch: "2022-01-01"
   id: usa-va
@@ -546,7 +546,7 @@ usa-va:
   tz: America/New_York
 usa-vi:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-vi
+  region: usa-vi
   engine: openthc
   epoch: "2023-01-01"
   id: usa-vi
@@ -557,7 +557,7 @@ usa-vi:
   tz: America/St_Thomas
 usa-vt:
   class: \OpenTHC\CRE\OpenTHC
-  code: usa-vt
+  region: usa-vt
   engine: openthc
   epoch: "2022-01-01"
   id: usa-vt
@@ -568,7 +568,7 @@ usa-vt:
   tz: America/New_York
 usa-wa:
   class: \OpenTHC\CRE\CCRS
-  code: usa-wa
+  region: usa-wa
   engine: openthc
   epoch: "2021-08-04"
   id: usa-wa
@@ -581,7 +581,7 @@ usa-wa:
   username: ~
 usa-wv:
   class: \OpenTHC\CRE\Metrc2023
-  code: usa-wv
+  region: usa-wv
   engine: metrc
   epoch: "2021-01-01"
   id: usa-wv
