@@ -16,12 +16,12 @@ class CRE
 	 */
 	static function factory(array $cfg)
 	{
-		$cre_info = self::getConfig($cfg['code']);
+		$cre_info = self::getConfig($cfg['id']);
 
 		$cfg = array_merge($cre_info, $cfg);
 
 		if (empty($cfg['class'])) {
-			throw new \Exception(sprintf('Cannot create CRE "%s" without Class', $cfg['code']));
+			throw new \Exception(sprintf('Cannot create CRE "%s" without Class', $cfg['id']));
 		}
 
 		$cre = new $cre_info['class']($cfg);
@@ -84,6 +84,14 @@ class CRE
 			}
 
 		}
+
+		// Filter Out not-live ones
+		$ret_data = array_filter($ret_data, function($v, $k) {
+			if (empty($v['live'])) {
+				return false;
+			}
+			return true;
+		}, ARRAY_FILTER_USE_BOTH);
 
 		return $ret_data;
 

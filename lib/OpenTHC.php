@@ -14,6 +14,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 	protected $_c; // Client Connection
 
 	protected $_res_body;
+
 	protected $_res_code;
 
 	protected $obj_list = [
@@ -59,7 +60,7 @@ class OpenTHC extends \OpenTHC\CRE\Base
 			'openthc-service-id' => $this->_cfg['service-id'],
 			'openthc-contact-id' => $this->_cfg['contact'],
 			'openthc-company-id' => $this->_cfg['company'],
-			'openthc-license-id' => $this->_License['id'],
+			'openthc-license-id' => (!empty($this->_License['id']) ? $this->_License['id'] : ''),
 		];
 
 		// Session ID?
