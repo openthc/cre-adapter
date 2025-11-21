@@ -192,17 +192,16 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		case 'lot': // v1
 		case 'plant': // v1
 		case 'plantbatch': // v1
+		case 'product':
+		case 'section':
 		case 'variety':
 			return true;
 		case 'contact': // is patients & employees -- time aware or not?
 		case 'lab-result':
 		case 'patients':
-		case 'product':
 		case 'product-type':
-		case 'section':
 		case 'section-type':
 		case 'tag':
-		case 'variety':
 		case 'uom':
 			return false;
 		default:
