@@ -58,17 +58,28 @@ class Lab_Result extends \OpenTHC\CRE\Metrc2023\Base
 	/**
 	 * Search for Lab Result for Specific Package
 	 */
-	function search(string $pkg)
+	function search()
 	{
-		$arg = [
-			'packageId' => $pkg
-		];
-		$url = $this->_client->_make_url($this->_path . '/results', $arg);
+		$url = sprintf('%s/batches', $this->_path);
+		$url = $this->_client->_make_url($url, $arg);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
-
+		$res = $this->formatResponse($res);
 		return $res;
 
+	}
+
+	function single(string $oid)
+	{
+		$arg = [
+			'packageId' => $oid
+		];
+		$url = sprintf('%s/results', $this->_path);
+		$url = $this->_client->_make_url($url, $arg);
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		$res = $this->formatResponse($res);
+		return $res;
 	}
 
 }
