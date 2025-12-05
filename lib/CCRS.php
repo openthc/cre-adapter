@@ -474,6 +474,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'PropagationMaterial';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'HarvestedMaterial';
 			case '018NY6XC00PT8AXVZGNZN3A0QT': return 'HarvestedMaterial';
+			case '018NY6XC00PR0DUCTTYPEYZG3N': return 'HarvestedMaterial';
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-156]");
 		}
@@ -518,6 +519,7 @@ class CCRS extends \OpenTHC\CRE\Base
 			case '018NY6XC00PTY9THKSEQ8NFS1J': return 'Seed';
 			case '018NY6XC00PTZZWCH7XVREHK6T': return 'Flower Unlotted';
 			case '018NY6XC00PT8AXVZGNZN3A0QT': return 'Waste';
+			case '018NY6XC00PR0DUCTTYPEYZG3N': return 'Flower Unlotted';
 			default:
 				throw new \Exception("Type '$x' Not Handled [CLC-194]");
 		}
