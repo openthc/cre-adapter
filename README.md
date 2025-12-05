@@ -10,7 +10,7 @@ There is a convenience factory method to use with the proper configuration (load
 
 
 ```php
-$cfg = \OpenTHC\CRE::getConfig('usa/wa');
+$cfg = \OpenTHC\CRE::getConfig('usa-wa');
 $cre = \OpenTHC\CRE::factory($cfg);
 $res = $cre->license()->search();
 $res = $cre->crop()->search();
@@ -18,7 +18,7 @@ foreach ($res as $rec) {
 	echo $rec['variety']['name'] . "\n";
 }
 
-$res = $cre->lot()->search();
+$res = $cre->inventory()->search();
 foreach ($res as $rec) {
 	echo $rec['id'] . ' ' . $rec['product_id'] . "\n";
 }
@@ -63,5 +63,5 @@ It's also possible to interface with the objects at a higher level.
 $obj_list = $cre->license()->search($arg);
 $obj = $cre->license()->single($oid);
 $res = $cre->license()->create($obj);
-$res = $cre->license()->update($obj);
+$res = $cre->license()->update($oid, $obj);
 ```
