@@ -35,12 +35,8 @@ class CRE
 	 */
 	static function getConfig(string $cre_code, string $app_root='')
 	{
-		// Use the / name as the canonical
+		// Use the - name as the canonical
 		$cre_code = str_replace('/', '-', $cre_code);
-		if ('usa-wa-ccrs' == $cre_code) {
-			$cre_code = 'usa-wa';
-		}
-
 		$cre_list = self::getEngineList($app_root);
 		if (empty($cre_list[$cre_code])) {
 			throw new \Exception('Invalid CRE Configuration [CLC-041]');
