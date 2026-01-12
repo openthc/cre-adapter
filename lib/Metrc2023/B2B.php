@@ -138,4 +138,17 @@ class B2B extends \OpenTHC\CRE\Metrc2023\Base
 		return $res;
 	}
 
+	/**
+	 * Download the PDF Manifest document as a Base64-encoded string
+	 * @param $oid The Transfer ID
+	 */
+	function manifest($oid)
+	{
+		$url = '/transfers/v2/manifest/%s/pdf';
+		$url = sprintf($url, $oid);
+
+		$req = $this->_client->_curl_init($url);
+		$res = $this->_client->_curl_exec($req);
+		return $res;
+	}
 }
