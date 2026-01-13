@@ -539,7 +539,6 @@ usa-ok-test:
   region: usa-ok
   engine: metrc
   epoch: "2021-04-01"
-  hide: true
   id: usa-ok-test
   live: false
   name: Oklahoma / Metrc / Test
