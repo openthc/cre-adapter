@@ -402,7 +402,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 				'code' => $code,
 				'data' => null,
 				'meta' => [
-					'note' => sprintf('Client Not Authorized [CLM-403]: %s', $this->_res['Message']),
+					'note' => sprintf('Client Not Authorized [CLM-401]: %s', $this->_res['Message']),
 				]
 			];
 		case 404:
