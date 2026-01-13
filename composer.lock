@@ -82,16 +82,16 @@
         },
         {
             "name": "chrome-php/wrench",
-            "version": "v1.7.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chrome-php/wrench.git",
-                "reference": "f82965181bd325ffb02be247676831a1f3e71912"
+                "reference": "bd67a315cf2143ba30598339ad1b6c346db96c99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chrome-php/wrench/zipball/f82965181bd325ffb02be247676831a1f3e71912",
-                "reference": "f82965181bd325ffb02be247676831a1f3e71912",
+                "url": "https://api.github.com/repos/chrome-php/wrench/zipball/bd67a315cf2143ba30598339ad1b6c346db96c99",
+                "reference": "bd67a315cf2143ba30598339ad1b6c346db96c99",
                 "shasum": ""
             },
             "require": {
@@ -138,22 +138,22 @@
             ],
             "support": {
                 "issues": "https://github.com/chrome-php/wrench/issues",
-                "source": "https://github.com/chrome-php/wrench/tree/v1.7.1"
+                "source": "https://github.com/chrome-php/wrench/tree/v1.8.0"
             },
-            "time": "2025-05-01T11:18:17+00:00"
+            "time": "2025-12-27T11:29:35+00:00"
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.5.9",
+            "version": "1.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "1905981ee626e6f852448b7aaa978f8666c5bc54"
+                "reference": "961a5e4056dd2e4a2eedcac7576075947c28bf63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/1905981ee626e6f852448b7aaa978f8666c5bc54",
-                "reference": "1905981ee626e6f852448b7aaa978f8666c5bc54",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/961a5e4056dd2e4a2eedcac7576075947c28bf63",
+                "reference": "961a5e4056dd2e4a2eedcac7576075947c28bf63",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.5.9"
+                "source": "https://github.com/composer/ca-bundle/tree/1.5.10"
             },
             "funding": [
                 {
@@ -212,7 +212,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-06T11:46:17+00:00"
+            "time": "2025-12-08T15:06:51+00:00"
         },
         {
             "name": "docopt/docopt",
@@ -1153,16 +1153,16 @@
         },
         {
             "name": "maxmind-db/reader",
-            "version": "v1.12.1",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
-                "reference": "815939e006b7e68062b540ec9e86aaa8be2b6ce4"
+                "reference": "2194f58d0f024ce923e685cdf92af3daf9951908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/815939e006b7e68062b540ec9e86aaa8be2b6ce4",
-                "reference": "815939e006b7e68062b540ec9e86aaa8be2b6ce4",
+                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/2194f58d0f024ce923e685cdf92af3daf9951908",
+                "reference": "2194f58d0f024ce923e685cdf92af3daf9951908",
                 "shasum": ""
             },
             "require": {
@@ -1175,12 +1175,13 @@
                 "friendsofphp/php-cs-fixer": "3.*",
                 "phpstan/phpstan": "*",
                 "phpunit/phpunit": ">=8.0.0,<10.0.0",
-                "squizlabs/php_codesniffer": "3.*"
+                "squizlabs/php_codesniffer": "4.*"
             },
             "suggest": {
                 "ext-bcmath": "bcmath or gmp is required for decoding larger integers with the pure PHP decoder",
                 "ext-gmp": "bcmath or gmp is required for decoding larger integers with the pure PHP decoder",
-                "ext-maxminddb": "A C-based database decoder that provides significantly faster lookups"
+                "ext-maxminddb": "A C-based database decoder that provides significantly faster lookups",
+                "maxmind-db/reader-ext": "C extension for significantly faster IP lookups (install via PIE: pie install maxmind-db/reader-ext)"
             },
             "type": "library",
             "autoload": {
@@ -1210,9 +1211,9 @@
             ],
             "support": {
                 "issues": "https://github.com/maxmind/MaxMind-DB-Reader-php/issues",
-                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.12.1"
+                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.13.1"
             },
-            "time": "2025-05-05T20:56:32+00:00"
+            "time": "2025-11-21T22:24:26+00:00"
         },
         {
             "name": "maxmind/web-service-common",
@@ -1267,16 +1268,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.10.0",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "5cf826f2991858b54d5c3809bee745560a1042a7"
+                "reference": "37308608e599f34a1a4845b16440047ec98a172a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/5cf826f2991858b54d5c3809bee745560a1042a7",
-                "reference": "5cf826f2991858b54d5c3809bee745560a1042a7",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/37308608e599f34a1a4845b16440047ec98a172a",
+                "reference": "37308608e599f34a1a4845b16440047ec98a172a",
                 "shasum": ""
             },
             "require": {
@@ -1294,7 +1295,7 @@
                 "graylog2/gelf-php": "^1.4.2 || ^2@dev",
                 "guzzlehttp/guzzle": "^7.4",
                 "guzzlehttp/psr7": "^2.2",
-                "mongodb/mongodb": "^1.8",
+                "mongodb/mongodb": "^1.8 || ^2.0",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
                 "phpspec/prophecy": "^1.15",
                 "phpstan/phpstan": "^1.10",
@@ -1353,7 +1354,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.10.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.11.0"
             },
             "funding": [
                 {
@@ -1365,7 +1366,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-12T12:43:37+00:00"
+            "time": "2026-01-01T13:05:00+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -1584,16 +1585,16 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "a70f552d338f9266eec6606c1f0b324da5514c96"
+                "reference": "020029849cc55ad360066844df8ed880fb20c5bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a70f552d338f9266eec6606c1f0b324da5514c96",
-                "reference": "a70f552d338f9266eec6606c1f0b324da5514c96",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/020029849cc55ad360066844df8ed880fb20c5bb",
+                "reference": "020029849cc55ad360066844df8ed880fb20c5bb",
                 "shasum": ""
             },
             "require": {
@@ -1631,9 +1632,9 @@
                 "dependency injection"
             ],
             "support": {
-                "source": "https://github.com/silexphp/Pimple/tree/v3.6.0"
+                "source": "https://github.com/silexphp/Pimple/tree/v3.6.1"
             },
-            "time": "2025-11-12T12:31:38+00:00"
+            "time": "2025-12-31T08:24:29+00:00"
         },
         {
             "name": "psr/container",
@@ -2701,16 +2702,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.6.2",
+            "version": "v5.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "3a454ca033b9e06b63282ce19562e892747449bb"
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3a454ca033b9e06b63282ce19562e892747449bb",
-                "reference": "3a454ca033b9e06b63282ce19562e892747449bb",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82",
                 "shasum": ""
             },
             "require": {
@@ -2753,9 +2754,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.2"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.7.0"
             },
-            "time": "2025-10-21T19:32:17+00:00"
+            "time": "2025-12-06T11:56:16+00:00"
         },
         {
             "name": "phar-io/manifest",
