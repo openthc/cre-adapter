@@ -32,7 +32,7 @@ usa-ak-test:
   id: usa-ak-test
   live: false
   name: Alaska / Metrc / Test
-  server: https://sandbox-api-or.metrc.com/
+  server: https://sandbox-api-ak.metrc.com/
   service-sk: ~
   tz: America/Juneau
 
