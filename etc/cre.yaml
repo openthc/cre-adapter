@@ -442,7 +442,7 @@ usa-nj-test:
   region: usa-nj
   engine: metrc
   epoch: "2018-01-01"
-  id: usa-nj
+  id: usa-nj-test
   live: false
   name: New Jersey / Metrc
   server: https://sandbox-api-nj.metrc.com/
@@ -503,7 +503,7 @@ usa-ny-test:
   region: usa-ny
   engine: metrc
   epoch: "2025-11-01"
-  id: usa-ny
+  id: usa-ny-test
   live: false
   name: New York / Metrc / Sandbox
   server: https://sandbox-api-ny.metrc.com
@@ -598,7 +598,7 @@ usa-ri-test:
   region: usa-ri
   engine: metrc
   epoch: "2022-05-05"
-  id: usa-ri
+  id: usa-ri-test
   live: false
   name: Rhode Island / Metrc
   server: https://sandbox-api-ri.metrc.com/
