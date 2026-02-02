@@ -15,11 +15,11 @@
 		}
 	},
 	"require": {
-		"chrome-php/chrome": "1.14.0",
-		"openthc/common": "dev-main"
+		"chrome-php/chrome": "1.15.0",
+		"openthc/common": "dev-debian-13"
 	},
 	"require-dev": {
-		"phpstan/phpstan": "2.1.8",
-		"phpunit/phpunit": "9.6.20"
+		"phpstan/phpstan": "2.1.38",
+		"phpunit/phpunit": "12.5.8"
 	}
 }
