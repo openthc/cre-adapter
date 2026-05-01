@@ -82,9 +82,13 @@ class Inventory extends \OpenTHC\CRE\Metrc2023\Base
 	 * [search description]
 	 * @return [type] [description]
 	 */
-	function search($arg=null)
+	function search($stat=null)
 	{
-		$url = sprintf('%s/active', $this->_path);
+		if (empty($stat)) {
+			$stat = 'active';
+		}
+
+		$url = sprintf('%s/%s', $this->_path, $stat);
 		$url = $this->_client->_make_url($url);
 		$req = $this->_client->_curl_init($url);
 		$res = $this->_client->_curl_exec($req);
