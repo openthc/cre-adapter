@@ -7,6 +7,8 @@
 
 namespace OpenTHC\CRE;
 
+use Exception;
+
 class Metrc2023 extends \OpenTHC\CRE\Base
 {
 	const ENGINE = 'metrc';
@@ -75,11 +77,11 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		parent::__construct($cfg);
 
 		if (empty($this->_cfg['service-sk'])) {
-			throw new \Exception('Invalid Service Key [LRM-048]');
+			throw new Exception('Invalid Service Key [LRM-048]');
 		}
 
 		if (empty($this->_cfg['license-sk'])) {
-			throw new \Exception('Invalid License Key [LRM-052]');
+			throw new Exception('Invalid License Key [LRM-052]');
 		}
 
 		$this->_api_key_vendor = $this->_cfg['service-sk'];
@@ -106,7 +108,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 					return $res;
 			}
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return array(
 				'code' => 500,
 				'data' => null,
@@ -127,7 +129,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 					return $res;
 			}
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return array(
 				'code' => 500,
 				'data' => null,
@@ -169,7 +171,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 
 		var_dump($res);
 		// var_dump(debug_print_backtrace());
-		throw new \Exception('METRC Really Broken [LRM-159]');
+		throw new Exception('METRC Really Broken [LRM-159]');
 		exit(0);
 	}
 
@@ -205,7 +207,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		case 'uom':
 			return false;
 		default:
-			throw new \Exception(sprintf('Unknown Object Type: "%s"', $obj));
+			throw new Exception(sprintf('Unknown Object Type: "%s"', $obj));
 		}
 	}
 
@@ -303,7 +305,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		case 'variety':
 			return false;
 		default:
-			throw new \Exception(sprintf('Unknown Object Type: "%s"', $obj));
+			throw new Exception(sprintf('Unknown Object Type: "%s"', $obj));
 		}
 
 	}
@@ -414,7 +416,7 @@ class Metrc2023 extends \OpenTHC\CRE\Base
 		default:
 			// var_dump($this);
 			$msg = sprintf('Server Error / Invalid Request: %d [RBE-735]', $code);
-			throw new \Exception($msg);
+			throw new Exception($msg);
 		}
 
 		if (empty($this->_res)) {

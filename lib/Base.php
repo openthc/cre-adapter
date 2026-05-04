@@ -7,6 +7,9 @@
 
 namespace OpenTHC\CRE;
 
+use Exception;
+use DateTimezone;
+
 class Base
 {
 	protected $_api_base = '';
@@ -35,7 +38,7 @@ class Base
 	function __construct(array $cfg)
 	{
 		if (empty($cfg)) {
-			throw new \Exception('Invalid Parameters [LRB-037]');
+			throw new Exception('Invalid Parameters [LRB-037]');
 		}
 
 		$cfg = $this->config_data_patch($cfg);
@@ -50,7 +53,7 @@ class Base
 		if (is_object($this->_cfg['tz'])) {
 			$this->_tz = $this->_cfg['tz'];
 		} elseif (is_string($this->_cfg['tz'])) {
-			$this->_tz = new \DateTimezone($this->_cfg['tz']);
+			$this->_tz = new DateTimezone($this->_cfg['tz']);
 		}
 
 
@@ -115,6 +118,7 @@ class Base
 	/**
 	 * Set License
 	 * @param mixed $l License Data Array
+	 * @SuppressWarnings(PHPMD.ElseExpression)
 	 */
 	function setLicense($l)
 	{
@@ -129,19 +133,19 @@ class Base
 				'guid' => $l,
 			];
 		} else {
-			throw new \Exception('Invalid Parameters [CLB-058]');
+			throw new Exception('Invalid Parameters [CLB-058]');
 		}
 
 		if (empty($l['id'])) {
-			throw new \Exception('License Missing ID [CLB-062]');
+			throw new Exception('License Missing ID [CLB-062]');
 		}
 
 		if (empty($l['code'])) {
-			throw new \Exception('License Missing CODE [CLB-066]');
+			throw new Exception('License Missing CODE [CLB-066]');
 		}
 
 		if (empty($l['guid'])) {
-			throw new \Exception('License Missing GUID [CLB-070]');
+			throw new Exception('License Missing GUID [CLB-070]');
 		}
 
 		$this->_License = $l;
@@ -159,7 +163,7 @@ class Base
 			return $this->obj_list;
 		}
 
-		throw new \Exception('Not Implemented');
+		throw new Exception('Not Implemented');
 	}
 
 	/**
@@ -240,7 +244,6 @@ class Base
 
 		// Booleans
 		curl_setopt($req, CURLOPT_AUTOREFERER, true);
-		curl_setopt($req, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($req, CURLOPT_COOKIESESSION, false);
 		curl_setopt($req, CURLOPT_CRLF, false);
 		curl_setopt($req, CURLOPT_FAILONERROR, false);
@@ -270,6 +273,7 @@ class Base
 	 * Normalize record data array and return a hash
 	 * @param array $obj Data Object to create hash from
 	 * @return string sha256 hash
+	 * @SuppressWarnings(PHPMD.ElseExpression)
 	 */
 	static function objHash($obj, $key_list=[])
 	{
@@ -307,7 +311,7 @@ class Base
 
 	/*
 	 * Key-Sort Array, Recursively
-	 * replicated from openthc/common
+	 * replicated from openthc/common _ksort_r
 	 */
 	static function ksort_r(array $a)
 	{

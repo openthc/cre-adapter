@@ -72,7 +72,7 @@ class Base extends \OpenTHC\CRE\Base
 	{
 		$url = $this->_client->_make_url(sprintf('%s/%s', $this->_path, $oid));
 		$req = $this->_client->_curl_init($url);
-		$res = $this->_client->_curl_exec($req, $arg);
+		$res = $this->_client->_curl_exec($req);
 		return $res;
 	}
 

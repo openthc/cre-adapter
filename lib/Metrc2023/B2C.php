@@ -37,12 +37,12 @@ class B2C extends \OpenTHC\CRE\Metrc2023\Base
 
 	}
 
-	function update($arg)
+	function update(string $oid, $obj)
 	{
 		$url = $this->_client->_make_url($this->_path);
 		$req = $this->_client->_curl_init($url);
 		curl_setopt($req, CURLOPT_CUSTOMREQUEST, 'PUT');
-		$res = $this->_client->_curl_exec($req, [ $arg ]);
+		$res = $this->_client->_curl_exec($req, [ $obj ]);
 		return $res;
 	}
 
