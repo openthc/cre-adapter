@@ -2,7 +2,7 @@
 /**
  * Interface for BioTrack
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * @see https://biotrack.com/
  */

@@ -3,10 +3,11 @@
 #
 
 parameters:
+
 	bootstrapFiles:
 		- %currentWorkingDirectory%/vendor/autoload.php
 
-	level: 5
+	level: 6
 
 	paths:
 		- %currentWorkingDirectory%/lib

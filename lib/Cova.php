@@ -2,7 +2,7 @@
 /**
  * Interface for Cova
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * @see https://api.covasoft.net/Documentation
  */

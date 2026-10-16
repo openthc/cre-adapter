@@ -2,7 +2,7 @@
 /**
  * Strain in BioTrack as NO-OP
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE\BioTrack;

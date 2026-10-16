@@ -2,7 +2,7 @@
 /**
  * Section Interface
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * @todo Reset Sections cause Metrc doesn't provide information about which sections are real?
  * @note you GEt a 403 Error on Sections when query as a Processor

@@ -2,7 +2,7 @@
 /**
  * Create and Search for Products
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 namespace OpenTHC\CRE\Test\Metrc\Inventory_Process;
 
@@ -30,6 +30,19 @@ class Convert_Lot_Test extends \OpenTHC\CRE\Test\Metrc_Case
 			],
 		];
 		$res = $cre->packageCreate($obj);
+		$this->assertValidResponse($res);
+	}
+
+	/**
+	 * @depends A_Auth_Test::test_auth_ak
+	 */
+	function test_convert_ak()
+	{
+		// $cre = get_alakac_cre();
+		$cre->inventory()->search();
+
+		$arg = [ /* the correct magic */ ];
+		$res = $cre->inventory()->convert($arg);
 		$this->assertValidResponse($res);
 	}
 }

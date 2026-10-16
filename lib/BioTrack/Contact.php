@@ -2,7 +2,7 @@
 /**
  * Contact in BioTrack
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * This can be both Employees and Patients
  */

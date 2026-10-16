@@ -2,7 +2,7 @@
 /**
  * Crop Interface
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * @note You get a 401 Error on Plants when not allowed
  */

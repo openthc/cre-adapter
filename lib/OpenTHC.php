@@ -2,7 +2,7 @@
 /**
  * Interface to the OpenTHC (or OpenTHC Like) CRE
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE;

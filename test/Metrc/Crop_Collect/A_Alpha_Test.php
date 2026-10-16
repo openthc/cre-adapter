@@ -1,6 +1,6 @@
 <?php
 /**
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE\Test\Metrc\Crop_Collect;
@@ -40,7 +40,7 @@ class A_Alpha_Test extends \OpenTHC\CRE\Test\Metrc_Case
 
 
 // Harvest Create Package
-// $res = $rbe->plant_collect()->harvestPackageCreate([[
+// $res = $rbe->crop_collect()->harvestPackageCreate([[
 // 	'Tag' => 'ABCDEF012345670000016525',
 // 	'Room' => 'Eval 78b705e8',
 // 	'Item' => 'Buds',

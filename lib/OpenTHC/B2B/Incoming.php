@@ -2,7 +2,7 @@
 /**
  * B2B Incoming interface
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE\OpenTHC\B2B;

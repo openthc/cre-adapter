@@ -2,7 +2,7 @@
 /**
  * Test Auth Stuff
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * Notes about the Auth module
  * The "service-sk" cooresponds to a code that is a company object identifier
@@ -49,7 +49,7 @@ class A_Auth_Bunk_Test extends \OpenTHC\CRE\Test\Metrc_Case
 	{
 		// TEST COMPANY A
 		// $res = $this->_post('/auth/open', [
-		$c = new \OpenTHC\CRE\Metrc([
+		$c = new \OpenTHC\CRE\Metrc2023([
 			'service-sk' => getenv('OPENTHC_TEST_METRC_SERVICE_SK'),
 			'license-sk' => getenv('OPENTHC_TEST_METRC_LICENSE_SK'),
 		]);

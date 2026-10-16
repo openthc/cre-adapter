@@ -2,7 +2,7 @@
 /**
  * Load Each Engine
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE\Test\Core;
@@ -25,7 +25,7 @@ class Engine_Test extends \OpenTHC\CRE\Test\Base_Case
 			'license-sk' => 'TEST',
 		];
 
-		$cre_list = \OpenTHC\CRE::getEngineList();
+		$cre_list = \OpenTHC\CRE::getEngineList($_ENV['OPENTHC_TEST_APP_ROOT']);
 
 		foreach ($cre_list as $cfg0) {
 

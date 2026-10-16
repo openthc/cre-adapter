@@ -3,7 +3,7 @@
  * WCIA Utility Class
  * For https://cannabisintegratorsalliance.com/
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE;
@@ -157,6 +157,7 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * @deprecated use \OpenTHC\App\CRE\CCRS\Product\Type
 	 * Maps OpenTHC Product ID to WCIA Category & Type
 	 *
 	 * @return Array
@@ -205,6 +206,7 @@ class WCIA extends \OpenTHC\CRE\Base
 	}
 
 	/**
+	 * @deprecated use \OpenTHC\App\CRE\CCRS\Product\Type
 	 * Maps WCIA Product Type and Category to OpenTHC ULID
 	 */
 	static function map_product_type_ct2id($t0, $t1)

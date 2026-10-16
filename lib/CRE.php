@@ -2,7 +2,7 @@
 /**
  * A Compliance Reporting Engine Interface
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC;
@@ -17,7 +17,6 @@ class CRE
 	static function factory(array $cfg)
 	{
 		$cre_info = self::getConfig($cfg['id']);
-
 		$cfg = array_merge($cre_info, $cfg);
 
 		if (empty($cfg['class'])) {
@@ -39,10 +38,25 @@ class CRE
 		$cre_code = str_replace('/', '-', $cre_code);
 		$cre_list = self::getEngineList($app_root);
 		if (empty($cre_list[$cre_code])) {
-			throw new \Exception('Invalid CRE Configuration [CLC-041]');
+			throw new \Exception("Invalid CRE Configuration '$cre_code' [CLC-041]");
 		}
 		$cre_data = $cre_list[$cre_code];
 		return $cre_data;
+	}
+
+	/**
+	 *
+	 */
+	static function getEngine(array $cfg)
+	{
+		if (empty($cfg['class'])) {
+			throw new \Exception(sprintf('Cannot create CRE "%s" without Class', $cfg['id']));
+		}
+
+		$cre = new $cfg['class']($cfg);
+
+		return $cre;
+
 	}
 
 	/**

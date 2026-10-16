@@ -2,7 +2,7 @@
 /**
  * Test Class Loading
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * Remove this maybe
  */

@@ -2,7 +2,7 @@
 /**
  * Testing the config file and making sure all the spots are correctly filled
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 namespace OpenTHC\CRE\Test\Config;

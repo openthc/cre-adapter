@@ -1,7 +1,8 @@
 {
 	"name": "openthc/cre-adapter",
 	"description": "OpenTHC Cannabis Reporting Engine API Adapters",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
+	"version": "420.26.288",
 	"autoload": {
 		"files": [
 			"lib/CRE.php"

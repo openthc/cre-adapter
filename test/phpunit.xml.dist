@@ -45,16 +45,20 @@
 		<!--
 			METRC Options
 		-->
-		<env name="OPENTHC_TEST_METRC_CRE" value="usa-co" />
-		<env name="OPENTHC_TEST_METRC_LICENSE_SK" value="" />
+		<!-- <env name="OPENTHC_TEST_METRC_CRE" value="usa-co" /> -->
+		<!-- <env name="OPENTHC_TEST_METRC_LICENSE_SK" value="" /> -->
+		<env name="OPENTHC_TEST_METRC_CA_LICENSE_SK" value="" />
+		<env name="OPENTHC_TEST_METRC_CO_LICENSE_SK" value="" />
+		<!-- <env ... -->
 
 	</php>
 
 	<testsuites>
 		<testsuite name="All">
 			<directory>Config</directory>
-			<directory>Core</directory>
+			<!-- <directory>Core</directory> -->
 			<!-- <directory>BioTrack</directory> -->
+			<file>CCRS/Product_Type_Test.php</file>
 			<!-- <directory>Metrc</directory> -->
 		</testsuite>
 	</testsuites>

@@ -2,7 +2,7 @@
 /**
  * Product in BioTrack
  *
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * They don't have a concept of a Product, so this is really just a helper
  */
