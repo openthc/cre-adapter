@@ -2,7 +2,7 @@
 	"name": "openthc/cre-adapter",
 	"description": "OpenTHC Cannabis Reporting Engine API Adapters",
 	"license": "GPL-3.0-only",
-	"version": "420.26.288",
+	"version": "420.26.294",
 	"autoload": {
 		"files": [
 			"lib/CRE.php"
@@ -13,12 +13,12 @@
 		}
 	},
 	"require": {
-		"chrome-php/chrome": "1.14.0",
-		"openthc/common": "v2026.288.1"
+		"chrome-php/chrome": "1.16.1",
+		"openthc/common": "v2026.289.0"
 	},
 	"require-dev": {
 		"phpmd/phpmd": "2.15.0",
-		"phpstan/phpstan": "2.1.54",
-		"phpunit/phpunit": "9.6.33"
+		"phpstan/phpstan": "2.3.1",
+		"phpunit/phpunit": "9.6.38"
 	}
 }
